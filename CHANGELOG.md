@@ -1,3 +1,9 @@
+1.2.0
+-----
+
+### Fixes
+* Fixed the mcmod.info file not containing any version information in the dev JAR.
+
 1.1.2
 -----
 
