@@ -60,7 +60,6 @@ processResources {
 // Task for creating a deobfuscated JAR; needed by the projects which use this library
 task deobfJar(type: Jar) {
     from sourceSets.main.output
-    from sourceSets.main.resources
     classifier = 'dev'
 }
 
