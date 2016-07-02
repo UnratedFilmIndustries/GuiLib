@@ -9,19 +9,25 @@ buildscript {
             name = 'sonatype'
             url = 'https://oss.sonatype.org/content/repositories/snapshots/'
         }
+        maven {
+            name = 'jboss'
+            url = 'http://repository.jboss.org/nexus/content/groups/public/'
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'org.hibernate.build.gradle:gradle-maven-publish-auth:2.0.1'
     }
 }
 
 // Apply plugins
 apply plugin: 'forge'
+apply plugin: 'maven-publish'
+apply plugin: 'maven-publish-auth'
 
 // Basic project information
-version = '1.1.0'
 group = 'de.unratedfilms'
-archivesBaseName = 'guilib'
+version = '1.1.1'
 
 // Minimum java version
 sourceCompatibility = 1.7
@@ -71,10 +77,22 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
 }
 
-// Project artifacts (binaries, deobf binaries, sources, and javadoc)
-artifacts {
-    archives jar
-    archives deobfJar
-    archives sourceJar
-    archives javadocJar
+// Publish the project artifacts to a maven repository
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifact jar
+            artifact deobfJar
+            artifact sourceJar
+            artifact javadocJar
+        }
+    }
+    repositories {
+        maven {
+            name = 'quartercode-deployment'
+            url = version.endsWith('-SNAPSHOT') ?
+                    'http://repo.quartercode.com/content/repositories/snapshots/' :
+                    'http://repo.quartercode.com/content/repositories/releases/'
+        }
+    }
 }
