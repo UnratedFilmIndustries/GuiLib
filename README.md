@@ -1,6 +1,11 @@
-GUI Library
-=================
+GuiLib
+======
 
-GuiLib is a minecraft library/mod that allows modders to create more advanced Minecraft GUIs.
+GuiLib is a Minecraft library that allows modders to create more advanced Minecraft GUIs.
 
-Forum Thread: http://www.minecraftforum.net/topic/1909236-/
+License
+-------
+
+This project has been forked from: https://github.com/DavidGoldman/GuiLib
+
+It may be used under the terms of the GNU General Public License (GPL) v3.0. See the LICENSE.md file or https://www.gnu.org/licenses/gpl-3.0.txt for details.
