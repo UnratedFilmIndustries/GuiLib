@@ -6,6 +6,7 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import de.unratedfilms.guilib.core.Checkbox;
+import de.unratedfilms.guilib.core.MouseButton;
 
 /**
  * Default style checkbox.
@@ -26,10 +27,10 @@ public class CheckboxVanilla extends Checkbox {
     }
 
     @Override
-    public void handleClick(int mx, int my) {
+    public void handleClick(int mx, int my, MouseButton mouseButton) {
 
+        super.handleClick(mx, my, mouseButton);
         MC.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-        super.handleClick(mx, my);
     }
 
     @Override

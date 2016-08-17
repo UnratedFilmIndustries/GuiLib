@@ -42,7 +42,7 @@ public class MultiTooltip extends Widget {
     }
 
     @Override
-    public boolean click(int mx, int my) {
+    public boolean click(int mx, int my, MouseButton mouseButton) {
 
         return false;
     }

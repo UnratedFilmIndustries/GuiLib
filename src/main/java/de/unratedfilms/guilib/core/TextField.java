@@ -278,13 +278,13 @@ public abstract class TextField extends FocusableWidget {
     }
 
     @Override
-    public boolean click(int mx, int my) {
+    public boolean click(int mx, int my, MouseButton mouseButton) {
 
-        return inBounds(mx, my);
+        return mouseButton == MouseButton.LEFT && inBounds(mx, my);
     }
 
     @Override
-    public void handleClick(int mx, int my) {
+    public void handleClick(int mx, int my, MouseButton mouseButton) {
 
         int pos = mx - x;
         pos -= Math.abs(getInternalWidth() - width) / 2;

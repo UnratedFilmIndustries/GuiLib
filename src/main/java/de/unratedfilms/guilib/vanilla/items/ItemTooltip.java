@@ -16,6 +16,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.opengl.GL11;
+import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Widget;
 
 /**
@@ -124,7 +125,7 @@ public class ItemTooltip extends Widget {
     }
 
     @Override
-    public boolean click(int mx, int my) {
+    public boolean click(int mx, int my, MouseButton mouseButton) {
 
         return false;
     }

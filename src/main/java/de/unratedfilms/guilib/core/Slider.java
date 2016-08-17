@@ -43,19 +43,20 @@ public abstract class Slider extends Widget {
     }
 
     @Override
-    public boolean click(int mx, int my) {
+    public boolean click(int mx, int my, MouseButton mouseButton) {
 
-        if (inBounds(mx, my)) {
+        if (mouseButton == MouseButton.LEFT && inBounds(mx, my)) {
             value = (float) (mx - (x + 4)) / (float) (width - 8);
             value = MathHelper.clamp_float(value, 0, 1);
             dragging = true;
             return true;
         }
+
         return false;
     }
 
     @Override
-    public void handleClick(int mx, int my) {
+    public void handleClick(int mx, int my, MouseButton mouseButton) {
 
         value = (float) (mx - (x + 4)) / (float) (width - 8);
         value = MathHelper.clamp_float(value, 0, 1);
@@ -63,9 +64,11 @@ public abstract class Slider extends Widget {
     }
 
     @Override
-    public void mouseReleased(int mx, int my) {
+    public void mouseReleased(int mx, int my, MouseButton mouseButton) {
 
-        dragging = false;
+        if (mouseButton == MouseButton.LEFT) {
+            dragging = false;
+        }
     }
 
     public static interface SliderFormat {

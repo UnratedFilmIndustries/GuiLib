@@ -21,7 +21,6 @@ import de.unratedfilms.guilib.core.Widget;
  *
  * Note that items use zLevel for rendering - change zLevel as needed.
  */
-
 public class ItemButton extends Button implements Shiftable {
 
     public static final int        WIDTH        = 18;

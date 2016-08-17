@@ -5,6 +5,7 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Slider;
 
 /**
@@ -25,9 +26,9 @@ public class SliderVanilla extends Slider {
     }
 
     @Override
-    public void handleClick(int mx, int my) {
+    public void handleClick(int mx, int my, MouseButton mouseButton) {
 
-        super.handleClick(mx, my);
+        super.handleClick(mx, my, mouseButton);
         MC.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
     }
 

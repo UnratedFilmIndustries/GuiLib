@@ -10,8 +10,9 @@ import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import de.unratedfilms.guilib.core.Button;
-import de.unratedfilms.guilib.core.Button.ButtonHandler;
+import de.unratedfilms.guilib.core.Button.LeftButtonHandler;
 import de.unratedfilms.guilib.core.Container;
+import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Widget;
 
 /**
@@ -166,18 +167,16 @@ public abstract class BasicScreen extends GuiScreen {
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int code) {
 
-        if (code == 0) {
-            for (Container c : containers) {
-                if (c.mouseClicked(mouseX, mouseY)) {
-                    selectedContainer = c;
-                    break;
-                }
+        for (Container c : containers) {
+            if (c.mouseClicked(mouseX, mouseY, MouseButton.fromCode(code))) {
+                selectedContainer = c;
+                break;
             }
+        }
 
-            for (Container c : containers) {
-                if (c != selectedContainer) {
-                    c.setFocused(null);
-                }
+        for (Container c : containers) {
+            if (c != selectedContainer) {
+                c.setFocused(null);
             }
         }
     }
@@ -185,10 +184,8 @@ public abstract class BasicScreen extends GuiScreen {
     @Override
     protected void mouseMovedOrUp(int mouseX, int mouseY, int code) {
 
-        if (code == 0) {
-            for (Container c : containers) {
-                c.mouseReleased(mouseX, mouseY);
-            }
+        for (Container c : containers) {
+            c.mouseReleased(mouseX, mouseY, MouseButton.fromCode(code));
         }
     }
 
@@ -201,10 +198,10 @@ public abstract class BasicScreen extends GuiScreen {
         }
     }
 
-    public class CloseButtonHandler implements ButtonHandler {
+    public class CloseButtonHandler extends LeftButtonHandler {
 
         @Override
-        public void buttonClicked(Button button) {
+        public void leftButtonClicked(Button button) {
 
             close();
         }

@@ -5,6 +5,7 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import de.unratedfilms.guilib.core.Button;
+import de.unratedfilms.guilib.core.MouseButton;
 
 /**
  * Vanilla GuiButton in Widget form.
@@ -69,10 +70,10 @@ public class ButtonVanilla extends Button {
     }
 
     @Override
-    public void handleClick(int mx, int my) {
+    public void handleClick(int mx, int my, MouseButton mouseButton) {
 
+        super.handleClick(mx, my, mouseButton);
         MC.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-        super.handleClick(mx, my);
     }
 
 }

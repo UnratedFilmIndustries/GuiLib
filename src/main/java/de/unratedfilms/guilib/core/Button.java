@@ -17,16 +17,16 @@ public abstract class Button extends Widget {
     }
 
     @Override
-    public boolean click(int mx, int my) {
+    public boolean click(int mx, int my, MouseButton mouseButton) {
 
-        return enabled && inBounds(mx, my);
+        return mouseButton != MouseButton.UNKNOWN && enabled && inBounds(mx, my);
     }
 
     @Override
-    public void handleClick(int mx, int my) {
+    public void handleClick(int mx, int my, MouseButton mouseButton) {
 
         if (handler != null) {
-            handler.buttonClicked(this);
+            handler.buttonClicked(this, mouseButton);
         }
     }
 
@@ -46,7 +46,21 @@ public abstract class Button extends Widget {
 
     public static interface ButtonHandler {
 
-        public void buttonClicked(Button button);
+        public void buttonClicked(Button button, MouseButton mouseButton);
+
+    }
+
+    public static abstract class LeftButtonHandler implements ButtonHandler {
+
+        @Override
+        public void buttonClicked(Button button, MouseButton mouseButton) {
+
+            if (mouseButton == MouseButton.LEFT) {
+                leftButtonClicked(button);
+            }
+        }
+
+        public abstract void leftButtonClicked(Button button);
 
     }
 

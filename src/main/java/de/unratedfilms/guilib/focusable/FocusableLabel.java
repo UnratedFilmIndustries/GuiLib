@@ -4,6 +4,7 @@ package de.unratedfilms.guilib.focusable;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
+import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Scrollbar.Shiftable;
 import de.unratedfilms.guilib.core.Widget;
 
@@ -129,9 +130,9 @@ public class FocusableLabel extends FocusableWidget implements Shiftable {
     }
 
     @Override
-    public boolean click(int mx, int my) {
+    public boolean click(int mx, int my, MouseButton mouseButton) {
 
-        return inBounds(mx, my);
+        return mouseButton == MouseButton.LEFT && inBounds(mx, my);
     }
 
     private static int getStringWidth(String text) {

@@ -180,7 +180,7 @@ public class Container {
         return mx >= left && my >= top && mx < right && my < bottom;
     }
 
-    public boolean mouseClicked(int mx, int my) {
+    public boolean mouseClicked(int mx, int my, MouseButton mouseButton) {
 
         if (inBounds(mx, my)) {
             boolean resetFocus = true;
@@ -190,13 +190,13 @@ public class Container {
             }
 
             for (Widget w : widgets) {
-                if (w.shouldRender(top, bottom) && w.click(mx, my)) {
+                if (w.shouldRender(top, bottom) && w.click(mx, my, mouseButton)) {
                     lastSelected = w;
                     if (w instanceof FocusableWidget) {
                         setFocused((FocusableWidget) w);
                         resetFocus = false;
                     }
-                    w.handleClick(mx, my);
+                    w.handleClick(mx, my, mouseButton);
                     break;
                 }
             }
@@ -260,10 +260,10 @@ public class Container {
         }
     }
 
-    public void mouseReleased(int mx, int my) {
+    public void mouseReleased(int mx, int my, MouseButton mouseButton) {
 
         if (lastSelected != null) {
-            lastSelected.mouseReleased(mx, my);
+            lastSelected.mouseReleased(mx, my, mouseButton);
             lastSelected = null;
         }
     }

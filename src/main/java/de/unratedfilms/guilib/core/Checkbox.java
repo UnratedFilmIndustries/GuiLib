@@ -23,13 +23,13 @@ public abstract class Checkbox extends Widget {
     }
 
     @Override
-    public boolean click(int mx, int my) {
+    public boolean click(int mx, int my, MouseButton mouseButton) {
 
-        return inBounds(mx, my);
+        return mouseButton == MouseButton.LEFT && inBounds(mx, my);
     }
 
     @Override
-    public void handleClick(int mx, int my) {
+    public void handleClick(int mx, int my, MouseButton mouseButton) {
 
         checked = !checked;
     }
