@@ -59,7 +59,7 @@ public abstract class Widget extends Gui {
      *
      * @param mx Mouse-X
      * @param my Mouse-Y
-     * @param button The pressed mouse button
+     * @param mouseButton The pressed mouse button
      * @return Whether the control should handleClick and the widget should be focused
      */
     public abstract boolean click(int mx, int my, MouseButton mouseButton);
@@ -70,7 +70,7 @@ public abstract class Widget extends Gui {
      *
      * @param mx Mouse-X
      * @param my Mouse-Y
-     * @param button The pressed mouse button
+     * @param mouseButton The pressed mouse button
      */
     public void handleClick(int mx, int my, MouseButton mouseButton) {
 
@@ -88,7 +88,7 @@ public abstract class Widget extends Gui {
      *
      * @param mx Mouse-X
      * @param my Mouse-Y
-     * @param button The released mouse button
+     * @param mouseButton The released mouse button
      */
     public void mouseReleased(int mx, int my, MouseButton mouseButton) {
 
