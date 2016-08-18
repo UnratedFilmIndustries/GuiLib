@@ -25,6 +25,8 @@ public enum MouseButton {
 
     /**
      * Returns the internal code that is used by LWJGL do describe which button has been pressed.
+     *
+     * @return The LWJGL mouse button code, or {@code -1} if the button is unknown.
      */
     public int getCode() {
 

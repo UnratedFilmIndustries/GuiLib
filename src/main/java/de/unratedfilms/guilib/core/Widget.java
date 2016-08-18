@@ -1,186 +1,165 @@
 
 package de.unratedfilms.guilib.core;
 
-import java.util.Collections;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
+import org.lwjgl.input.Keyboard;
 
 /**
- * Widgets are the core of this library.
- * All controls should be a subclass of this Widget class.
+ * Widgets are the core of this library. A widget can be a label, a text field, a button, essentially everything.
+ * All controls should somehow implement this Widget interface.
+ * It is recommended to use the {@link WidgetAdapter} as a superclass in order to avoid boilerplate code.
  */
-public abstract class Widget extends Gui {
-
-    // Utility constant for quick access
-    public static final Minecraft MC = Minecraft.getMinecraft();
-
-    protected int                 x, y, width, height;
-    protected boolean             enabled;
+public interface Widget {
 
     /**
+     * Returns the leftmost x coordinate of this widget on the screen.
      *
-     * @param width Widget of this widget
-     * @param height Height of this widget
+     * @return The leftmost x coordinate in pixels.
      */
-    public Widget(int width, int height) {
-
-        this.width = width;
-        this.height = height;
-        enabled = true;
-    }
+    public int getX();
 
     /**
+     * Sets the leftmost x coordinate of this widget on the screen.
      *
-     * @param x Leftmost x of this widget
-     * @param y Topmost y of this widget
-     * @param width Widget of this widget
-     * @param height Height of this widget
+     * @param x The new leftmost x coordinate in pixels.
      */
-    public Widget(int x, int y, int width, int height) {
-
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        enabled = true;
-    }
+    public void setX(int x);
 
     /**
-     * Draws this widget
+     * Returns the topmost y coordinate of this widget on the screen.
      *
-     * @param mx Mouse-X
-     * @param my Mouse-Y
+     * @return The topmost y coordinate in pixels.
      */
-    public abstract void draw(int mx, int my);
+    public int getY();
 
     /**
-     * Called when the mouse is clicked.
+     * Sets the topmost y coordinate of this widget on the screen.
      *
-     * @param mx Mouse-X
-     * @param my Mouse-Y
-     * @param mouseButton The pressed mouse button
-     * @return Whether the control should handleClick and the widget should be focused
+     * @param y The new topmost y coordinate in pixels.
      */
-    public abstract boolean click(int mx, int my, MouseButton mouseButton);
+    public void setY(int y);
 
     /**
-     * Called when a call to {@link #click(int, int, MouseButton)} returns true.
-     * Handle the click event in this method.
+     * Sets both the x and y coordinates of this widget at the same time.
+     * Note that this is just a convenience method and internally calls {@link #setX(int)} and {@link #setY(int)}.
+     * That means that you only need to override those if you want to enforce a shift on all coordinates.
      *
-     * @param mx Mouse-X
-     * @param my Mouse-Y
-     * @param mouseButton The pressed mouse button
+     * @param x The new leftmost x coordinate in pixels.
+     * @param y The new topmost y coordinate in pixels.
      */
-    public void handleClick(int mx, int my, MouseButton mouseButton) {
-
-    }
+    public void setPosition(int x, int y);
 
     /**
-     * Update this control (if necessary).
-     */
-    public void update() {
-
-    }
-
-    /**
-     * Called when the mouse is released.
+     * Returns the width of this widget.
      *
-     * @param mx Mouse-X
-     * @param my Mouse-Y
-     * @param mouseButton The released mouse button
+     * @return The width in pixels.
      */
-    public void mouseReleased(int mx, int my, MouseButton mouseButton) {
-
-    }
+    public int getWidth();
 
     /**
-     * Called when a key is typed.
+     * Sets the width of this widget.
      *
-     * @param typedChar Character typed (if any)
-     * @param keyCode Keyboard.KEY_ code for this key
-     * @return Whether this widget has captured this keyboard event
+     * @param width The new width in pixels.
      */
-    public boolean keyTyped(char typedChar, int keyCode) {
+    public void setWidth(int width);
 
-        return false;
-    }
+    /**
+     * Returns the height of this widget.
+     *
+     * @return The height in pixels.
+     */
+    public int getHeight();
+
+    /**
+     * The new height of this widget.
+     *
+     * @param height The new height in pixels.
+     */
+    public void setHeight(int height);
+
+    /**
+     * Sets both the width and height of this widget at the same time.
+     * Note that this is just a convenience method and internally calls {@link #setWidth(int)} and {@link #setHeight(int)}.
+     * That means that you only need to override those if you want to enforce a shift on all lengths.
+     *
+     * @param width The new width in pixels.
+     * @param height The new height in pixels.
+     */
+    public void setSize(int width, int height);
+
+    /*
+     * Event handlers
+     */
+
+    /**
+     * Updates this widget during each tick.
+     */
+    public void update();
+
+    /**
+     * Draws this widget.
+     *
+     * @param mx The x coordinate of the mouse.
+     * @param my The y coordinate of the mouse.
+     */
+    public void draw(int mx, int my);
+
+    /**
+     * Called once when the given {@link MouseButton} is pushed down.
+     *
+     * @param mx The x coordinate of the mouse.
+     * @param my The y coordinate of the mouse.
+     * @param mouseButton The pressed mouse button.
+     * @return Whether the widget should be focused as a result of the click.
+     */
+    public boolean mousePressed(int mx, int my, MouseButton mouseButton);
+
+    /**
+     * Called once when the given {@link MouseButton} is released.
+     *
+     * @param mx The x coordinate of the mouse.
+     * @param my The y coordinate of the mouse.
+     * @param mouseButton The released mouse button.
+     */
+    public void mouseReleased(int mx, int my, MouseButton mouseButton);
+
+    /**
+     * Called once when the given key is typed.
+     *
+     * @param typedChar The typed character (if any).
+     * @param keyCode {@link Keyboard}{@code .KEY_} code for the typed key.
+     * @return Whether this widget has captured this keyboard event, which means that it won't cause a focus shift (tab) or a scrollbar shift (up/down).
+     */
+    public boolean keyTyped(char typedChar, int keyCode);
 
     /**
      * Called when the mouse wheel has moved.
      *
-     * @param delta Clamped difference, currently either +5 or -5
-     * @return Whether this widget has captured this mouse wheel event
+     * @param delta Clamped difference, currently either +5 or -5.
+     * @return Whether this widget has captured this mouse wheel event, which means that other widget's won't get notified about the wheel rotation.
+     *         Of course, this only applies if no widget is focused, because in that case only the widget in focus would be notified.
      */
-    public boolean mouseWheel(int delta) {
+    public boolean mouseWheel(int delta);
 
-        return false;
-    }
+    /*
+     * Predicates
+     */
 
     /**
-     * Called when rendering to get tooltips.
+     * Determines whether the specified coordinate is in bounds of this widget's area.
      *
-     * @return Tooltips for this widget
+     * @param x The x coordinate of the point which should be tested.
+     * @param y The y coordinate of the point which should be tested.
+     * @return Whether the mouse is in the bounds of this widget.
      */
-    public List<Widget> getTooltips() {
-
-        return Collections.emptyList();
-    }
+    public boolean inBounds(int x, int y);
 
     /**
-     * Called to see if the specified coordinate is in bounds.
+     * Determines whether this widget should render, given the top and bottom edges of the screen.
      *
-     * @param mx Mouse-X
-     * @param my Mouse-Y
-     * @return Whether the mouse is in the bounds of this widget
+     * @param topY The top y of the screen.
+     * @param bottomY The bottom y of the screen.
+     * @return Whether or not this widget should be rendered.
      */
-    public boolean inBounds(int mx, int my) {
-
-        return mx >= x && my >= y && mx < x + width && my < y + height;
-    }
-
-    /**
-     * Called to see if this widget should render.
-     *
-     * @param topY Top-Y of the screen
-     * @param bottomY Bottom-Y of the screen
-     * @return Whether or not this widget should be rendered
-     */
-    public boolean shouldRender(int topY, int bottomY) {
-
-        return y + height >= topY && y <= bottomY;
-    }
-
-    /**
-     * Set the position of this widget.
-     *
-     * @param x Left-most X
-     * @param y Top-most Y
-     */
-    public void setPosition(int x, int y) {
-
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX() {
-
-        return x;
-    }
-
-    public int getY() {
-
-        return y;
-    }
-
-    public int getWidth() {
-
-        return width;
-    }
-
-    public int getHeight() {
-
-        return height;
-    }
+    public boolean shouldRender(int topY, int bottomY);
 
 }
