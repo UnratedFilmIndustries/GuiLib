@@ -3,12 +3,15 @@
 
 ### Additions
 * You can now handle all mouse clicks and not just the ones with the left mouse button.
+* Replaced the somewhat obscure and counter-intuitive tooltip system with a way more intuitive and flexible one.
+* All widgets are now described through interfaces and then implemented by concrete classes. That adds an additional layer of possible abstraction if you need it -- and in many cases, you actually do.
 
 ### Fixes
 * Fixed the mcmod.info file not containing any version information in the dev JAR.
 
 ### Notes
-* Some changes to the mouse API will probably break your custom widgets and button handlers. Watch out for that when upgrading!
+* Restructured all the packages and untangled a lot of dependencies.
+* A lot of fundamental changes and general cleanups will probably break your code. Watch out for that when upgrading!
 
 1.1.2
 -----
