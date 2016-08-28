@@ -3,12 +3,12 @@ package de.unratedfilms.guilib.integration;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.MathHelper;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import de.unratedfilms.guilib.core.MouseButton;
 
 /**

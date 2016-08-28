@@ -1,8 +1,8 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
-import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
+import net.minecraft.util.ResourceLocation;
 import de.unratedfilms.guilib.widgets.model.Checkbox;
 import de.unratedfilms.guilib.widgets.view.adapters.CheckboxAdapter;
 

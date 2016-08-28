@@ -1,9 +1,9 @@
 
 package de.unratedfilms.guilib.widgets.view.adapters;
 
+import org.apache.commons.lang3.Validate;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.ResourceLocation;
-import org.apache.commons.lang3.Validate;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.WidgetAdapter;
 import de.unratedfilms.guilib.widgets.model.Checkbox;

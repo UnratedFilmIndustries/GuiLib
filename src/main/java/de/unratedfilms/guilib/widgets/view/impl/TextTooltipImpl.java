@@ -2,9 +2,9 @@
 package de.unratedfilms.guilib.widgets.view.impl;
 
 import java.util.List;
-import net.minecraft.client.gui.FontRenderer;
 import org.apache.commons.lang3.Validate;
 import org.lwjgl.opengl.GL11;
+import net.minecraft.client.gui.FontRenderer;
 import de.unratedfilms.guilib.widgets.model.TextTooltip;
 import de.unratedfilms.guilib.widgets.view.adapters.TextTooltipAdapter;
 

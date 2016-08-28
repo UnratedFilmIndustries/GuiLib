@@ -3,10 +3,10 @@ package de.unratedfilms.guilib.integration;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.MathHelper;
 import de.unratedfilms.guilib.core.FocusableWidget;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.TooltipableWidget;

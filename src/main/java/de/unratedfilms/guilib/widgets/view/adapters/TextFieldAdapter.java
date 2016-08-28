@@ -1,12 +1,12 @@
 
 package de.unratedfilms.guilib.widgets.view.adapters;
 
+import org.apache.commons.lang3.Validate;
+import org.lwjgl.opengl.GL11;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.MathHelper;
-import org.apache.commons.lang3.Validate;
-import org.lwjgl.opengl.GL11;
 import de.unratedfilms.guilib.core.FocusableWidget;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.WidgetAdapter;

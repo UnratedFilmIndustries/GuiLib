@@ -1,9 +1,9 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
-import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.Validate;
 import org.lwjgl.opengl.GL11;
+import net.minecraft.util.ResourceLocation;
 import de.unratedfilms.guilib.widgets.model.ButtonLabel;
 import de.unratedfilms.guilib.widgets.view.adapters.ButtonAdapter;
 
