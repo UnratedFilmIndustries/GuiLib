@@ -359,40 +359,67 @@ public class Container {
 
     public boolean mousePressed(int mx, int my, MouseButton mouseButton) {
 
-        if (inBounds(mx, my)) {
-            boolean resetFocus = true;
+        if (!inBounds(mx, my)) {
+            return false;
+        }
 
-            if (scrollbar != null && scrollbar.shouldRender(top, bottom) && scrollbar.inBounds(mx, my)) {
-                return true;
-            }
-
-            for (Widget w : widgets) {
-                if (w.shouldRender(top, bottom) && w.mousePressed(mx, my, mouseButton)) {
-                    lastSelectedWidget = w;
-                    if (w instanceof FocusableWidget) {
-                        setFocused((FocusableWidget) w);
-                        resetFocus = false;
-                    }
-                    break;
-                }
-            }
-            if (resetFocus) {
-                setFocused(null);
-            }
+        // Handle the scrollbar if the mouse hovers over it
+        if (scrollbar != null && scrollbar.shouldRender(top, bottom) && scrollbar.inBounds(mx, my)) {
             return true;
         }
-        return false;
+
+        // If we have a focused widget, it is allowed to handle the mouse click first
+        FocusableWidget focusedWidget = getFocusedWidget();
+        if (focusedWidget != null && tryForwardMousePressedToWidget(mx, my, mouseButton, focusedWidget)) {
+            return true;
+        }
+
+        // If we don't have a focused widget or the focused widget is not interested in the mouse click, allow the other widgets to handle it
+        boolean resetFocus = true;
+        for (Widget w : widgets) {
+            if (w != focusedWidget && tryForwardMousePressedToWidget(mx, my, mouseButton, w)) {
+                if (w instanceof FocusableWidget) {
+                    resetFocus = false;
+                }
+                break;
+            }
+        }
+        if (resetFocus) {
+            setFocused(null);
+        }
+
+        return true;
     }
 
-    public void mouseReleased(int mx, int my, MouseButton mouseButton) {
+    private boolean tryForwardMousePressedToWidget(int mx, int my, MouseButton mouseButton, Widget w) {
 
-        if (lastSelectedWidget != null) {
-            lastSelectedWidget.mouseReleased(mx, my, mouseButton);
-            lastSelectedWidget = null;
+        if (w.shouldRender(top, bottom) && w.mousePressed(mx, my, mouseButton)) {
+            lastSelectedWidget = w;
+            if (w instanceof FocusableWidget) {
+                setFocused((FocusableWidget) w);
+            }
+            return true;
+        } else {
+            return false;
         }
     }
 
-    public void mouseWheel(int delta) {
+    public boolean mouseReleased(int mx, int my, MouseButton mouseButton) {
+
+        if (lastSelectedWidget == null) {
+            return false;
+        }
+
+        lastSelectedWidget.mouseReleased(mx, my, mouseButton);
+        lastSelectedWidget = null;
+        return true;
+    }
+
+    public boolean mouseWheel(int mx, int my, int delta) {
+
+        if (!inBounds(mx, my)) {
+            return false;
+        }
 
         if (scrollbar != null && scrollbar.shouldRender(top, bottom)) {
             scrollbar.shiftRelative(delta);
@@ -407,6 +434,8 @@ public class Container {
                 }
             }
         }
+
+        return true;
     }
 
     public boolean keyTyped(char typedChar, int keyCode) {

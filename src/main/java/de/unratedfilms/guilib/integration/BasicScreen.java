@@ -118,14 +118,13 @@ public abstract class BasicScreen extends GuiScreen {
             delta = MathHelper.clamp_int(delta, -5, 5);
 
             for (Container c : containers) {
-                if (c.inBounds(mouseX, mouseY)) {
-                    c.mouseWheel(delta);
+                if (c.mouseWheel(mouseX, mouseY, delta)) {
                     handled = true;
                     break;
                 }
             }
             if (!handled && selectedContainer != null) {
-                selectedContainer.mouseWheel(delta);
+                selectedContainer.mouseWheel(mouseX, mouseY, delta);
             }
         }
     }
@@ -151,7 +150,9 @@ public abstract class BasicScreen extends GuiScreen {
     protected void mouseMovedOrUp(int mouseX, int mouseY, int code) {
 
         for (Container c : containers) {
-            c.mouseReleased(mouseX, mouseY, MouseButton.fromCode(code));
+            if (c.mouseReleased(mouseX, mouseY, MouseButton.fromCode(code))) {
+                break;
+            }
         }
     }
 
