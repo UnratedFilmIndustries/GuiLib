@@ -37,12 +37,13 @@ public class TextTooltipImpl extends TextTooltipAdapter {
 
         Validate.notNull("Vanilla tooltip cannot have a null font");
         this.font = font;
+        invalidate();
     }
 
     @Override
     protected void doRevalidate() {
 
-        setSize(getMaxStringWidth(getLines()), getLines().size() == 1 ? 8 : getLines().size() * 10);
+        setSize(getMaxStringWidth(font, getLines()), getLines().size() == 1 ? 8 : getLines().size() * 10);
     }
 
     /**

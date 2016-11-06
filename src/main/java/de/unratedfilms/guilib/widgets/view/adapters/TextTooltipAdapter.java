@@ -4,6 +4,7 @@ package de.unratedfilms.guilib.widgets.view.adapters;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.Validate;
+import net.minecraft.client.gui.FontRenderer;
 import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
 import de.unratedfilms.guilib.widgets.model.TextTooltip;
 
@@ -12,11 +13,11 @@ import de.unratedfilms.guilib.widgets.model.TextTooltip;
  */
 public abstract class TextTooltipAdapter extends ContextHelperWidgetAdapter implements TextTooltip {
 
-    protected static int getMaxStringWidth(List<String> strings) {
+    protected static int getMaxStringWidth(FontRenderer font, List<String> strings) {
 
         int max = 0;
         for (String s : strings) {
-            int width = MC.fontRenderer.getStringWidth(s);
+            int width = font.getStringWidth(s);
             if (width > max) {
                 max = width;
             }
