@@ -1,12 +1,12 @@
 
 package de.unratedfilms.guilib.widgets.model;
 
-import de.unratedfilms.guilib.core.Widget;
+import de.unratedfilms.guilib.core.WidgetRigid;
 
 /**
  * Abstract representation of a checkbox.
  */
-public interface Checkbox extends Widget {
+public interface Checkbox extends WidgetRigid {
 
     public String getLabel();
 

@@ -4,7 +4,7 @@ package de.unratedfilms.guilib.core;
 /**
  * A {@link Widget} that can gain and lose focus.
  */
-public interface FocusableWidget extends Widget {
+public interface WidgetFocusable extends Widget {
 
     public boolean isFocused();
 

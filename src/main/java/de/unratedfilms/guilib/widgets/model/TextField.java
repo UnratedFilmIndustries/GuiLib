@@ -2,14 +2,14 @@
 package de.unratedfilms.guilib.widgets.model;
 
 import net.minecraft.util.ChatAllowedCharacters;
-import de.unratedfilms.guilib.core.FocusableWidget;
-import de.unratedfilms.guilib.core.Widget;
+import de.unratedfilms.guilib.core.WidgetFlexible;
+import de.unratedfilms.guilib.core.WidgetFocusable;
 
 /**
  * Abstract representation of a text field.
  * This is pretty much a copy of the vanilla text field, so it should support highlighting, copying, and pasting text.
  */
-public interface TextField extends Widget, FocusableWidget {
+public interface TextField extends WidgetFlexible, WidgetFocusable {
 
     public int getMaxLength();
 

@@ -10,19 +10,26 @@ public class TextFieldImpl extends TextFieldAdapter {
 
     private int innerColor, outerColor;
 
+    public TextFieldImpl() {
+
+        this(new VanillaFilter());
+    }
+
     public TextFieldImpl(CharacterFilter filter) {
 
-        this(200, 20, filter);
+        this(-16777216, -6250336, filter);
     }
 
-    public TextFieldImpl(int width, int height, CharacterFilter filter) {
+    public TextFieldImpl(int innerColor, int outerColor) {
 
-        this(width, height, -16777216, -6250336, filter);
+        this(innerColor, outerColor, new VanillaFilter());
     }
 
-    public TextFieldImpl(int width, int height, int innerColor, int outerColor, CharacterFilter filter) {
+    public TextFieldImpl(int innerColor, int outerColor, CharacterFilter filter) {
 
-        super(width, height, filter);
+        super(filter);
+
+        setSize(200, 16);
 
         this.innerColor = innerColor;
         this.outerColor = outerColor;
@@ -69,8 +76,8 @@ public class TextFieldImpl extends TextFieldAdapter {
     @Override
     protected void drawBackground() {
 
-        drawRect(getX() - 1, getY() - 1, getX() + getWidth() + 1, getY() + getHeight() + 1, outerColor);
-        drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), innerColor);
+        drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), outerColor);
+        drawRect(getX() + 1, getY() + 1, getX() + getWidth() - 1, getY() + getHeight() - 1, innerColor);
     }
 
 }

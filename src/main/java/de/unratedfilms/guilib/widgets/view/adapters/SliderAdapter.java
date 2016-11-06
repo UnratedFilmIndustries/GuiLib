@@ -6,7 +6,8 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import de.unratedfilms.guilib.core.MouseButton;
-import de.unratedfilms.guilib.core.WidgetAdapter;
+import de.unratedfilms.guilib.core.Viewport;
+import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
 import de.unratedfilms.guilib.widgets.model.Slider;
 
 /**
@@ -14,7 +15,7 @@ import de.unratedfilms.guilib.widgets.model.Slider;
  *
  * @param <V> The type of number that can be chosen using the slider (e.g. int or float).
  */
-public abstract class SliderAdapter<V> extends WidgetAdapter implements Slider<V> {
+public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implements Slider<V> {
 
     private V                       minValue, maxValue;
     private SliderLabelFormatter<V> labelFormatter;
@@ -24,9 +25,7 @@ public abstract class SliderAdapter<V> extends WidgetAdapter implements Slider<V
 
     protected boolean               dragging;
 
-    public SliderAdapter(int width, int height, V minValue, V maxValue, SliderLabelFormatter<V> labelFormatter, V value) {
-
-        super(width, height);
+    public SliderAdapter(V minValue, V maxValue, SliderLabelFormatter<V> labelFormatter, V value) {
 
         this.minValue = minValue;
         this.maxValue = maxValue;
@@ -114,18 +113,18 @@ public abstract class SliderAdapter<V> extends WidgetAdapter implements Slider<V
     }
 
     @Override
-    public void draw(int mx, int my) {
+    public void drawInLocalContext(Viewport viewport, int lmx, int lmy) {
 
         if (dragging) {
-            degree = (float) (mx - (getX() + 4)) / (getWidth() - 8);
+            degree = (float) (lmx - (getX() + 4)) / (getWidth() - 8);
             degree = MathHelper.clamp_float(degree, 0, 1);
         }
     }
 
     @Override
-    public boolean mousePressed(int mx, int my, MouseButton mouseButton) {
+    public boolean mousePressedInLocalContext(Viewport viewport, int lmx, int lmy, MouseButton mouseButton) {
 
-        if (mouseButton == MouseButton.LEFT && inBounds(mx, my)) {
+        if (mouseButton == MouseButton.LEFT && inLocalBounds(viewport, lmx, lmy)) {
             dragging = true;
             MC.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 
@@ -136,7 +135,7 @@ public abstract class SliderAdapter<V> extends WidgetAdapter implements Slider<V
     }
 
     @Override
-    public void mouseReleased(int mx, int my, MouseButton mouseButton) {
+    public void mouseReleasedInLocalContext(Viewport viewport, int lmx, int lmy, MouseButton mouseButton) {
 
         if (mouseButton == MouseButton.LEFT) {
             dragging = false;

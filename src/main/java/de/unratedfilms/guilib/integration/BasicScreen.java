@@ -1,30 +1,27 @@
 
 package de.unratedfilms.guilib.integration;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.MathHelper;
+import de.unratedfilms.guilib.core.Dimension;
 import de.unratedfilms.guilib.core.MouseButton;
+import de.unratedfilms.guilib.core.Viewport;
+import de.unratedfilms.guilib.core.WidgetFlexible;
 
 /**
  * The core GuiScreen. Use this class for your GUIs.
  */
 public abstract class BasicScreen extends GuiScreen {
 
-    private final GuiScreen   parent;
-    private boolean           hasInit, closed;
-    protected List<Container> containers;
-    protected Container       selectedContainer;
+    private final GuiScreen parent;
+    private boolean         hasInit, closed;
+    private WidgetFlexible  rootWidget;
 
     public BasicScreen(GuiScreen parent) {
 
         this.parent = parent;
-        containers = new ArrayList<>();
     }
 
     public GuiScreen getParent() {
@@ -32,9 +29,19 @@ public abstract class BasicScreen extends GuiScreen {
         return parent;
     }
 
-    public List<Container> getContainers() {
+    public WidgetFlexible getRootWidget() {
 
-        return containers;
+        return rootWidget;
+    }
+
+    public void setRootWidget(WidgetFlexible rootWidget) {
+
+        this.rootWidget = rootWidget;
+    }
+
+    protected Viewport getRootViewport() {
+
+        return new Viewport(new Dimension(width, height));
     }
 
     public void close() {
@@ -48,11 +55,6 @@ public abstract class BasicScreen extends GuiScreen {
     protected void drawBackground() {
 
         drawDefaultBackground();
-    }
-
-    public void drawCenteredStringNoShadow(FontRenderer ft, String str, int cx, int y, int color) {
-
-        ft.drawString(str, cx - ft.getStringWidth(str) / 2, y, color);
     }
 
     /*
@@ -69,7 +71,9 @@ public abstract class BasicScreen extends GuiScreen {
             hasInit = true;
         }
 
-        revalidateGui();
+        // Window resize revalidation
+        rootWidget.setBounds(0, 0, width, height);
+        rootWidget.revalidate(true);
 
         if (closed) {
             reopenedGui();
@@ -87,19 +91,17 @@ public abstract class BasicScreen extends GuiScreen {
     @Override
     public void updateScreen() {
 
-        for (Container c : containers) {
-            c.update();
-        }
+        rootWidget.update();
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
+        // Potential revalidation
+        rootWidget.revalidate(false);
+
         drawBackground();
-        int scale = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight).getScaleFactor();
-        for (Container c : containers) {
-            c.draw(mouseX, mouseY, scale);
-        }
+        rootWidget.draw(getRootViewport(), mouseX, mouseY);
     }
 
     /**
@@ -114,52 +116,29 @@ public abstract class BasicScreen extends GuiScreen {
         if (delta != 0) {
             int mouseX = Mouse.getEventX() * width / mc.displayWidth;
             int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
-            boolean handled = false;
             delta = MathHelper.clamp_int(delta, -5, 5);
 
-            for (Container c : containers) {
-                if (c.mouseWheel(mouseX, mouseY, delta)) {
-                    handled = true;
-                    break;
-                }
-            }
-            if (!handled && selectedContainer != null) {
-                selectedContainer.mouseWheel(mouseX, mouseY, delta);
-            }
+            rootWidget.mouseWheel(getRootViewport(), mouseX, mouseY, delta);
         }
     }
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int code) {
 
-        for (Container c : containers) {
-            if (c.mousePressed(mouseX, mouseY, MouseButton.fromCode(code))) {
-                selectedContainer = c;
-                break;
-            }
-        }
-
-        for (Container c : containers) {
-            if (c != selectedContainer) {
-                c.setFocused(null);
-            }
-        }
+        rootWidget.mousePressed(getRootViewport(), mouseX, mouseY, MouseButton.fromCode(code));
     }
 
     @Override
     protected void mouseMovedOrUp(int mouseX, int mouseY, int code) {
 
-        for (Container c : containers) {
-            if (c.mouseReleased(mouseX, mouseY, MouseButton.fromCode(code))) {
-                break;
-            }
-        }
+        rootWidget.mouseReleased(getRootViewport(), mouseX, mouseY, MouseButton.fromCode(code));
     }
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) {
 
-        boolean handled = selectedContainer != null ? selectedContainer.keyTyped(typedChar, keyCode) : false;
+        boolean handled = rootWidget.keyTyped(typedChar, keyCode);
+
         if (!handled) {
             unhandledKeyTyped(typedChar, keyCode);
         }
@@ -174,12 +153,6 @@ public abstract class BasicScreen extends GuiScreen {
      * Create your containers and widgets here.
      */
     protected abstract void createGui();
-
-    /**
-     * Revalidate this GUI.
-     * Reset your widget locations/dimensions here.
-     */
-    protected abstract void revalidateGui();
 
     /**
      * Called when this GUI is reopened after being closed.

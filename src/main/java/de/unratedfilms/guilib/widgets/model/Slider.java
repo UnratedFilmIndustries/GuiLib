@@ -1,14 +1,14 @@
 
 package de.unratedfilms.guilib.widgets.model;
 
-import de.unratedfilms.guilib.core.Widget;
+import de.unratedfilms.guilib.core.WidgetFlexible;
 
 /**
  * Abstract representation of a slider.
  *
  * @param <V> The type of number that can be chosen using the slider (e.g. int or float).
  */
-public interface Slider<V> extends Widget {
+public interface Slider<V> extends WidgetFlexible {
 
     public V getMinValue();
 

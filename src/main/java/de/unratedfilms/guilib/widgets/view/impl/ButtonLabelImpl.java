@@ -2,8 +2,9 @@
 package de.unratedfilms.guilib.widgets.view.impl;
 
 import org.apache.commons.lang3.Validate;
-import org.lwjgl.opengl.GL11;
 import net.minecraft.util.ResourceLocation;
+import cpw.mods.fml.client.config.GuiUtils;
+import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.widgets.model.ButtonLabel;
 import de.unratedfilms.guilib.widgets.view.adapters.ButtonAdapter;
 
@@ -18,13 +19,9 @@ public class ButtonLabelImpl extends ButtonAdapter implements ButtonLabel {
 
     public ButtonLabelImpl(String label, ButtonHandler handler) {
 
-        this(200, 20, label, handler);
-    }
+        super(handler);
 
-    public ButtonLabelImpl(int width, int height, String label, ButtonHandler handler) {
-
-        super(width, height, handler);
-
+        setSize(200, 20);
         this.label = label;
     }
 
@@ -42,21 +39,13 @@ public class ButtonLabelImpl extends ButtonAdapter implements ButtonLabel {
     }
 
     @Override
-    public void draw(int mx, int my) {
+    public void drawInLocalContext(Viewport viewport, int lmx, int lmy) {
 
-        MC.renderEngine.bindTexture(TEXTURE);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        boolean hover = inBounds(mx, my);
+        boolean hover = inLocalBounds(viewport, lmx, lmy);
+
         int u = 0, v = 46 + getStateOffset(hover);
+        GuiUtils.drawContinuousTexturedBox(TEXTURE, getX(), getY(), u, v, getWidth(), getHeight(), 200, 20, 2, 3, 2, 2, zLevel);
 
-        if (getWidth() == 200 && getHeight() == 20) {
-            drawTexturedModalRect(getX(), getY(), u, v, getWidth(), getHeight());
-        } else {
-            drawTexturedModalRect(getX(), getY(), u, v, getWidth() / 2, getHeight() / 2);
-            drawTexturedModalRect(getX() + getWidth() / 2, getY(), u + 200 - getWidth() / 2, v, getWidth() / 2, getHeight() / 2);
-            drawTexturedModalRect(getX(), getY() + getHeight() / 2, u, v + 20 - getHeight() / 2, getWidth() / 2, getHeight() / 2);
-            drawTexturedModalRect(getX() + getWidth() / 2, getY() + getHeight() / 2, u + 200 - getWidth() / 2, v + 20 - getHeight() / 2, getWidth() / 2, getHeight() / 2);
-        }
         drawCenteredString(MC.fontRenderer, label, getX() + getWidth() / 2, getY() + (getHeight() - 8) / 2, getTextColor(hover));
     }
 

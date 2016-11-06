@@ -1,6 +1,7 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
+import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.widgets.view.adapters.LabelAdapter;
 
 public class LabelImpl extends LabelAdapter {
@@ -15,21 +16,12 @@ public class LabelImpl extends LabelAdapter {
 
     public LabelImpl(String text, int color, int hoverColor) {
 
-        // Note that the width will be adjusted by the setText() method
-        super(0, 11, text);
+        super(text);
 
         setText(text);
         this.color = color;
         this.hoverColor = hoverColor;
         shadowed = true;
-    }
-
-    @Override
-    public void setText(String text) {
-
-        super.setText(text);
-
-        setWidth(MC.fontRenderer.getStringWidth(text));
     }
 
     public int getColor() {
@@ -63,9 +55,15 @@ public class LabelImpl extends LabelAdapter {
     }
 
     @Override
-    public void draw(int mx, int my) {
+    protected void doRevalidate() {
 
-        boolean hover = inBounds(mx, my);
+        setSize(MC.fontRenderer.getStringWidth(getText()), 11);
+    }
+
+    @Override
+    public void drawInLocalContext(Viewport viewport, int lmx, int lmy) {
+
+        boolean hover = inLocalBounds(viewport, lmx, lmy);
         int finalColor = hover ? hoverColor : color;
         if (shadowed) {
             MC.fontRenderer.drawStringWithShadow(getText(), getX(), getY() + 2, finalColor);

@@ -3,6 +3,7 @@ package de.unratedfilms.guilib.widgets.view.impl;
 
 import org.lwjgl.opengl.GL11;
 import net.minecraft.util.ResourceLocation;
+import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.widgets.view.adapters.SliderAdapter;
 
 /**
@@ -17,18 +18,15 @@ public abstract class SliderImpl<V> extends SliderAdapter<V> {
 
     public SliderImpl(V minValue, V maxValue, SliderLabelFormatter<V> textFormatter, V value) {
 
-        this(150, 20, minValue, maxValue, textFormatter, value);
-    }
+        super(minValue, maxValue, textFormatter, value);
 
-    public SliderImpl(int width, int height, V minValue, V maxValue, SliderLabelFormatter<V> textFormatter, V value) {
-
-        super(width, height, minValue, maxValue, textFormatter, value);
+        setSize(150, 20);
     }
 
     @Override
-    public void draw(int mx, int my) {
+    public void drawInLocalContext(Viewport viewport, int lmx, int lmy) {
 
-        super.draw(mx, my);
+        super.drawInLocalContext(viewport, lmx, lmy);
 
         MC.renderEngine.bindTexture(TEXTURE);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -43,7 +41,7 @@ public abstract class SliderImpl<V> extends SliderAdapter<V> {
 
         // Label
         drawCenteredString(MC.fontRenderer, getLabelFormatter().formatLabel(this), getX() + getWidth() / 2, getY() + (getHeight() - 8) / 2,
-                inBounds(mx, my) ? 16777120 : 0xffffff);
+                inLocalBounds(viewport, lmx, lmy) ? 16777120 : 0xffffff);
     }
 
 }

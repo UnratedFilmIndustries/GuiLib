@@ -34,15 +34,14 @@ public abstract class OverlayScreen extends BasicScreen {
     @Override
     public boolean doesGuiPauseGame() {
 
-        return getParent().doesGuiPauseGame();
+        return parent.doesGuiPauseGame();
     }
 
     @Override
-    protected void revalidateGui() {
+    public void initGui() {
 
-        parent.width = width;
-        parent.height = height;
-        parent.revalidateGui();
+        parent.initGui();
+        super.initGui();
     }
 
     @Override

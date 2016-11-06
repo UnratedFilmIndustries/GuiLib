@@ -7,16 +7,17 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.MathHelper;
-import de.unratedfilms.guilib.core.FocusableWidget;
 import de.unratedfilms.guilib.core.MouseButton;
-import de.unratedfilms.guilib.core.WidgetAdapter;
+import de.unratedfilms.guilib.core.Viewport;
+import de.unratedfilms.guilib.core.WidgetFocusable;
+import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
 import de.unratedfilms.guilib.widgets.model.TextField;
 
 /**
  * A minimal implementation of {@link TextField} that only contains drawing code for painting the text and the cursor.
  * The border and background of the text field must be painted by a subclass.
  */
-public abstract class TextFieldAdapter extends WidgetAdapter implements TextField, FocusableWidget {
+public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implements TextField, WidgetFocusable {
 
     private int             maxLength = 32;
     private CharacterFilter filter;
@@ -27,14 +28,12 @@ public abstract class TextFieldAdapter extends WidgetAdapter implements TextFiel
     private boolean         focused;
     protected int           cursorCounter, cursorPosition, charOffset, selectionEnd;
 
-    public TextFieldAdapter(int width, int height) {
+    public TextFieldAdapter() {
 
-        this(width, height, new VanillaFilter());
+        this(new VanillaFilter());
     }
 
-    public TextFieldAdapter(int width, int height, CharacterFilter filter) {
-
-        super(width, height);
+    public TextFieldAdapter(CharacterFilter filter) {
 
         this.filter = filter;
     }
@@ -222,7 +221,7 @@ public abstract class TextFieldAdapter extends WidgetAdapter implements TextFiel
     protected abstract void drawBackground();
 
     @Override
-    public void draw(int mx, int my) {
+    public void drawInLocalContext(Viewport viewport, int lmx, int lmy) {
 
         drawBackground();
 
@@ -267,7 +266,6 @@ public abstract class TextFieldAdapter extends WidgetAdapter implements TextFiel
             int l1 = l + MC.fontRenderer.getStringWidth(s.substring(0, k));
             drawCursorVertical(k1, i1 - 1, l1 - 1, i1 + 1 + MC.fontRenderer.FONT_HEIGHT);
         }
-
     }
 
     protected void drawCursorVertical(int x1, int y1, int x2, int y2) {
@@ -319,10 +317,10 @@ public abstract class TextFieldAdapter extends WidgetAdapter implements TextFiel
     }
 
     @Override
-    public boolean mousePressed(int mx, int my, MouseButton mouseButton) {
+    public boolean mousePressedInLocalContext(Viewport viewport, int lmx, int lmy, MouseButton mouseButton) {
 
-        if (mouseButton == MouseButton.LEFT && inBounds(mx, my)) {
-            int pos = mx - getX();
+        if (mouseButton == MouseButton.LEFT && inLocalBounds(viewport, lmx, lmy)) {
+            int pos = lmx - getX();
             pos -= Math.abs(getInternalWidth() - getWidth()) / 2;
 
             String s = MC.fontRenderer.trimStringToWidth(

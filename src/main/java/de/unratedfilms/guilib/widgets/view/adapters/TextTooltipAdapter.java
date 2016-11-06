@@ -4,13 +4,13 @@ package de.unratedfilms.guilib.widgets.view.adapters;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.Validate;
-import de.unratedfilms.guilib.core.WidgetAdapter;
+import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
 import de.unratedfilms.guilib.widgets.model.TextTooltip;
 
 /**
  * A minimal implementation of {@link TextTooltip} that doesn't contain any drawing code.
  */
-public abstract class TextTooltipAdapter extends WidgetAdapter implements TextTooltip {
+public abstract class TextTooltipAdapter extends ContextHelperWidgetAdapter implements TextTooltip {
 
     protected static int getMaxStringWidth(List<String> strings) {
 
@@ -28,9 +28,6 @@ public abstract class TextTooltipAdapter extends WidgetAdapter implements TextTo
 
     public TextTooltipAdapter(List<String> lines) {
 
-        super(0, 0);
-        zLevel = 1.0f;
-
         setLines(lines);
     }
 
@@ -47,7 +44,7 @@ public abstract class TextTooltipAdapter extends WidgetAdapter implements TextTo
 
         this.lines.clear();
         this.lines.addAll(lines);
-        updateSize();
+        invalidate();
     }
 
     @Override
@@ -56,19 +53,14 @@ public abstract class TextTooltipAdapter extends WidgetAdapter implements TextTo
         Validate.noNullElements(lines, "No tooltip line is allowed to be null");
 
         this.lines.addAll(lines);
-        updateSize();
+        invalidate();
     }
 
     @Override
     public void removeLines(List<String> lines) {
 
         this.lines.removeAll(lines);
-        updateSize();
+        invalidate();
     }
-
-    /**
-     * Changes the {@link #setSize(int, int) size} of this tooltip widget depending on the {@link #getLines() lines}.
-     */
-    protected abstract void updateSize();
 
 }

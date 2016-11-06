@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.Validate;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.gui.FontRenderer;
+import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.widgets.model.TextTooltip;
 import de.unratedfilms.guilib.widgets.view.adapters.TextTooltipAdapter;
 
@@ -39,7 +40,7 @@ public class TextTooltipImpl extends TextTooltipAdapter {
     }
 
     @Override
-    protected void updateSize() {
+    protected void doRevalidate() {
 
         setSize(getMaxStringWidth(getLines()), getLines().size() == 1 ? 8 : getLines().size() * 10);
     }
@@ -48,7 +49,7 @@ public class TextTooltipImpl extends TextTooltipAdapter {
      * See {@link net.minecraft.client.gui.inventory.GuiContainer#drawHoveringText}
      */
     @Override
-    public void draw(int mx, int my) {
+    public void drawInLocalContext(Viewport viewport, int lmx, int lmy) {
 
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 

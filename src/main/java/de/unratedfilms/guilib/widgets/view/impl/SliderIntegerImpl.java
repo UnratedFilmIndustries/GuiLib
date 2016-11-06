@@ -10,12 +10,7 @@ public class SliderIntegerImpl extends SliderImpl<Integer> {
 
     public SliderIntegerImpl(int minValue, int maxValue, SliderLabelFormatter<Integer> textFormatter, int value) {
 
-        this(150, 20, minValue, maxValue, textFormatter, value);
-    }
-
-    public SliderIntegerImpl(int width, int height, int minValue, int maxValue, SliderLabelFormatter<Integer> textFormatter, int value) {
-
-        super(width, height, minValue, maxValue, textFormatter, value);
+        super(minValue, maxValue, textFormatter, value);
     }
 
     @Override

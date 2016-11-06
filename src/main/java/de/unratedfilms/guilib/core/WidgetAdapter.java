@@ -1,6 +1,7 @@
 
 package de.unratedfilms.guilib.core;
 
+import org.apache.commons.lang3.Validate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 
@@ -10,104 +11,138 @@ import net.minecraft.client.gui.Gui;
 public abstract class WidgetAdapter extends Gui implements Widget {
 
     // Utility constant for quick access
-    protected static final Minecraft MC = Minecraft.getMinecraft();
+    protected static final Minecraft MC     = Minecraft.getMinecraft();
 
-    private int                      x, y;
-    private int                      width, height;
-
-    /**
-     * Creates a new widget.
-     *
-     * @param width The width of this widget in pixels.
-     * @param height The height of this widget in pixels.
-     */
-    public WidgetAdapter(int width, int height) {
-
-        this.width = width;
-        this.height = height;
-    }
-
-    /**
-     * Creates a new widget at the given coordinates.
-     *
-     * @param x The leftmost x coordinate of this widget on the screen in pixels.
-     * @param y The topmost y coordinate of this widget on the screen in pixels.
-     * @param width The width of this widget in pixels.
-     * @param height The height of this widget in pixels.
-     */
-    public WidgetAdapter(int x, int y, int width, int height) {
-
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-    }
+    private Rectangle                bounds = new Rectangle(0, 0, 0, 0);
+    protected boolean                valid  = false;
 
     @Override
     public int getX() {
 
-        return x;
+        return bounds.getX();
     }
 
     @Override
     public void setX(int x) {
 
-        this.x = x;
+        bounds = bounds.withX(x);
     }
 
     @Override
     public int getY() {
 
-        return y;
+        return bounds.getY();
     }
 
     @Override
     public void setY(int y) {
 
-        this.y = y;
+        bounds = bounds.withY(y);
+    }
+
+    @Override
+    public Point getPosition() {
+
+        return bounds.getPosition();
     }
 
     @Override
     public void setPosition(int x, int y) {
 
-        setX(x);
-        setY(y);
+        bounds = bounds.withPosition(x, y);
+    }
+
+    @Override
+    public void setPosition(Point position) {
+
+        bounds = bounds.withPosition(position);
     }
 
     @Override
     public int getWidth() {
 
-        return width;
+        return bounds.getWidth();
     }
 
-    @Override
     public void setWidth(int width) {
 
-        this.width = width;
+        Validate.isTrue(width >= 0, "Width of widget must not be negative");
+        bounds = bounds.withWidth(width);
     }
 
     @Override
     public int getHeight() {
 
-        return height;
+        return bounds.getHeight();
     }
 
-    @Override
     public void setHeight(int height) {
 
-        this.height = height;
+        Validate.isTrue(height >= 0, "Height of widget must not be negative");
+        bounds = bounds.withHeight(height);
     }
 
     @Override
+    public Dimension getSize() {
+
+        return bounds.getSize();
+    }
+
     public void setSize(int width, int height) {
 
-        setWidth(width);
-        setHeight(height);
+        bounds = bounds.withSize(width, height);
+    }
+
+    public void setSize(Dimension size) {
+
+        bounds = bounds.withSize(size);
+    }
+
+    @Override
+    public Rectangle getBounds() {
+
+        return bounds;
+    }
+
+    public void setBounds(int x, int y, int width, int height) {
+
+        bounds = new Rectangle(x, y, width, height);
+    }
+
+    public void setBounds(Rectangle bounds) {
+
+        this.bounds = bounds;
+    }
+
+    /**
+     * Marks this very widget as invalid and thus causes a revalidation to be run prior to the next render cycle.
+     * That means that the widget will layout itself again.
+     * In case of a {@link WidgetRigid rigid widget}, the widget will also readjust its own bounds.
+     */
+    protected void invalidate() {
+
+        valid = false;
+    }
+
+    @Override
+    public boolean revalidate(boolean force) {
+
+        if (!valid || force) {
+            doRevalidate();
+            valid = true;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /*
      * Empty event handlers
      */
+
+    protected void doRevalidate() {
+
+    }
 
     @Override
     public void update() {
@@ -115,24 +150,29 @@ public abstract class WidgetAdapter extends Gui implements Widget {
     }
 
     @Override
-    public boolean mousePressed(int mx, int my, MouseButton mouseButton) {
+    public void draw(Viewport viewport, int mx, int my) {
+
+    }
+
+    @Override
+    public boolean mousePressed(Viewport viewport, int mx, int my, MouseButton mouseButton) {
 
         return false;
     }
 
     @Override
-    public void mouseReleased(int mx, int my, MouseButton mouseButton) {
+    public void mouseReleased(Viewport viewport, int mx, int my, MouseButton mouseButton) {
 
+    }
+
+    @Override
+    public boolean mouseWheel(Viewport viewport, int mx, int my, int delta) {
+
+        return false;
     }
 
     @Override
     public boolean keyTyped(char typedChar, int keyCode) {
-
-        return false;
-    }
-
-    @Override
-    public boolean mouseWheel(int delta) {
 
         return false;
     }
@@ -142,15 +182,15 @@ public abstract class WidgetAdapter extends Gui implements Widget {
      */
 
     @Override
-    public boolean inBounds(int testX, int testY) {
+    public boolean inLocalBounds(Viewport viewport, int lx, int ly) {
 
-        return testX >= x && testY >= y && testX < x + width && testY < y + height;
+        return viewport.inLocalBounds(lx, ly) && lx >= getX() && ly >= getY() && lx < getX() + getWidth() && ly < getY() + getHeight();
     }
 
     @Override
-    public boolean shouldRender(int topY, int bottomY) {
+    public boolean inGlobalBounds(Viewport viewport, int gx, int gy) {
 
-        return y + height >= topY && y <= bottomY;
+        return inLocalBounds(viewport, viewport.localX(gx), viewport.localY(gy));
     }
 
 }

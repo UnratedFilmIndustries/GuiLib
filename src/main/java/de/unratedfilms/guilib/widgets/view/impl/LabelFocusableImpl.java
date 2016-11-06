@@ -2,6 +2,7 @@
 package de.unratedfilms.guilib.widgets.view.impl;
 
 import de.unratedfilms.guilib.core.MouseButton;
+import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.widgets.model.LabelFocusable;
 
 /**
@@ -55,13 +56,13 @@ public class LabelFocusableImpl extends LabelImpl implements LabelFocusable {
     }
 
     @Override
-    public void draw(int mx, int my) {
+    public void drawInLocalContext(Viewport viewport, int lmx, int lmy) {
 
         if (focused) {
             drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), focusColor);
         }
 
-        boolean hover = inBounds(mx, my);
+        boolean hover = inLocalBounds(viewport, lmx, lmy);
         int finalColor = focused ? focusColor : hover ? getHoverColor() : getColor();
         if (isShadowed()) {
             MC.fontRenderer.drawStringWithShadow(getText(), getX(), getY() + 2, finalColor);
@@ -71,9 +72,9 @@ public class LabelFocusableImpl extends LabelImpl implements LabelFocusable {
     }
 
     @Override
-    public boolean mousePressed(int mx, int my, MouseButton mouseButton) {
+    public boolean mousePressedInLocalContext(Viewport viewport, int lmx, int lmy, MouseButton mouseButton) {
 
-        return mouseButton == MouseButton.LEFT && inBounds(mx, my);
+        return mouseButton == MouseButton.LEFT && inLocalBounds(viewport, lmx, lmy);
     }
 
     @Override

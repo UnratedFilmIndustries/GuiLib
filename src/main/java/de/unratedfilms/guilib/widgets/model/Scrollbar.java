@@ -1,34 +1,36 @@
 
 package de.unratedfilms.guilib.widgets.model;
 
-import de.unratedfilms.guilib.core.Widget;
-import de.unratedfilms.guilib.integration.Container;
+import de.unratedfilms.guilib.core.WidgetRigid;
 
 /**
  * Abstract representation of a scrollbar.
  */
-public interface Scrollbar extends Widget {
+public interface Scrollbar extends WidgetRigid {
 
     public Container getContainer();
 
     public void setContainer(Container container);
 
     /**
-     * Shifts the scrollbar by {@code p} pixels.
+     * Returns the amount of pixels the scrollable widgets should be shifted upwards by.
      *
-     * @param p How many pixels to shift the scrollbar.
+     * @return How many pixels to shift the scollable widgets.
      */
-    public void shift(int p);
+    public int getWidgetShift();
+
+    /**
+     * Shifts the scollable widgets upwards by {@code p} pixels.
+     *
+     * @param p How many pixels to shift the scollable widgets.
+     */
+    public void addWidgetShift(int p);
 
     /**
      * Shifts this scrollbar relative to its size + contentHeight.
      *
      * @param p Base pixels to shift.
      */
-    public void shiftRelative(int p);
-
-    public void revalidate(int topY, int bottomY);
-
-    public void onChildRemoved();
+    public void addWidgetShiftRelative(int p);
 
 }

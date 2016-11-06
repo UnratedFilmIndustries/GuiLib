@@ -1,8 +1,10 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.util.ResourceLocation;
+import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.widgets.model.Checkbox;
 import de.unratedfilms.guilib.widgets.view.adapters.CheckboxAdapter;
 
@@ -21,25 +23,29 @@ public class CheckboxImpl extends CheckboxAdapter {
 
     public CheckboxImpl(String label, boolean checked) {
 
-        // Note that the width will be adjusted by the setLabel() method
-        super(0, SIZE, label, checked);
+        super(label, checked);
     }
 
     @Override
-    public void setLabel(String label) {
+    protected void doRevalidate() {
 
-        super.setLabel(label);
-
-        setSize(SIZE + 2 + MC.fontRenderer.getStringWidth(label), SIZE);
+        int width = SIZE;
+        if (!StringUtils.isBlank(getLabel())) {
+            width += 2 + MC.fontRenderer.getStringWidth(getLabel());
+        }
+        setSize(width, SIZE);
     }
 
     @Override
-    public void draw(int mx, int my) {
+    public void drawInLocalContext(Viewport viewport, int lmx, int lmy) {
 
         MC.renderEngine.bindTexture(TEXTURE);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         drawTexturedModalRect(getX(), getY(), 0, isChecked() ? SIZE : 0, SIZE, SIZE);
-        MC.fontRenderer.drawStringWithShadow(getLabel(), getX() + SIZE + 2, getY() + 1, inBounds(mx, my) ? 16777120 : 0xffffff);
+
+        if (!StringUtils.isBlank(getLabel())) {
+            MC.fontRenderer.drawStringWithShadow(getLabel(), getX() + SIZE + 2, getY() + 1, inLocalBounds(viewport, lmx, lmy) ? 16777120 : 0xffffff);
+        }
     }
 
 }

@@ -12,8 +12,9 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import de.unratedfilms.guilib.core.TooltipableWidget;
+import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
+import de.unratedfilms.guilib.core.WidgetTooltipable;
 import de.unratedfilms.guilib.util.ItemNameResolver;
 import de.unratedfilms.guilib.widgets.model.Button;
 import de.unratedfilms.guilib.widgets.model.ButtonItem;
@@ -26,10 +27,8 @@ import de.unratedfilms.guilib.widgets.view.adapters.ButtonAdapter;
  * <br>
  * Note that items use zLevel for rendering - change zLevel as needed.
  */
-public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, TooltipableWidget {
+public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, WidgetTooltipable {
 
-    public static final int        WIDTH         = 18;
-    public static final int        HEIGHT        = 18;
     public static final RenderItem ITEM_RENDERER = new RenderItem();
 
     private ItemStack              itemStack;
@@ -37,7 +36,7 @@ public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, Tooltip
 
     public ButtonItemImpl(ItemStack itemStack, ButtonHandler handler) {
 
-        super(WIDTH, HEIGHT, handler);
+        super(handler);
 
         zLevel = 100;
         setItemStack(itemStack);
@@ -76,7 +75,7 @@ public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, Tooltip
                 // Line 0 should have the rarity color
                 tooltipLines.set(0, itemStack.getRarity().rarityColor + line0);
 
-                // All other lines should be colored in gray
+                // All other lines should be colored gray
                 for (ListIterator<String> iter = tooltipLines.listIterator(1); iter.hasNext();) {
                     iter.set(EnumChatFormatting.GRAY + iter.next());
                 }
@@ -91,13 +90,19 @@ public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, Tooltip
         return new TextTooltipImpl(tooltipLines, font);
     }
 
+    @Override
+    protected void doRevalidate() {
+
+        setSize(18, 18);
+    }
+
     /**
      * Draws the item or string "Air" if stack.getItem() is null
      */
     @Override
-    public void draw(int mx, int my) {
+    public void drawInLocalContext(Viewport viewport, int lmx, int lmy) {
 
-        boolean hover = inBounds(mx, my);
+        boolean hover = inLocalBounds(viewport, lmx, lmy);
         if (hover) {
             GL11.glDisable(GL11.GL_DEPTH_TEST);
             drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0x55909090);
