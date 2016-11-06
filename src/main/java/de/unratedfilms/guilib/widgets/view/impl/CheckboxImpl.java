@@ -13,7 +13,7 @@ import de.unratedfilms.guilib.widgets.view.adapters.CheckboxAdapter;
  */
 public class CheckboxImpl extends CheckboxAdapter {
 
-    private static final int              SIZE    = 10;
+    public static final int               SIZE    = 10;
     private static final ResourceLocation TEXTURE = new ResourceLocation("guilib", "textures/gui/checkbox.png");
 
     public CheckboxImpl(String label) {

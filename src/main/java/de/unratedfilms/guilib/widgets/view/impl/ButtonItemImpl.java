@@ -29,6 +29,7 @@ import de.unratedfilms.guilib.widgets.view.adapters.ButtonAdapter;
  */
 public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, WidgetTooltipable {
 
+    public static final int        SIZE          = 18;
     public static final RenderItem ITEM_RENDERER = new RenderItem();
 
     private ItemStack              itemStack;
@@ -93,7 +94,7 @@ public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, WidgetT
     @Override
     protected void doRevalidate() {
 
-        setSize(18, 18);
+        setSize(SIZE, SIZE);
     }
 
     /**
