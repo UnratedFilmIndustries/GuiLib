@@ -144,7 +144,7 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
         Viewport subViewport = subViewport(viewport);
 
         // Detect which widget the mouse cursor is hovering over
-        detectHoveredWidget(viewport, mx, my);
+        detectHoveredWidget(subViewport, mx, my);
 
         WidgetFocusable focusedWidget = getFocusedWidget();
 
@@ -165,6 +165,7 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
             int hoveredMillis = (int) ( (System.nanoTime() - hoverStart) / 1000 / 1000);
             Widget tooltip = ((WidgetTooltipable) hoveredWidget).getTooltip(hoveredMillis);
 
+            tooltip.revalidate(false);
             tooltip.draw(getTooltipViewport(viewport, tooltip, mx, my), mx, my);
         }
     }
