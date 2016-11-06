@@ -40,7 +40,10 @@ public abstract class OverlayScreen extends BasicScreen {
     @Override
     public void initGui() {
 
+        parent.width = width;
+        parent.height = height;
         parent.initGui();
+
         super.initGui();
     }
 
