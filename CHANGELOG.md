@@ -2,16 +2,16 @@
 -----
 
 ### Additions
-* You can now handle all mouse clicks and not just the ones with the left mouse button.
-* Replaced the somewhat obscure and counter-intuitive tooltip system with a way more intuitive and flexible one.
 * All widgets are now described through interfaces and then implemented by concrete classes. That adds an additional layer of possible abstraction if you need it -- and in many cases, you actually do.
 * Added the flexible viewport architecture that allows widgets to decide what parts should be rendered where and with which scissor. It basically allows for things like dropdown menus that peek out of scrollable containers to happen.
 * Added immutable classes for points, dimensions and rectangles.
 * Added the possibility to nest containers.
 * Added a proper revalidation process and layout managers to containers. Also added a distinction between rigid and flexible widgets, which is needed for the layouting to be strict and predictable.
-* Widgets now tell whether they focused, instead of each container storing
+* Widgets can now handle all mouse clicks and not just the ones with the left mouse button.
+* Whether a widget is focused is now stored in the focused widget itself, instead of each container storing a reference to the focused widget.
+* Replaced the somewhat obscure and counter-intuitive tooltip system with a way more intuitive and flexible one.
 * Added the dropdown widget.
-* Added a container that adjusts its size to fit its contents.
+* Added a container widget that adjusts its size to fit its contents.
 
 ### Fixes
 * Fixed the mcmod.info file not containing any version information in the dev JAR.
