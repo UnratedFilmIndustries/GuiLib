@@ -169,6 +169,10 @@ public abstract class BasicScreen extends GuiScreen {
      */
     protected void unhandledKeyTyped(char typedChar, int keyCode) {
 
+        // Custom screens can override this behavior if they want to
+        if (keyCode == Keyboard.KEY_ESCAPE) {
+            close();
+        }
     }
 
 }
