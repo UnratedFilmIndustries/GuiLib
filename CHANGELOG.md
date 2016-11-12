@@ -13,6 +13,7 @@
 * Added the dropdown widget.
 * Added a container widget that adjusts its size to fit its contents.
 * Many methods now return the object they have been called on, meaning that you can now chain those methods together, saving tons of unnecessary lines.
+* Button labels are now abbreviated with ellipsis if they are too long.
 
 ### Fixes
 * Fixed the mcmod.info file not containing any version information in the dev JAR.
