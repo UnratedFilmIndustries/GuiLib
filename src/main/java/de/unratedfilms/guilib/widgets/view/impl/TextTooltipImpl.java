@@ -6,6 +6,7 @@ import org.apache.commons.lang3.Validate;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.gui.FontRenderer;
 import de.unratedfilms.guilib.core.Viewport;
+import de.unratedfilms.guilib.util.FontUtils;
 import de.unratedfilms.guilib.widgets.model.TextTooltip;
 import de.unratedfilms.guilib.widgets.view.adapters.TextTooltipAdapter;
 
@@ -43,7 +44,7 @@ public class TextTooltipImpl extends TextTooltipAdapter {
     @Override
     protected void doRevalidate() {
 
-        setSize(getMaxStringWidth(font, getLines()), getLines().size() == 1 ? 8 : getLines().size() * 10);
+        setSize(FontUtils.getMaxStringWidth(font, getLines()), getLines().size() == 1 ? 8 : getLines().size() * 10);
     }
 
     /**
