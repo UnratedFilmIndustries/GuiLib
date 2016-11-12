@@ -2,6 +2,7 @@
 package de.unratedfilms.guilib.widgets.view.impl;
 
 import java.util.Collection;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.client.config.GuiUtils;
 import de.unratedfilms.guilib.core.MouseButton;
@@ -27,7 +28,7 @@ import de.unratedfilms.guilib.widgets.view.adapters.DropdownAdapter;
  */
 public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter<O> {
 
-    private static final int              EXT_V_MARGIN     = 10;
+    private static final int              EXT_MARGIN       = 10;
     private static final int              OPTION_HEIGHT    = 12;
     private static final int              OPTION_H_PADDING = 6;
 
@@ -94,8 +95,7 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
                 }
             }
 
-        });
-        ext.appendLayoutManager(new FlowLayoutManager(ext, Axis.Y, 0, 0, 0));
+        }).appendLayoutManager(new FlowLayoutManager(ext, Axis.Y, 0, 0, 0));
 
         for (final O option : getOptions()) {
             Button optionButton = new ButtonLabelImpl(option.getDisplayObject(), new ButtonHandler() {
@@ -115,15 +115,20 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
     @Override
     protected void doRevalidate() {
 
-        ext.setPosition(0, getHeight());
+        ext.setPosition(getX(), getY() + getHeight());
         ext.setWidth(getExtWidth());
     }
 
-    private void adjustExtHeight(Viewport viewport) {
+    private void fitExtIntoWindow(Viewport viewport) {
 
-        // Make ext as high as necessary, but don't let it peek out of the Minecraft window
-        int maxHeight = viewport.getScreenSize().getHeight() - EXT_V_MARGIN - viewport.globalY(getY() + ext.getY());
-        ext.setHeight(Math.max(0, Math.min(getOptions().size() * OPTION_HEIGHT, maxHeight)));
+        // Make sure that ext does not peek out of the right side of the Minecraft window
+        int maxX = viewport.localX(viewport.getScreenSize().getWidth() - EXT_MARGIN - ext.getWidth());
+        ext.setX(MathHelper.clamp_int(0, getX(), maxX));
+
+        // Make ext as high as necessary, but don't let it peek out of the lower side of the Minecraft window
+        int maxHeight = viewport.getScreenSize().getHeight() - EXT_MARGIN - viewport.globalY(getY() + ext.getY());
+        ext.setHeight(MathHelper.clamp_int(getOptions().size() * OPTION_HEIGHT, 0, maxHeight));
+
         ext.revalidate(true);
     }
 
@@ -168,7 +173,7 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
 
         super.draw(viewport, mx, my);
         if (isFocused()) {
-            adjustExtHeight(viewport); // Since the revalidate() method doesn't take a viewport (for good reasons), we have to do the ext height adjustment here
+            fitExtIntoWindow(viewport); // Since the revalidate() method doesn't take a viewport (for good reasons), we have to do the ext x and height adjustment here
             ext.draw(viewport.withoutScissor(), mx, my);
         }
     }
