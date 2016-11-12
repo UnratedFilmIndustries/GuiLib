@@ -25,4 +25,6 @@ public class ItemNameResolver {
         return StatCollector.translateToLocal("itemname.unknown");
     }
 
+    private ItemNameResolver() {}
+
 }
