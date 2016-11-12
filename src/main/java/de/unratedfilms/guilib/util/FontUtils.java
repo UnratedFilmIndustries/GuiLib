@@ -18,6 +18,18 @@ public class FontUtils {
         return max;
     }
 
+    public static String abbreviateIfTooLong(FontRenderer font, String string, int maxWidth) {
+
+        int stringWidth = font.getStringWidth(string);
+        int ellipsisWidth = font.getStringWidth("...");
+
+        if (stringWidth > maxWidth && stringWidth > ellipsisWidth) {
+            return font.trimStringToWidth(string, maxWidth - ellipsisWidth).trim() + "...";
+        } else {
+            return string;
+        }
+    }
+
     private FontUtils() {}
 
 }

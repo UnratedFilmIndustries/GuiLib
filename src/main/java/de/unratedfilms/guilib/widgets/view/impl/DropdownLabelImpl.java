@@ -9,6 +9,7 @@ import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.extra.FlowLayoutManager;
 import de.unratedfilms.guilib.extra.FlowLayoutManager.Axis;
+import de.unratedfilms.guilib.util.FontUtils;
 import de.unratedfilms.guilib.widgets.model.Button;
 import de.unratedfilms.guilib.widgets.model.Button.ButtonHandler;
 import de.unratedfilms.guilib.widgets.model.ButtonLabel;
@@ -138,7 +139,8 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
         int u = 0, v = 46 + (hover ? 40 : 20);
         GuiUtils.drawContinuousTexturedBox(TEXTURE, getX(), getY(), u, v, getWidth(), getHeight(), 200, 20, 2, 3, 2, 2, zLevel);
 
-        drawCenteredString(MC.fontRenderer, getSelectedOption().getDisplayObject(), getX() + getWidth() / 2, getY() + (getHeight() - 8) / 2, hover ? 16777120 : 14737632);
+        String actualLabel = FontUtils.abbreviateIfTooLong(MC.fontRenderer, getSelectedOption().getDisplayObject(), getWidth() - 6);
+        drawCenteredString(MC.fontRenderer, actualLabel, getX() + getWidth() / 2, getY() + (getHeight() - 8) / 2, hover ? 16777120 : 14737632);
     }
 
     /*
