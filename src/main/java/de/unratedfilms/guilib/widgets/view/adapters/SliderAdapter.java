@@ -40,9 +40,10 @@ public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implem
     }
 
     @Override
-    public void setMinValue(V minValue) {
+    public SliderAdapter<V> setMinValue(V minValue) {
 
         this.minValue = minValue;
+        return this;
     }
 
     @Override
@@ -52,9 +53,10 @@ public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implem
     }
 
     @Override
-    public void setMaxValue(V maxValue) {
+    public SliderAdapter<V> setMaxValue(V maxValue) {
 
         this.maxValue = maxValue;
+        return this;
     }
 
     @Override
@@ -64,10 +66,12 @@ public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implem
     }
 
     @Override
-    public void setLabelFormatter(SliderLabelFormatter<V> textFormatter) {
+    public SliderAdapter<V> setLabelFormatter(SliderLabelFormatter<V> textFormatter) {
 
         Validate.notNull(textFormatter, "Slider label formatter cannot be null");
         this.labelFormatter = textFormatter;
+
+        return this;
     }
 
     @Override
@@ -77,9 +81,10 @@ public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implem
     }
 
     @Override
-    public void setValue(V value) {
+    public SliderAdapter<V> setValue(V value) {
 
         this.degree = MathHelper.clamp_float(convertToDegree(value), 0, 1);
+        return this;
     }
 
     /**

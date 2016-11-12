@@ -6,6 +6,7 @@ import org.lwjgl.input.Keyboard;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Point;
 import de.unratedfilms.guilib.core.Viewport;
+import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.core.WidgetFocusable;
 import de.unratedfilms.guilib.widgets.model.Container;
 import de.unratedfilms.guilib.widgets.model.Scrollbar;
@@ -27,6 +28,28 @@ public class ContainerScrollableImpl extends ContainerClippingImpl {
      * @throws IllegalArgumentException If either the given width or the given height is negative.
      */
     public ContainerScrollableImpl(Scrollbar scrollbar, int shiftAmount) {
+
+        Validate.notNull(scrollbar, "Scrollbar cannot be null in a scrollable container");
+        Validate.isTrue(scrollbar.getContainer() == null, "One scrollbar cannot be used in multiple scrollable containers");
+
+        this.scrollbar = scrollbar;
+        scrollbar.setContainer(this);
+
+        this.shiftAmount = shiftAmount;
+    }
+
+    /**
+     * Creates a new scrollable container, which by default will clip the elements contained, and immediately adds the given widgets to it.
+     *
+     * @param scrollbar The scrollbar for this container.
+     * @param shiftAmount The amount to shift the scrollbar when focus is shifted.
+     *        This should normally be the height of the {@link WidgetFocusable}, depending on spacing.
+     * @param widgets The widgets that should initially be added to the new scrollable container.
+     * @throws IllegalArgumentException If either the given width or the given height is negative.
+     */
+    public ContainerScrollableImpl(Scrollbar scrollbar, int shiftAmount, Widget... widgets) {
+
+        super(widgets);
 
         Validate.notNull(scrollbar, "Scrollbar cannot be null in a scrollable container");
         Validate.isTrue(scrollbar.getContainer() == null, "One scrollbar cannot be used in multiple scrollable containers");

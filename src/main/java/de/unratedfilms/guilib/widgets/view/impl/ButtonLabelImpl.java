@@ -32,10 +32,12 @@ public class ButtonLabelImpl extends ButtonAdapter implements ButtonLabel {
     }
 
     @Override
-    public void setLabel(String label) {
+    public ButtonLabelImpl setLabel(String label) {
 
         Validate.notNull(label, "Vanilla button label cannot be null");
         this.label = label;
+
+        return this;
     }
 
     @Override

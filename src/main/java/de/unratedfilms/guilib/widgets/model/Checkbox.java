@@ -10,10 +10,10 @@ public interface Checkbox extends WidgetRigid {
 
     public String getLabel();
 
-    public void setLabel(String label);
+    public Checkbox setLabel(String label);
 
     public boolean isChecked();
 
-    public void setChecked(boolean checked);
+    public Checkbox setChecked(boolean checked);
 
 }

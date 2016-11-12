@@ -11,6 +11,6 @@ public interface ButtonItem extends Button, WidgetRigid {
 
     public ItemStack getItemStack();
 
-    public void setItemStack(ItemStack itemStack);
+    public ButtonItem setItemStack(ItemStack itemStack);
 
 }

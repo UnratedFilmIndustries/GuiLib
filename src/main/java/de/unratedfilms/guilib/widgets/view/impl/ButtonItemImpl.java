@@ -50,10 +50,12 @@ public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, WidgetT
     }
 
     @Override
-    public void setItemStack(ItemStack itemStack) {
+    public ButtonItemImpl setItemStack(ItemStack itemStack) {
 
         this.itemStack = itemStack;
         tooltip = generateTooltip();
+
+        return this;
     }
 
     @SuppressWarnings ("unchecked")

@@ -28,9 +28,10 @@ public abstract class ButtonAdapter extends ContextHelperWidgetAdapter implement
     }
 
     @Override
-    public void setHandler(ButtonHandler handler) {
+    public ButtonAdapter setHandler(ButtonHandler handler) {
 
         this.handler = handler;
+        return this;
     }
 
     @Override
@@ -40,9 +41,10 @@ public abstract class ButtonAdapter extends ContextHelperWidgetAdapter implement
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
+    public ButtonAdapter setEnabled(boolean enabled) {
 
         this.enabled = enabled;
+        return this;
     }
 
     @Override

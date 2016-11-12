@@ -34,10 +34,12 @@ public abstract class CheckboxAdapter extends ContextHelperWidgetAdapter impleme
     }
 
     @Override
-    public void setLabel(String label) {
+    public CheckboxAdapter setLabel(String label) {
 
         this.label = label;
         invalidate();
+
+        return this;
     }
 
     @Override
@@ -47,9 +49,10 @@ public abstract class CheckboxAdapter extends ContextHelperWidgetAdapter impleme
     }
 
     @Override
-    public void setChecked(boolean checked) {
+    public CheckboxAdapter setChecked(boolean checked) {
 
         this.checked = checked;
+        return this;
     }
 
     @Override

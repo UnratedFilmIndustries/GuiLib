@@ -39,29 +39,35 @@ public abstract class TextTooltipAdapter extends ContextHelperWidgetAdapter impl
     }
 
     @Override
-    public void setLines(List<String> lines) {
+    public TextTooltipAdapter setLines(List<String> lines) {
 
         Validate.noNullElements(lines, "No tooltip line is allowed to be null");
 
         this.lines.clear();
         this.lines.addAll(lines);
         invalidate();
+
+        return this;
     }
 
     @Override
-    public void addLines(List<String> lines) {
+    public TextTooltipAdapter addLines(List<String> lines) {
 
         Validate.noNullElements(lines, "No tooltip line is allowed to be null");
 
         this.lines.addAll(lines);
         invalidate();
+
+        return this;
     }
 
     @Override
-    public void removeLines(List<String> lines) {
+    public TextTooltipAdapter removeLines(List<String> lines) {
 
         this.lines.removeAll(lines);
         invalidate();
+
+        return this;
     }
 
 }

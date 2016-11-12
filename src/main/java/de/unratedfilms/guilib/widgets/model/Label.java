@@ -10,6 +10,6 @@ public interface Label extends WidgetRigid {
 
     public String getText();
 
-    public void setText(String text);
+    public Label setText(String text);
 
 }

@@ -35,6 +35,11 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     private Widget                         hoveredWidget;
     private long                           hoverStart;                            // nanoseconds
 
+    public ContainerAdapter(Widget... widgets) {
+
+        addWidgets(widgets);
+    }
+
     @Override
     public Container appendLayoutManager(LayoutManager layoutManager) {
 
@@ -55,21 +60,25 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     }
 
     @Override
-    public void addWidget(Widget widget) {
+    public ContainerAdapter addWidget(Widget widget) {
 
         widgets.add(widget);
 
         if (widget instanceof WidgetFocusable) {
             focusableWidgets.add((WidgetFocusable) widget);
         }
+
+        return this;
     }
 
     @Override
-    public void addWidgets(Widget... widgets) {
+    public ContainerAdapter addWidgets(Widget... widgets) {
 
         for (Widget widget : widgets) {
             addWidget(widget);
         }
+
+        return this;
     }
 
     @Override

@@ -12,19 +12,19 @@ public interface Slider<V> extends WidgetFlexible {
 
     public V getMinValue();
 
-    public void setMinValue(V minValue);
+    public Slider<V> setMinValue(V minValue);
 
     public V getMaxValue();
 
-    public void setMaxValue(V maxValue);
+    public Slider<V> setMaxValue(V maxValue);
 
     public SliderLabelFormatter<V> getLabelFormatter();
 
-    public void setLabelFormatter(SliderLabelFormatter<V> labelFormatter);
+    public Slider<V> setLabelFormatter(SliderLabelFormatter<V> labelFormatter);
 
     public V getValue();
 
-    public void setValue(V value);
+    public Slider<V> setValue(V value);
 
     public static interface SliderLabelFormatter<V> {
 

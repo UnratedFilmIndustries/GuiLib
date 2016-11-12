@@ -12,11 +12,11 @@ public interface Button extends Widget {
 
     public ButtonHandler getHandler();
 
-    public void setHandler(ButtonHandler handler);
+    public Button setHandler(ButtonHandler handler);
 
     public boolean isEnabled();
 
-    public void setEnabled(boolean enabled);
+    public Button setEnabled(boolean enabled);
 
     public static interface ButtonHandler {
 

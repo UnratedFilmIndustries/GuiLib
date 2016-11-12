@@ -44,9 +44,10 @@ public abstract class DropdownAdapter<O extends Option<?>> extends ContextHelper
     }
 
     @Override
-    public void setHandler(DropdownHandler<O> handler) {
+    public DropdownAdapter<O> setHandler(DropdownHandler<O> handler) {
 
         this.handler = handler;
+        return this;
     }
 
     @Override
@@ -56,7 +57,7 @@ public abstract class DropdownAdapter<O extends Option<?>> extends ContextHelper
     }
 
     @Override
-    public void setOptions(Collection<O> options) {
+    public DropdownAdapter<O> setOptions(Collection<O> options) {
 
         this.options = ImmutableList.copyOf(options);
 
@@ -65,6 +66,8 @@ public abstract class DropdownAdapter<O extends Option<?>> extends ContextHelper
         }
 
         invalidate();
+
+        return this;
     }
 
     @Override
@@ -74,10 +77,12 @@ public abstract class DropdownAdapter<O extends Option<?>> extends ContextHelper
     }
 
     @Override
-    public void setSelectedOption(O selectedOption) {
+    public DropdownAdapter<O> setSelectedOption(O selectedOption) {
 
         Validate.isTrue(options.contains(selectedOption), "You can't select an option which the dropdown doesn't even offer");
         this.selectedOption = selectedOption;
+
+        return this;
     }
 
     @Override

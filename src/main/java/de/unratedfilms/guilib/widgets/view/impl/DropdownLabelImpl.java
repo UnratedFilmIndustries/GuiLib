@@ -67,12 +67,14 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
      */
 
     @Override
-    public void setOptions(Collection<O> options) {
+    public DropdownLabelImpl<O> setOptions(Collection<O> options) {
 
         super.setOptions(options);
 
         generateExt();
         invalidate();
+
+        return this;
     }
 
     private void generateExt() {

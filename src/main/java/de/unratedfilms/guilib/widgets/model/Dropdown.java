@@ -21,7 +21,7 @@ public interface Dropdown<O extends Option<?>> extends WidgetFlexible, WidgetFoc
 
     public DropdownHandler<O> getHandler();
 
-    public void setHandler(DropdownHandler<O> handler);
+    public Dropdown<O> setHandler(DropdownHandler<O> handler);
 
     public ImmutableList<O> getOptions();
 
@@ -31,7 +31,7 @@ public interface Dropdown<O extends Option<?>> extends WidgetFlexible, WidgetFoc
      *
      * @param options The new option list.
      */
-    public void setOptions(Collection<O> options);
+    public Dropdown<O> setOptions(Collection<O> options);
 
     public O getSelectedOption();
 
@@ -41,7 +41,7 @@ public interface Dropdown<O extends Option<?>> extends WidgetFlexible, WidgetFoc
      * @param selectedOption The new currently selected option.
      * @throws IllegalArgumentException If the new selected option isn't part of the {@link #getOptions() options list}.
      */
-    public void setSelectedOption(O selectedOption);
+    public Dropdown<O> setSelectedOption(O selectedOption);
 
     public static interface DropdownHandler<O extends Option<?>> {
 

@@ -10,6 +10,6 @@ public interface ButtonLabel extends Button, WidgetFlexible {
 
     public String getLabel();
 
-    public void setLabel(String label);
+    public ButtonLabel setLabel(String label);
 
 }

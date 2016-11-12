@@ -24,11 +24,13 @@ public abstract class LabelAdapter extends ContextHelperWidgetAdapter implements
     }
 
     @Override
-    public void setText(String text) {
+    public LabelAdapter setText(String text) {
 
         Validate.notNull(text, "Label text cannot be null");
         this.text = text;
         invalidate();
+
+        return this;
     }
 
 }

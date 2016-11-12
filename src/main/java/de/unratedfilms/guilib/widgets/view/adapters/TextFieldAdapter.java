@@ -45,13 +45,15 @@ public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implem
     }
 
     @Override
-    public void setMaxLength(int length) {
+    public TextFieldAdapter setMaxLength(int length) {
 
         maxLength = length;
 
         if (text.length() > length) {
             text = text.substring(0, length);
         }
+
+        return this;
     }
 
     @Override
@@ -61,9 +63,10 @@ public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implem
     }
 
     @Override
-    public void setFilter(CharacterFilter filter) {
+    public TextFieldAdapter setFilter(CharacterFilter filter) {
 
         this.filter = filter;
+        return this;
     }
 
     public int getTextColor() {
@@ -83,11 +86,13 @@ public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implem
     }
 
     @Override
-    public void setText(String text) {
+    public TextFieldAdapter setText(String text) {
 
         Validate.notNull(text, "Text field text cannot be null");
         this.text = text.length() > maxLength ? text.substring(0, maxLength) : text;
         setCursorPosition(this.text.length());
+
+        return this;
     }
 
     @Override

@@ -10,6 +10,6 @@ public interface LabelFocusable extends Label, WidgetFocusable {
 
     public Object getUserData();
 
-    public void setUserData(Object userData);
+    public LabelFocusable setUserData(Object userData);
 
 }

@@ -13,15 +13,15 @@ public interface TextField extends WidgetFlexible, WidgetFocusable {
 
     public int getMaxLength();
 
-    public void setMaxLength(int length);
+    public TextField setMaxLength(int length);
 
     public CharacterFilter getFilter();
 
-    public void setFilter(CharacterFilter filter);
+    public TextField setFilter(CharacterFilter filter);
 
     public String getText();
 
-    public void setText(String text);
+    public TextField setText(String text);
 
     public String getSelectedText();
 

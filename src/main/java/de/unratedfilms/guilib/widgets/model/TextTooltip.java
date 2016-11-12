@@ -11,10 +11,10 @@ public interface TextTooltip extends WidgetRigid {
 
     public List<String> getLines();
 
-    public void setLines(List<String> lines);
+    public TextTooltip setLines(List<String> lines);
 
-    public void addLines(List<String> lines);
+    public TextTooltip addLines(List<String> lines);
 
-    public void removeLines(List<String> lines);
+    public TextTooltip removeLines(List<String> lines);
 
 }

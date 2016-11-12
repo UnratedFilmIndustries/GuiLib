@@ -20,9 +20,9 @@ public interface Container extends Widget, WidgetFocusable {
 
     public List<WidgetFocusable> getFocusableWidgets();
 
-    public void addWidget(Widget widget);
+    public Container addWidget(Widget widget);
 
-    public void addWidgets(Widget... widgets);
+    public Container addWidgets(Widget... widgets);
 
     public WidgetFocusable getFocusedWidget();
 

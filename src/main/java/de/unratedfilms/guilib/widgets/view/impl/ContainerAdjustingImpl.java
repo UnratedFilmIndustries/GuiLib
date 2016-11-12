@@ -11,6 +11,11 @@ import de.unratedfilms.guilib.widgets.view.adapters.ContainerAdapter;
  */
 public class ContainerAdjustingImpl extends ContainerAdapter implements WidgetRigid {
 
+    public ContainerAdjustingImpl(Widget... widgets) {
+
+        super(widgets);
+    }
+
     @Override
     protected void doRevalidate() {
 

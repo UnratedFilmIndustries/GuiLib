@@ -34,9 +34,10 @@ public class LabelFocusableImpl extends LabelImpl implements LabelFocusable {
     }
 
     @Override
-    public void setUserData(Object userData) {
+    public LabelFocusableImpl setUserData(Object userData) {
 
         this.userData = userData;
+        return this;
     }
 
     public int getFocusColor() {
