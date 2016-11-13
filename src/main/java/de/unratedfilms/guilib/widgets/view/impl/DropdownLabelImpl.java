@@ -108,7 +108,7 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
                 }
 
             });
-            ext.addWidget(optionButton);
+            ext.addWidgets(optionButton);
         }
     }
 

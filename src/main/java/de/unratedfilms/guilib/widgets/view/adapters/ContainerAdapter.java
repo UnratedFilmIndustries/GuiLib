@@ -60,12 +60,14 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     }
 
     @Override
-    public ContainerAdapter addWidget(Widget widget) {
+    public ContainerAdapter addWidgets(Widget... widgets) {
 
-        widgets.add(widget);
+        for (Widget widget : widgets) {
+            this.widgets.add(widget);
 
-        if (widget instanceof WidgetFocusable) {
-            focusableWidgets.add((WidgetFocusable) widget);
+            if (widget instanceof WidgetFocusable) {
+                focusableWidgets.add((WidgetFocusable) widget);
+            }
         }
 
         invalidate();
@@ -74,11 +76,25 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     }
 
     @Override
-    public ContainerAdapter addWidgets(Widget... widgets) {
+    public Container removeWidgets(Widget... widgets) {
 
         for (Widget widget : widgets) {
-            addWidget(widget);
+            this.widgets.remove(widget);
+            focusableWidgets.remove(widget);
         }
+
+        invalidate();
+
+        return this;
+    }
+
+    @Override
+    public Container clearWidgets() {
+
+        widgets.clear();
+        focusableWidgets.clear();
+
+        invalidate();
 
         return this;
     }
