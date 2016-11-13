@@ -13,8 +13,10 @@ import de.unratedfilms.guilib.widgets.model.Checkbox;
  */
 public abstract class CheckboxAdapter extends ContextHelperWidgetAdapter implements Checkbox {
 
-    private String  label;
-    private boolean checked;
+    private CheckboxHandler handler;
+
+    private String          label;
+    private boolean         checked;
 
     public CheckboxAdapter(String label) {
 
@@ -25,6 +27,19 @@ public abstract class CheckboxAdapter extends ContextHelperWidgetAdapter impleme
 
         setLabel(label);
         this.checked = checked;
+    }
+
+    @Override
+    public CheckboxHandler getHandler() {
+
+        return handler;
+    }
+
+    @Override
+    public CheckboxAdapter setHandler(CheckboxHandler handler) {
+
+        this.handler = handler;
+        return this;
     }
 
     @Override
@@ -62,6 +77,11 @@ public abstract class CheckboxAdapter extends ContextHelperWidgetAdapter impleme
             MC.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 
             checked = !checked;
+
+            if (getHandler() != null) {
+                getHandler().checkboxChanged(this, checked);
+            }
+
             return true;
         }
 
