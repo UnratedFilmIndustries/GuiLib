@@ -19,14 +19,16 @@ import de.unratedfilms.guilib.widgets.model.TextField;
  */
 public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implements TextField, WidgetFocusable {
 
-    private int             maxLength = 32;
-    private CharacterFilter filter;
-    private int             textColor = 0xffffff;
+    private TextFieldHandler handler;
 
-    private String          text      = "";
+    private int              maxLength = 32;
+    private CharacterFilter  filter;
+    private int              textColor = 0xffffff;
 
-    private boolean         focused;
-    protected int           cursorCounter, cursorPosition, charOffset, selectionEnd;
+    private String           text      = "";
+
+    private boolean          focused;
+    protected int            cursorCounter, cursorPosition, charOffset, selectionEnd;
 
     public TextFieldAdapter() {
 
@@ -36,6 +38,19 @@ public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implem
     public TextFieldAdapter(CharacterFilter filter) {
 
         this.filter = filter;
+    }
+
+    @Override
+    public TextFieldHandler getHandler() {
+
+        return handler;
+    }
+
+    @Override
+    public TextFieldAdapter setHandler(TextFieldHandler handler) {
+
+        this.handler = handler;
+        return this;
     }
 
     @Override
@@ -342,65 +357,77 @@ public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implem
     @Override
     public boolean keyTyped(char typedChar, int keyCode) {
 
-        if (focused) {
-            switch (typedChar) {
-                case 1:
-                    setCursorPosition(text.length());
-                    setSelectionPosition(0);
-                    return true;
-                case 3:
-                    GuiScreen.setClipboardString(getSelectedText());
-                    return true;
-                case 22:
-                    insertTextAtCursor(GuiScreen.getClipboardString());
-                    return true;
-                case 24:
-                    GuiScreen.setClipboardString(getSelectedText());
-                    insertTextAtCursor("");
-                    return true;
-                default:
-                    switch (keyCode) {
-                        case 14:
-                            deleteTextFromCursor(-1);
-                            return true;
-                        case 199:
-                            setSelectionPosition(0);
-                            setCursorPosition(0);
-                            return true;
-                        case 203:
-                            if (GuiScreen.isShiftKeyDown()) {
-                                setSelectionPosition(selectionEnd - 1);
-                            } else {
-                                moveCursorBy(-1);
-                            }
-                            return true;
-                        case 205:
-                            if (GuiScreen.isShiftKeyDown()) {
-                                setSelectionPosition(selectionEnd + 1);
-                            } else {
-                                moveCursorBy(1);
-                            }
-                            return true;
-                        case 207:
-                            if (GuiScreen.isShiftKeyDown()) {
-                                setSelectionPosition(text.length());
-                            } else {
-                                setCursorPosition(text.length());
-                            }
-                            return true;
-                        case 211:
-                            deleteTextFromCursor(1);
-                            return true;
-                        default:
-                            if (filter.isAllowedCharacter(typedChar)) {
-                                insertTextAtCursor(Character.toString(typedChar));
-                                return true;
-                            }
-                            return false;
-                    }
-            }
+        if (!focused) {
+            return false;
         }
-        return false;
+
+        boolean result = handleKeyType(typedChar, keyCode);
+
+        if (handler != null) {
+            handler.keyTyped(this, typedChar, keyCode);
+        }
+
+        return result;
+    }
+
+    private boolean handleKeyType(char typedChar, int keyCode) {
+
+        switch (typedChar) {
+            case 1:
+                setCursorPosition(text.length());
+                setSelectionPosition(0);
+                return true;
+            case 3:
+                GuiScreen.setClipboardString(getSelectedText());
+                return true;
+            case 22:
+                insertTextAtCursor(GuiScreen.getClipboardString());
+                return true;
+            case 24:
+                GuiScreen.setClipboardString(getSelectedText());
+                insertTextAtCursor("");
+                return true;
+            default:
+                switch (keyCode) {
+                    case 14:
+                        deleteTextFromCursor(-1);
+                        return true;
+                    case 199:
+                        setSelectionPosition(0);
+                        setCursorPosition(0);
+                        return true;
+                    case 203:
+                        if (GuiScreen.isShiftKeyDown()) {
+                            setSelectionPosition(selectionEnd - 1);
+                        } else {
+                            moveCursorBy(-1);
+                        }
+                        return true;
+                    case 205:
+                        if (GuiScreen.isShiftKeyDown()) {
+                            setSelectionPosition(selectionEnd + 1);
+                        } else {
+                            moveCursorBy(1);
+                        }
+                        return true;
+                    case 207:
+                        if (GuiScreen.isShiftKeyDown()) {
+                            setSelectionPosition(text.length());
+                        } else {
+                            setCursorPosition(text.length());
+                        }
+                        return true;
+                    case 211:
+                        deleteTextFromCursor(1);
+                        return true;
+                    default:
+                        if (filter.isAllowedCharacter(typedChar)) {
+                            insertTextAtCursor(Character.toString(typedChar));
+                            return true;
+                        }
+                        return false;
+                }
+        }
     }
 
 }

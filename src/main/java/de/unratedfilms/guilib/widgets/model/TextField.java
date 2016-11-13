@@ -11,6 +11,10 @@ import de.unratedfilms.guilib.core.WidgetFocusable;
  */
 public interface TextField extends WidgetFlexible, WidgetFocusable {
 
+    public TextFieldHandler getHandler();
+
+    public TextField setHandler(TextFieldHandler handler);
+
     public int getMaxLength();
 
     public TextField setMaxLength(int length);
@@ -34,6 +38,12 @@ public interface TextField extends WidgetFlexible, WidgetFocusable {
     public void moveCursorBy(int offset);
 
     public void setSelectionPosition(int index);
+
+    public static interface TextFieldHandler {
+
+        public void keyTyped(TextField textField, char typedChar, int keyCode);
+
+    }
 
     public static interface CharacterFilter {
 
