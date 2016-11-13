@@ -12,6 +12,7 @@
 * Replaced the somewhat obscure and counter-intuitive tooltip system with a way more intuitive and flexible one.
 * Added the dropdown widget.
 * Added a container widget that adjusts its size to fit its contents.
+* Added new handlers to the text field and checkbox widgets.
 * Many methods now return the object they have been called on, meaning that you can now chain those methods together, saving tons of unnecessary lines.
 * Button labels are now abbreviated with ellipsis if they are too long.
 
