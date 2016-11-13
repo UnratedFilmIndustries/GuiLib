@@ -68,6 +68,8 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
             focusableWidgets.add((WidgetFocusable) widget);
         }
 
+        invalidate();
+
         return this;
     }
 
