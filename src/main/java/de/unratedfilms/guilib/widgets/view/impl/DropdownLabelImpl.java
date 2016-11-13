@@ -105,6 +105,10 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
 
                     setSelectedOption(option);
                     focusLost();
+
+                    if (getHandler() != null) {
+                        getHandler().optionSelected(DropdownLabelImpl.this, option);
+                    }
                 }
 
             });
