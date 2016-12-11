@@ -40,6 +40,23 @@ public interface Widget {
     public void setY(int y);
 
     /**
+     * Returns the leftmost x <b>or</b> topmost y coordinate of this widget in its local context (i.e. the parent container), depending on the given {@link Axis}.
+     *
+     * @param axis Whether the {@link Axis#X} or {@link Axis#Y} coordinate should be returned.
+     * @return The leftmost x / topmost y coordinate in pixels.
+     */
+    public int getCoord(Axis axis);
+
+    /**
+     * Sets the leftmost x <b>or</b> topmost y coordinate of this widget in its local context (i.e. the parent container), depending on the given {@link Axis}.
+     * Calling this method has the same effect as calling either {@link #setX(int)} or {@link #setY(int)} explicitly with the coordinates value.
+     *
+     * @param axis Whether the {@link Axis#X} or {@link Axis#Y} coordinate should be changed.
+     * @param coord The new leftmost x / topmost y coordinate in pixels.
+     */
+    public void setCoord(Axis axis, int coord);
+
+    /**
      * Returns a {@link Point} which contains the x and y coordinates of this widget in its local context (i.e. the parent container).
      *
      * @return The point the widget is located at.
@@ -78,6 +95,15 @@ public interface Widget {
      *         Note that negative heights are not allowed.
      */
     public int getHeight();
+
+    /**
+     * Returns the width or height of this widget, depending on whether the given {@link Axis} argument points to {@link Axis#X} or {@link Axis#Y}.
+     *
+     * @param axis Whether the {@link Axis#X} (width) or {@link Axis#Y} (height) extent should be returned.
+     * @return The width or height in pixels.
+     *         Note that negative widths and heights are not allowed.
+     */
+    public int getExtent(Axis axis);
 
     /**
      * Returns a {@link Dimension} object which contains the width and height of this widget.

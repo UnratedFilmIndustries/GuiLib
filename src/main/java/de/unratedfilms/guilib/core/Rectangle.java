@@ -62,6 +62,16 @@ public class Rectangle {
         return withPosition(position.withY(newY));
     }
 
+    public int getCoord(Axis axis) {
+
+        return position.getCoord(axis);
+    }
+
+    public Rectangle withCoord(Axis axis, int coord) {
+
+        return withPosition(position.withCoord(axis, coord));
+    }
+
     public Point getPosition() {
 
         return position;
@@ -95,6 +105,16 @@ public class Rectangle {
     public Rectangle withHeight(int newHeight) {
 
         return withSize(size.withHeight(newHeight));
+    }
+
+    public int getExtent(Axis axis) {
+
+        return size.getExtent(axis);
+    }
+
+    public Rectangle withExtent(Axis axis, int extent) {
+
+        return withSize(size.withExtent(axis, extent));
     }
 
     public Dimension getSize() {

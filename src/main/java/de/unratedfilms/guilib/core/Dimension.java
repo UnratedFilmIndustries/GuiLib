@@ -41,6 +41,16 @@ public class Dimension {
         return new Dimension(width, newHeight);
     }
 
+    public int getExtent(Axis axis) {
+
+        return axis == Axis.X ? width : height;
+    }
+
+    public Dimension withExtent(Axis axis, int extent) {
+
+        return axis == Axis.X ? withWidth(extent) : withHeight(extent);
+    }
+
     @Override
     public int hashCode() {
 

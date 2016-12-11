@@ -26,6 +26,15 @@ public interface WidgetFlexible extends Widget {
     public void setHeight(int height);
 
     /**
+     * Sets the width or height of this widget, depending on whether the given {@link Axis} argument points to {@link Axis#X} or {@link Axis#Y}.
+     *
+     * @param axis Whether the {@link Axis#X} (width) or {@link Axis#Y} (height) extent should be changed.
+     * @param extent The new width or height in pixels.
+     * @throws IllegalArgumentException If the given width or height is negative.
+     */
+    public void setExtent(Axis axis, int extent);
+
+    /**
      * Sets both the width and height of this widget at the same time.
      * Note that this is just a convenience method and internally calls {@link #setWidth(int)} and {@link #setHeight(int)}.
      *

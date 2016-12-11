@@ -41,6 +41,18 @@ public abstract class WidgetAdapter extends Gui implements Widget {
     }
 
     @Override
+    public int getCoord(Axis axis) {
+
+        return bounds.getCoord(axis);
+    }
+
+    @Override
+    public void setCoord(Axis axis, int coord) {
+
+        bounds = bounds.withCoord(axis, coord);
+    }
+
+    @Override
     public Point getPosition() {
 
         return bounds.getPosition();
@@ -80,6 +92,18 @@ public abstract class WidgetAdapter extends Gui implements Widget {
 
         Validate.isTrue(height >= 0, "Height of widget must not be negative");
         bounds = bounds.withHeight(height);
+    }
+
+    @Override
+    public int getExtent(Axis axis) {
+
+        return bounds.getExtent(axis);
+    }
+
+    public void setExtent(Axis axis, int extent) {
+
+        Validate.isTrue(extent >= 0, "Width/height of widget must not be negative");
+        bounds = bounds.withExtent(axis, extent);
     }
 
     @Override

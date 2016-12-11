@@ -38,6 +38,16 @@ public class Point {
         return new Point(x, newY);
     }
 
+    public int getCoord(Axis axis) {
+
+        return axis == Axis.X ? x : y;
+    }
+
+    public Point withCoord(Axis axis, int coord) {
+
+        return axis == Axis.X ? withX(coord) : withY(coord);
+    }
+
     @Override
     public int hashCode() {
 
