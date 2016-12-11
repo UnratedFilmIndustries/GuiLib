@@ -9,6 +9,10 @@ import de.unratedfilms.guilib.core.WidgetFlexible;
 import de.unratedfilms.guilib.widgets.model.Container;
 import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
 
+/**
+ * Squeezes all of the widgets in a container either into its whole width (X axis) or height (Y axis), meaning that all the available space on that axis is used up.
+ * Weights can be used to control how much of the space should be used by each widget. Widgets without a specific weight are weighted with the value 1.
+ */
 public class SqueezeLayoutManager implements LayoutManager {
 
     private final Container        container;

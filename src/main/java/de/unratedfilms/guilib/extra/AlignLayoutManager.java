@@ -6,6 +6,9 @@ import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.widgets.model.Container;
 import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
 
+/**
+ * Sets either the X or the Y coordinate of all widgets in a container to a specific value, thereby aligning the widgets.
+ */
 public class AlignLayoutManager implements LayoutManager {
 
     private final Container container;

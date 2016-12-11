@@ -6,6 +6,9 @@ import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.widgets.model.Container;
 import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
 
+/**
+ * Positions all the widgets in a container either on top of each other (Y axis) or from left to right (X axis) with a specified gap between them.
+ */
 public class FlowLayoutManager implements LayoutManager {
 
     private final Container container;
