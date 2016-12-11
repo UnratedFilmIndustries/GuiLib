@@ -8,8 +8,8 @@ import org.apache.commons.lang3.Validate;
 import de.unratedfilms.guilib.core.Axis;
 import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.core.WidgetFlexible;
+import de.unratedfilms.guilib.widgets.model.Container;
 import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
-import de.unratedfilms.guilib.widgets.model.ContainerFlexible;
 
 /**
  * Squeezes all of the widgets in a container either into its whole width (X axis) or height (Y axis), meaning that all the available space on that axis is used up.
@@ -17,21 +17,18 @@ import de.unratedfilms.guilib.widgets.model.ContainerFlexible;
  */
 public class SqueezeLayout implements LayoutManager {
 
-    private final ContainerFlexible   container;
-
     private final Axis                axis;
     private final int                 padding, gap;
 
     private final Map<Widget, Double> weights = new HashMap<>();
 
-    public SqueezeLayout(ContainerFlexible container, Axis axis) {
+    public SqueezeLayout(Axis axis) {
 
-        this(container, axis, 10, 5);
+        this(axis, 10, 5);
     }
 
-    public SqueezeLayout(ContainerFlexible container, Axis axis, int padding, int gap) {
+    public SqueezeLayout(Axis axis, int padding, int gap) {
 
-        this.container = container;
         this.axis = axis;
         this.padding = padding;
         this.gap = gap;
@@ -53,7 +50,9 @@ public class SqueezeLayout implements LayoutManager {
     }
 
     @Override
-    public void layout() {
+    public void layout(Container container) {
+
+        Validate.validState(container instanceof WidgetFlexible, "The squeeze layout manager doesn't make any sense in a non-flexible container; did you create a container of the wrong type?");
 
         container.getWidgets().stream().forEach(w -> Validate.validState(w instanceof WidgetFlexible, "The squeeze layout manager can only deal with flexible widgets, but '%s' isn't one", w));
         @SuppressWarnings ("unchecked")

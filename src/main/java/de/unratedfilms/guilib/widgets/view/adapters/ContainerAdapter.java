@@ -153,7 +153,7 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     protected void doRevalidate() {
 
         for (LayoutManager layoutManager : layoutManagers) {
-            layoutManager.layout();
+            layoutManager.layout(this);
         }
     }
 

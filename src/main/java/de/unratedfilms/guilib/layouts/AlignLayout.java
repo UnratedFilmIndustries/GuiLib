@@ -11,20 +11,17 @@ import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
  */
 public class AlignLayout implements LayoutManager {
 
-    private final Container container;
+    private final Axis axis;
+    private final int  coordinate;
 
-    private final Axis      axis;
-    private final int       coordinate;
+    public AlignLayout(Axis axis, int coordinate) {
 
-    public AlignLayout(Container container, Axis axis, int coordinate) {
-
-        this.container = container;
         this.axis = axis;
         this.coordinate = coordinate;
     }
 
     @Override
-    public void layout() {
+    public void layout(Container container) {
 
         for (Widget widget : container.getWidgets()) {
             widget.setCoord(axis, coordinate);

@@ -30,7 +30,7 @@ public interface Container extends Widget, WidgetFocusable {
 
     public static interface LayoutManager {
 
-        public void layout();
+        public void layout(Container container);
 
     }
 

@@ -10,29 +10,29 @@ import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
 
 public class FitLayout implements LayoutManager {
 
-    private final Container container;
+    private final Axis axis;
+    private final int  extent;
 
-    private final Axis      axis;
-    private final int       extent;
+    public FitLayout(Axis axis) {
 
-    public FitLayout(Container container, Axis axis) {
-
-        this.container = container;
         this.axis = axis;
         extent = -1;
     }
 
-    public FitLayout(Container container, Axis axis, int extent) {
+    public FitLayout(Axis axis, int extent) {
 
         Validate.isTrue(extent >= 0, "Width/height of widget must not be negative");
 
-        this.container = container;
         this.axis = axis;
         this.extent = extent;
     }
 
     @Override
-    public void layout() {
+    public void layout(Container container) {
+
+        if (extent == -1) {
+            Validate.validState(container instanceof WidgetFlexible, "The fit layout manager without a fixed extent doesn't make any sense in a non-flexible container; did you create a container of the wrong type?");
+        }
 
         container.getWidgets().stream().forEach(w -> Validate.validState(w instanceof WidgetFlexible, "The fit layout manager can only deal with flexible widgets, but '%s' isn't one", w));
 

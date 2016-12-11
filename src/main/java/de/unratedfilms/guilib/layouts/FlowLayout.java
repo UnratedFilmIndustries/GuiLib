@@ -11,26 +11,23 @@ import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
  */
 public class FlowLayout implements LayoutManager {
 
-    private final Container container;
+    private final Axis axis;
+    private final int  padding, gap;
 
-    private final Axis      axis;
-    private final int       padding, gap;
+    public FlowLayout(Axis axis) {
 
-    public FlowLayout(Container container, Axis axis) {
-
-        this(container, axis, 10, 5);
+        this(axis, 10, 5);
     }
 
-    public FlowLayout(Container container, Axis axis, int padding, int gap) {
+    public FlowLayout(Axis axis, int padding, int gap) {
 
-        this.container = container;
         this.axis = axis;
         this.padding = padding;
         this.gap = gap;
     }
 
     @Override
-    public void layout() {
+    public void layout(Container container) {
 
         int coord = padding;
         for (Widget widget : container.getWidgets()) {

@@ -15,7 +15,6 @@ import de.unratedfilms.guilib.util.FontUtils;
 import de.unratedfilms.guilib.widgets.model.Button;
 import de.unratedfilms.guilib.widgets.model.Button.ButtonHandler;
 import de.unratedfilms.guilib.widgets.model.ButtonLabel;
-import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
 import de.unratedfilms.guilib.widgets.model.ContainerFlexible;
 import de.unratedfilms.guilib.widgets.model.Dropdown;
 import de.unratedfilms.guilib.widgets.model.Dropdown.Option;
@@ -85,21 +84,15 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
         extScrollbar = new ScrollbarImpl(0);
         ext = new ContainerScrollableImpl(extScrollbar, 10);
         ext
-                .appendLayoutManager(new LayoutManager() {
+                .appendLayoutManager(c -> {
+                    extScrollbar.setPosition(ext.getWidth() - extScrollbar.getWidth(), 0);
 
-                    @Override
-                    public void layout() {
-
-                        extScrollbar.setPosition(ext.getWidth() - extScrollbar.getWidth(), 0);
-
-                        for (Widget widget : ext.getWidgets()) {
-                            ((ButtonLabel) widget).setSize(getMaxOptionTextWidth() + 2 * OPTION_H_PADDING, OPTION_HEIGHT);
-                        }
+                    for (Widget widget : ext.getWidgets()) {
+                        ((ButtonLabel) widget).setSize(getMaxOptionTextWidth() + 2 * OPTION_H_PADDING, OPTION_HEIGHT);
                     }
-
                 })
-                .appendLayoutManager(new AlignLayout(ext, Axis.X, 0))
-                .appendLayoutManager(new FlowLayout(ext, Axis.Y, 0, 0));
+                .appendLayoutManager(new AlignLayout(Axis.X, 0))
+                .appendLayoutManager(new FlowLayout(Axis.Y, 0, 0));
 
         for (final O option : getOptions()) {
             Button optionButton = new ButtonLabelImpl(option.getDisplayObject(), new ButtonHandler() {
