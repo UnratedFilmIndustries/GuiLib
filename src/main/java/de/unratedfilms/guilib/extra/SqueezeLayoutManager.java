@@ -4,6 +4,7 @@ package de.unratedfilms.guilib.extra;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.Validate;
+import de.unratedfilms.guilib.core.Axis;
 import de.unratedfilms.guilib.core.WidgetFlexible;
 import de.unratedfilms.guilib.widgets.model.Container;
 import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;

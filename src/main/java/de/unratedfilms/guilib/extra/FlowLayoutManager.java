@@ -1,6 +1,7 @@
 
 package de.unratedfilms.guilib.extra;
 
+import de.unratedfilms.guilib.core.Axis;
 import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.widgets.model.Container;
 import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
