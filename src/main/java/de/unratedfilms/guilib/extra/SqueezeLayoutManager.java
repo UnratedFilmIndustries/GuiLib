@@ -60,7 +60,18 @@ public class SqueezeLayoutManager implements LayoutManager {
                 x += ungappedWidth;
             }
         } else if (axis == Axis.Y) {
-            // TODO: Y axis support
+            int availableHeight = container.getHeight() - 2 * padding;
+
+            int y = padding - gap / 2;
+            for (Constraint c : constraints) {
+                c.widget.setY(y + gap / 2);
+
+                double fraction = c.weight / weightSum;
+                int ungappedHeight = (int) (fraction * availableHeight);
+                c.widget.setHeight(ungappedHeight - gap /* '2 * gap/2' */);
+
+                y += ungappedHeight;
+            }
         }
     }
 
