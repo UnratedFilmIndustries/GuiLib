@@ -8,6 +8,10 @@ import de.unratedfilms.guilib.core.WidgetFlexible;
 import de.unratedfilms.guilib.widgets.model.Container;
 import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
 
+/**
+ * Sets either the width or the height of all widgets in a container to either a specific value or the width/height of the container itself,
+ * thereby fitting all widgets into a specified space.
+ */
 public class FitLayout implements LayoutManager {
 
     private final Axis axis;

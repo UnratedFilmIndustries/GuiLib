@@ -18,7 +18,7 @@ public interface WidgetFlexible extends Widget {
     public void setWidth(int width);
 
     /**
-     * The new height of this widget.
+     * Sets the height of this widget.
      *
      * @param height The new height in pixels.
      * @throws IllegalArgumentException If the given height is negative.
