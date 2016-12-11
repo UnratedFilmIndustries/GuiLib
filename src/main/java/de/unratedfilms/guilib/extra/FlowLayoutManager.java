@@ -7,12 +7,6 @@ import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
 
 public class FlowLayoutManager implements LayoutManager {
 
-    public static enum Axis {
-
-        X, Y;
-
-    }
-
     private final Container container;
 
     private final Axis      axis;
