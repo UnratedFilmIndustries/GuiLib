@@ -1,13 +1,15 @@
 
 package de.unratedfilms.guilib.extra;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.lang3.Validate;
 import de.unratedfilms.guilib.core.Axis;
+import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.core.WidgetFlexible;
-import de.unratedfilms.guilib.widgets.model.Container;
 import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
+import de.unratedfilms.guilib.widgets.model.ContainerFlexible;
 
 /**
  * Squeezes all of the widgets in a container either into its whole width (X axis) or height (Y axis), meaning that all the available space on that axis is used up.
@@ -15,19 +17,19 @@ import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
  */
 public class SqueezeLayoutManager implements LayoutManager {
 
-    private final Container        container;
+    private final ContainerFlexible   container;
 
-    private final Axis             axis;
-    private final int              padding, gap;
+    private final Axis                axis;
+    private final int                 padding, gap;
 
-    private final List<Constraint> constraints = new ArrayList<>();
+    private final Map<Widget, Double> weights = new HashMap<>();
 
-    public SqueezeLayoutManager(Container container, Axis axis) {
+    public SqueezeLayoutManager(ContainerFlexible container, Axis axis) {
 
         this(container, axis, 10, 5);
     }
 
-    public SqueezeLayoutManager(Container container, Axis axis, int padding, int gap) {
+    public SqueezeLayoutManager(ContainerFlexible container, Axis axis, int padding, int gap) {
 
         this.container = container;
         this.axis = axis;
@@ -35,12 +37,17 @@ public class SqueezeLayoutManager implements LayoutManager {
         this.gap = gap;
     }
 
-    public SqueezeLayoutManager then(WidgetFlexible widget, double weight) {
+    private double getWeight(WidgetFlexible widget) {
 
-        Validate.notNull(widget, "Can't add a null widget to the squeeze layout manager");
+        return weights.containsKey(widget) ? weights.get(widget) : 1;
+    }
+
+    public SqueezeLayoutManager addWeight(WidgetFlexible widget, double weight) {
+
+        Validate.notNull(widget, "Can't set the squeeze weight of a null widget");
         Validate.isTrue(weight > 0, "Can't use negative or zero values for squeeze layout weights");
 
-        constraints.add(new Constraint(widget, weight));
+        weights.put(widget, weight);
 
         return this;
     }
@@ -48,48 +55,23 @@ public class SqueezeLayoutManager implements LayoutManager {
     @Override
     public void layout() {
 
-        double weightSum = constraints.stream().mapToDouble(c -> c.weight).sum();
+        container.getWidgets().stream().forEach(w -> Validate.validState(w instanceof WidgetFlexible, "The squeeze layout manager can only deal with flexible widgets, but '%s' isn't one", w));
+        @SuppressWarnings ("unchecked")
+        List<WidgetFlexible> widgets = (List<WidgetFlexible>) (List<?>) container.getWidgets();
 
-        if (axis == Axis.X) {
-            int availableWidth = container.getWidth() - 2 * padding;
+        double weightSum = widgets.stream().mapToDouble(w -> getWeight(w)).sum();
+        int availableSpace = container.getWidth() - 2 * padding;
 
-            int x = padding - gap / 2;
-            for (Constraint c : constraints) {
-                c.widget.setX(x + gap / 2);
+        int coord = padding - gap / 2;
+        for (WidgetFlexible widget : widgets) {
+            widget.setCoord(axis, coord + gap / 2);
 
-                double fraction = c.weight / weightSum;
-                int ungappedWidth = (int) (fraction * availableWidth);
-                c.widget.setWidth(ungappedWidth - gap /* '2 * gap/2' */);
+            double fraction = getWeight(widget) / weightSum;
+            int ungappedExtent = (int) (fraction * availableSpace);
+            widget.setExtent(axis, ungappedExtent - gap /* '2 * gap/2' */);
 
-                x += ungappedWidth;
-            }
-        } else if (axis == Axis.Y) {
-            int availableHeight = container.getHeight() - 2 * padding;
-
-            int y = padding - gap / 2;
-            for (Constraint c : constraints) {
-                c.widget.setY(y + gap / 2);
-
-                double fraction = c.weight / weightSum;
-                int ungappedHeight = (int) (fraction * availableHeight);
-                c.widget.setHeight(ungappedHeight - gap /* '2 * gap/2' */);
-
-                y += ungappedHeight;
-            }
+            coord += ungappedExtent;
         }
-    }
-
-    private static class Constraint {
-
-        private final WidgetFlexible widget;
-        private final double         weight;
-
-        private Constraint(WidgetFlexible widget, double weight) {
-
-            this.widget = widget;
-            this.weight = weight;
-        }
-
     }
 
 }
