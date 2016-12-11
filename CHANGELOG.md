@@ -5,6 +5,7 @@
 * All widgets are now described through interfaces and then implemented by concrete classes. That adds an additional layer of possible abstraction if you need it -- and in many cases, you actually do.
 * Added the flexible viewport architecture that allows widgets to decide what parts should be rendered where and with which scissor. It basically allows for things like dropdown menus that peek out of scrollable containers to happen.
 * Added immutable classes for points, dimensions and rectangles.
+* Added the Axis enum which can be used to dynamically query or change either x/y coordinates or width/height extents, possibly reducing code duplication.
 * Added the possibility to nest containers.
 * Added a proper revalidation process and layout managers to containers. Also added a distinction between rigid and flexible widgets, which is needed for the layouting to be strict and predictable.
 * Widgets can now handle all mouse clicks and not just the ones with the left mouse button.
@@ -24,6 +25,7 @@
 ### Notes
 * Restructured all the packages and untangled a lot of dependencies.
 * A lot of fundamental changes and general cleanups will probably break your code. Watch out for that when upgrading!
+* Upgraded to Java 8 for lambdas and stuff.
 
 1.1.2
 -----
