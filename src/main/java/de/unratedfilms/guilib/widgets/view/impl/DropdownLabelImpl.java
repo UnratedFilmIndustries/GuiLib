@@ -8,6 +8,7 @@ import cpw.mods.fml.client.config.GuiUtils;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
+import de.unratedfilms.guilib.extra.AlignLayoutManager;
 import de.unratedfilms.guilib.extra.Axis;
 import de.unratedfilms.guilib.extra.FlowLayoutManager;
 import de.unratedfilms.guilib.util.FontUtils;
@@ -83,19 +84,22 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
 
         extScrollbar = new ScrollbarImpl(0);
         ext = new ContainerScrollableImpl(extScrollbar, 10);
-        ext.appendLayoutManager(new LayoutManager() {
+        ext
+                .appendLayoutManager(new LayoutManager() {
 
-            @Override
-            public void layout() {
+                    @Override
+                    public void layout() {
 
-                extScrollbar.setPosition(ext.getWidth() - extScrollbar.getWidth(), 0);
+                        extScrollbar.setPosition(ext.getWidth() - extScrollbar.getWidth(), 0);
 
-                for (Widget widget : ext.getWidgets()) {
-                    ((ButtonLabel) widget).setSize(getMaxOptionTextWidth() + 2 * OPTION_H_PADDING, OPTION_HEIGHT);
-                }
-            }
+                        for (Widget widget : ext.getWidgets()) {
+                            ((ButtonLabel) widget).setSize(getMaxOptionTextWidth() + 2 * OPTION_H_PADDING, OPTION_HEIGHT);
+                        }
+                    }
 
-        }).appendLayoutManager(new FlowLayoutManager(ext, Axis.Y, 0, 0, 0));
+                })
+                .appendLayoutManager(new AlignLayoutManager(ext, Axis.X, 0))
+                .appendLayoutManager(new FlowLayoutManager(ext, Axis.Y, 0, 0));
 
         for (final O option : getOptions()) {
             Button optionButton = new ButtonLabelImpl(option.getDisplayObject(), new ButtonHandler() {

@@ -5,40 +5,30 @@ import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.widgets.model.Container;
 import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
 
-public class FlowLayoutManager implements LayoutManager {
+public class AlignLayoutManager implements LayoutManager {
 
     private final Container container;
 
     private final Axis      axis;
-    private final int       padding, gap;
+    private final int       coordinate;
 
-    public FlowLayoutManager(Container container, Axis axis) {
-
-        this(container, axis, 10, 5);
-    }
-
-    public FlowLayoutManager(Container container, Axis axis, int padding, int gap) {
+    public AlignLayoutManager(Container container, Axis axis, int coordinate) {
 
         this.container = container;
         this.axis = axis;
-        this.padding = padding;
-        this.gap = gap;
+        this.coordinate = coordinate;
     }
 
     @Override
     public void layout() {
 
         if (axis == Axis.X) {
-            int x = padding;
             for (Widget widget : container.getWidgets()) {
-                widget.setX(x);
-                x += widget.getWidth() + gap;
+                widget.setX(coordinate);
             }
         } else if (axis == Axis.Y) {
-            int y = padding;
             for (Widget widget : container.getWidgets()) {
-                widget.setY(y);
-                y += widget.getHeight() + gap;
+                widget.setY(coordinate);
             }
         }
     }
