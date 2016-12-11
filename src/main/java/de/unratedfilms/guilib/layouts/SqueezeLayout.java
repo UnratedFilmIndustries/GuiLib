@@ -1,5 +1,5 @@
 
-package de.unratedfilms.guilib.extra;
+package de.unratedfilms.guilib.layouts;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +15,7 @@ import de.unratedfilms.guilib.widgets.model.ContainerFlexible;
  * Squeezes all of the widgets in a container either into its whole width (X axis) or height (Y axis), meaning that all the available space on that axis is used up.
  * Weights can be used to control how much of the space should be used by each widget. Widgets without a specific weight are weighted with the value 1.
  */
-public class SqueezeLayoutManager implements LayoutManager {
+public class SqueezeLayout implements LayoutManager {
 
     private final ContainerFlexible   container;
 
@@ -24,12 +24,12 @@ public class SqueezeLayoutManager implements LayoutManager {
 
     private final Map<Widget, Double> weights = new HashMap<>();
 
-    public SqueezeLayoutManager(ContainerFlexible container, Axis axis) {
+    public SqueezeLayout(ContainerFlexible container, Axis axis) {
 
         this(container, axis, 10, 5);
     }
 
-    public SqueezeLayoutManager(ContainerFlexible container, Axis axis, int padding, int gap) {
+    public SqueezeLayout(ContainerFlexible container, Axis axis, int padding, int gap) {
 
         this.container = container;
         this.axis = axis;
@@ -42,7 +42,7 @@ public class SqueezeLayoutManager implements LayoutManager {
         return weights.containsKey(widget) ? weights.get(widget) : 1;
     }
 
-    public SqueezeLayoutManager addWeight(WidgetFlexible widget, double weight) {
+    public SqueezeLayout addWeight(WidgetFlexible widget, double weight) {
 
         Validate.notNull(widget, "Can't set the squeeze weight of a null widget");
         Validate.isTrue(weight > 0, "Can't use negative or zero values for squeeze layout weights");

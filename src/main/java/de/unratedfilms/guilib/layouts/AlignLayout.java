@@ -1,5 +1,5 @@
 
-package de.unratedfilms.guilib.extra;
+package de.unratedfilms.guilib.layouts;
 
 import de.unratedfilms.guilib.core.Axis;
 import de.unratedfilms.guilib.core.Widget;
@@ -9,14 +9,14 @@ import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
 /**
  * Sets either the X or the Y coordinate of all widgets in a container to a specific value, thereby aligning the widgets.
  */
-public class AlignLayoutManager implements LayoutManager {
+public class AlignLayout implements LayoutManager {
 
     private final Container container;
 
     private final Axis      axis;
     private final int       coordinate;
 
-    public AlignLayoutManager(Container container, Axis axis, int coordinate) {
+    public AlignLayout(Container container, Axis axis, int coordinate) {
 
         this.container = container;
         this.axis = axis;

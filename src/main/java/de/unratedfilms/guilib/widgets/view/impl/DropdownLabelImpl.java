@@ -9,8 +9,8 @@ import de.unratedfilms.guilib.core.Axis;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
-import de.unratedfilms.guilib.extra.AlignLayoutManager;
-import de.unratedfilms.guilib.extra.FlowLayoutManager;
+import de.unratedfilms.guilib.layouts.AlignLayout;
+import de.unratedfilms.guilib.layouts.FlowLayout;
 import de.unratedfilms.guilib.util.FontUtils;
 import de.unratedfilms.guilib.widgets.model.Button;
 import de.unratedfilms.guilib.widgets.model.Button.ButtonHandler;
@@ -98,8 +98,8 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
                     }
 
                 })
-                .appendLayoutManager(new AlignLayoutManager(ext, Axis.X, 0))
-                .appendLayoutManager(new FlowLayoutManager(ext, Axis.Y, 0, 0));
+                .appendLayoutManager(new AlignLayout(ext, Axis.X, 0))
+                .appendLayoutManager(new FlowLayout(ext, Axis.Y, 0, 0));
 
         for (final O option : getOptions()) {
             Button optionButton = new ButtonLabelImpl(option.getDisplayObject(), new ButtonHandler() {
