@@ -26,14 +26,8 @@ public class AlignLayoutManager implements LayoutManager {
     @Override
     public void layout() {
 
-        if (axis == Axis.X) {
-            for (Widget widget : container.getWidgets()) {
-                widget.setX(coordinate);
-            }
-        } else if (axis == Axis.Y) {
-            for (Widget widget : container.getWidgets()) {
-                widget.setY(coordinate);
-            }
+        for (Widget widget : container.getWidgets()) {
+            widget.setCoord(axis, coordinate);
         }
     }
 

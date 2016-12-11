@@ -32,18 +32,10 @@ public class FlowLayoutManager implements LayoutManager {
     @Override
     public void layout() {
 
-        if (axis == Axis.X) {
-            int x = padding;
-            for (Widget widget : container.getWidgets()) {
-                widget.setX(x);
-                x += widget.getWidth() + gap;
-            }
-        } else if (axis == Axis.Y) {
-            int y = padding;
-            for (Widget widget : container.getWidgets()) {
-                widget.setY(y);
-                y += widget.getHeight() + gap;
-            }
+        int coord = padding;
+        for (Widget widget : container.getWidgets()) {
+            widget.setCoord(axis, coord);
+            coord += widget.getExtent(axis) + gap;
         }
     }
 
