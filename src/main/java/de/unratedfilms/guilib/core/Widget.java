@@ -89,12 +89,28 @@ public interface Widget {
     public int getWidth();
 
     /**
+     * Returns the rightmost x coordinate of this widget in its local context (i.e. the parent container).
+     * Note that this method just returns the sum of {@link #getX()} and {@link #getWidth()}.
+     *
+     * @return The rightmost x coordinate in pixels.
+     */
+    public int getRight();
+
+    /**
      * Returns the height of this widget.
      *
      * @return The height in pixels.
      *         Note that negative heights are not allowed.
      */
     public int getHeight();
+
+    /**
+     * Returns the lowermost y coordinate of this widget in its local context (i.e. the parent container).
+     * Note that this method just returns the sum of {@link #getY()} and {@link #getHeight()}.
+     *
+     * @return The lowermost y coordinate in pixels.
+     */
+    public int getBottom();
 
     /**
      * Returns the width or height of this widget, depending on whether the given {@link Axis} argument points to {@link Axis#X} or {@link Axis#Y}.

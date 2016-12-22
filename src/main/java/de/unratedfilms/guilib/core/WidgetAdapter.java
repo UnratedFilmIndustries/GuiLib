@@ -76,6 +76,12 @@ public abstract class WidgetAdapter extends Gui implements Widget {
         return bounds.getWidth();
     }
 
+    @Override
+    public int getRight() {
+
+        return getX() + getWidth();
+    }
+
     public void setWidth(int width) {
 
         Validate.isTrue(width >= 0, "Width of widget must not be negative");
@@ -86,6 +92,12 @@ public abstract class WidgetAdapter extends Gui implements Widget {
     public int getHeight() {
 
         return bounds.getHeight();
+    }
+
+    @Override
+    public int getBottom() {
+
+        return getY() + getHeight();
     }
 
     public void setHeight(int height) {
