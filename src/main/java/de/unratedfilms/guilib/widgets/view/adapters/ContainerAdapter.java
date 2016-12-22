@@ -3,9 +3,13 @@ package de.unratedfilms.guilib.widgets.view.adapters;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
+import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.input.Keyboard;
+import com.google.common.collect.ImmutableList;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Point;
 import de.unratedfilms.guilib.core.Rectangle;
@@ -25,15 +29,15 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
 
     private final List<LayoutManager>      layoutManagers     = new ArrayList<>();
 
-    private final List<Widget>             widgets            = new ArrayList<>();
-    private final List<WidgetFocusable>    focusableWidgets   = new ArrayList<>();
+    private ImmutableList<Widget>          widgets            = ImmutableList.of();
+    private ImmutableList<WidgetFocusable> focusableWidgets   = ImmutableList.of();
 
     // Keys & mouse
     private final Map<MouseButton, Widget> lastClickedWidgets = new HashMap<>();
 
     // Hover and tooltips
     private Widget                         hoveredWidget;
-    private long                           hoverStart;                            // nanoseconds
+    private long                           hoverStart;                             // nanoseconds
 
     public ContainerAdapter(Widget... widgets) {
 
@@ -48,13 +52,13 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     }
 
     @Override
-    public List<Widget> getWidgets() {
+    public ImmutableList<Widget> getWidgets() {
 
         return widgets;
     }
 
     @Override
-    public List<WidgetFocusable> getFocusableWidgets() {
+    public ImmutableList<WidgetFocusable> getFocusableWidgets() {
 
         return focusableWidgets;
     }
@@ -62,13 +66,10 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     @Override
     public ContainerAdapter addWidgets(Widget... widgets) {
 
-        for (Widget widget : widgets) {
-            this.widgets.add(widget);
+        this.widgets = ImmutableList.<Widget> builder().addAll(this.widgets).add(widgets).build();
 
-            if (widget instanceof WidgetFocusable) {
-                focusableWidgets.add((WidgetFocusable) widget);
-            }
-        }
+        Iterator<WidgetFocusable> newFocusableWidgets = Stream.of(widgets).filter(w -> w instanceof WidgetFocusable).map(WidgetFocusable.class::cast).iterator();
+        focusableWidgets = ImmutableList.<WidgetFocusable> builder().addAll(focusableWidgets).addAll(newFocusableWidgets).build();
 
         invalidate();
 
@@ -78,10 +79,8 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     @Override
     public Container removeWidgets(Widget... widgets) {
 
-        for (Widget widget : widgets) {
-            this.widgets.remove(widget);
-            focusableWidgets.remove(widget);
-        }
+        this.widgets = ImmutableList.copyOf(this.widgets.stream().filter(w -> !ArrayUtils.contains(widgets, w)).iterator());
+        focusableWidgets = ImmutableList.copyOf(focusableWidgets.stream().filter(w -> !ArrayUtils.contains(widgets, w)).iterator());
 
         invalidate();
 
@@ -91,8 +90,8 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     @Override
     public Container clearWidgets() {
 
-        widgets.clear();
-        focusableWidgets.clear();
+        widgets = ImmutableList.of();
+        focusableWidgets = ImmutableList.of();
 
         invalidate();
 
