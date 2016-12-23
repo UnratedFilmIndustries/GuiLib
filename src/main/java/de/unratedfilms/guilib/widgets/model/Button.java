@@ -1,6 +1,9 @@
 
 package de.unratedfilms.guilib.widgets.model;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Widget;
 
@@ -24,17 +27,30 @@ public interface Button extends Widget {
 
     }
 
-    public static abstract class LeftButtonHandler implements ButtonHandler {
+    public static class FilteredButtonHandler implements ButtonHandler {
+
+        private final Collection<MouseButton> filter;
+        private final ButtonHandler           wrapped;
+
+        public FilteredButtonHandler(MouseButton filter, ButtonHandler wrapped) {
+
+            this.filter = Collections.singleton(filter);
+            this.wrapped = wrapped;
+        }
+
+        public FilteredButtonHandler(MouseButton[] filter, ButtonHandler wrapped) {
+
+            this.filter = Arrays.asList(filter);
+            this.wrapped = wrapped;
+        }
 
         @Override
         public void buttonClicked(Button button, MouseButton mouseButton) {
 
-            if (mouseButton == MouseButton.LEFT) {
-                leftButtonClicked(button);
+            if (filter.contains(mouseButton)) {
+                wrapped.buttonClicked(button, mouseButton);
             }
         }
-
-        public abstract void leftButtonClicked(Button button);
 
     }
 
