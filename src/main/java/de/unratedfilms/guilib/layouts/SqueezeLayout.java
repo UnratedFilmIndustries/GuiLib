@@ -77,7 +77,7 @@ public class SqueezeLayout implements LayoutManager {
         // The unavailable space is taken up by widgets that should be kept and not resized
         int unavailableSpace = container.getWidgets().stream().filter(w -> keeps.contains(w)).mapToInt(w -> w.getExtent(axis) + gap).sum();
         // This is all the space that can be used for the resized widgets; two half-gaps are added on each side for easier computations
-        int availableSpace = container.getWidth() + gap /* '2 * gap/2' */ - unavailableSpace - 2 * padding;
+        int availableSpace = container.getExtent(axis) + gap /* '2 * gap/2' */ - unavailableSpace - 2 * padding;
 
         int coord = padding - gap / 2;
         for (Widget widget : container.getWidgets()) {
