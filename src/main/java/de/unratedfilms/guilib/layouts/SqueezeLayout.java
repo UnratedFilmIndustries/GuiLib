@@ -1,6 +1,7 @@
 
 package de.unratedfilms.guilib.layouts;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -40,6 +41,11 @@ public class SqueezeLayout implements LayoutManager {
 
     public SqueezeLayout keep(Widget... widgets) {
 
+        return keep(Arrays.asList(widgets));
+    }
+
+    public SqueezeLayout keep(Iterable<Widget> widgets) {
+
         Validate.noNullElements(widgets, "Can't mark null widgets as squeeze keeps");
 
         for (Widget widget : widgets) {
@@ -51,6 +57,11 @@ public class SqueezeLayout implements LayoutManager {
     }
 
     public SqueezeLayout weight(double weight, WidgetFlexible... widgets) {
+
+        return weight(weight, Arrays.asList(widgets));
+    }
+
+    public SqueezeLayout weight(double weight, Iterable<WidgetFlexible> widgets) {
 
         Validate.noNullElements(widgets, "Can't set the squeeze weight of a null widget");
         Validate.isTrue(weight > 0, "Can't use negative or zero values for squeeze layout weights");
