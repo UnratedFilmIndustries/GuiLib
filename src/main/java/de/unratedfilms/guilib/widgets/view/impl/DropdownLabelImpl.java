@@ -9,7 +9,6 @@ import de.unratedfilms.guilib.core.Axis;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
-import de.unratedfilms.guilib.layouts.AlignLayout;
 import de.unratedfilms.guilib.layouts.FlowLayout;
 import de.unratedfilms.guilib.util.FontUtils;
 import de.unratedfilms.guilib.widgets.model.Button;
@@ -91,7 +90,6 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
                         ((ButtonLabel) widget).setSize(getMaxOptionTextWidth() + 2 * OPTION_H_PADDING, OPTION_HEIGHT);
                     }
                 })
-                .appendLayoutManager(new AlignLayout(Axis.X, 0))
                 .appendLayoutManager(new FlowLayout(Axis.Y, 0, 0));
 
         for (final O option : getOptions()) {
