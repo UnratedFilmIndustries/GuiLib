@@ -1,6 +1,7 @@
 
 package de.unratedfilms.guilib.widgets.model;
 
+import java.util.Arrays;
 import java.util.List;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
@@ -20,9 +21,19 @@ public interface Container extends Widget, WidgetFocusable {
 
     public List<WidgetFocusable> getFocusableWidgets();
 
-    public Container addWidgets(Widget... widgets);
+    default public Container addWidgets(Widget... widgets) {
 
-    public Container removeWidgets(Widget... widgets);
+        return addWidgets(Arrays.asList(widgets));
+    }
+
+    public Container addWidgets(Iterable<Widget> widgets);
+
+    default public Container removeWidgets(Widget... widgets) {
+
+        return removeWidgets(Arrays.asList(widgets));
+    }
+
+    public Container removeWidgets(Iterable<Widget> widgets);
 
     public Container clearWidgets();
 
