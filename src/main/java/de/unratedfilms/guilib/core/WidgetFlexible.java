@@ -15,7 +15,10 @@ public interface WidgetFlexible extends Widget {
      * @param width The new width in pixels.
      * @throws IllegalArgumentException If the given width is negative.
      */
-    public void setWidth(int width);
+    default public void setWidth(int width) {
+
+        setExtent(Axis.X, width);
+    }
 
     /**
      * Sets the height of this widget.
@@ -23,7 +26,10 @@ public interface WidgetFlexible extends Widget {
      * @param height The new height in pixels.
      * @throws IllegalArgumentException If the given height is negative.
      */
-    public void setHeight(int height);
+    default public void setHeight(int height) {
+
+        setExtent(Axis.Y, height);
+    }
 
     /**
      * Sets the width or height of this widget, depending on whether the given {@link Axis} argument points to {@link Axis#X} or {@link Axis#Y}.
@@ -42,7 +48,11 @@ public interface WidgetFlexible extends Widget {
      * @param height The new height in pixels.
      * @throws IllegalArgumentException If either the given width or the given height is negative.
      */
-    public void setSize(int width, int height);
+    default public void setSize(int width, int height) {
+
+        setWidth(width);
+        setHeight(height);
+    }
 
     /**
      * Sets the width and height of this widget to the given size.
@@ -50,7 +60,10 @@ public interface WidgetFlexible extends Widget {
      *
      * @param size The new size of the widget.
      */
-    public void setSize(Dimension size);
+    default public void setSize(Dimension size) {
+
+        setSize(size.getWidth(), size.getHeight());
+    }
 
     /**
      * Sets the x and y coordinates in this widget's local context (i.e. the parent container) as well as the width and height of the widget at the same time.
@@ -62,7 +75,11 @@ public interface WidgetFlexible extends Widget {
      * @param height The new height in pixels.
      * @throws IllegalArgumentException If either the given width or the given height is negative.
      */
-    public void setBounds(int x, int y, int width, int height);
+    default public void setBounds(int x, int y, int width, int height) {
+
+        setPosition(x, y);
+        setSize(width, height);
+    }
 
     /**
      * Sets the x and y coordinates in this widget's local context (i.e. the parent container) as well as the width and height of the widget to the bounds of the given {@link Rectangle}.
@@ -70,7 +87,10 @@ public interface WidgetFlexible extends Widget {
      *
      * @param bounds The rectangle which describes the new bounds of the widget.
      */
-    public void setBounds(Rectangle bounds);
+    default public void setBounds(Rectangle bounds) {
+
+        setBounds(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight());
+    }
 
     /**
      * Revalidates this widget by layouting its contents again, <b>but not changing its own size!</b><br>

@@ -17,30 +17,6 @@ public abstract class WidgetAdapter extends Gui implements Widget {
     protected boolean                valid  = false;
 
     @Override
-    public int getX() {
-
-        return bounds.getX();
-    }
-
-    @Override
-    public void setX(int x) {
-
-        bounds = bounds.withX(x);
-    }
-
-    @Override
-    public int getY() {
-
-        return bounds.getY();
-    }
-
-    @Override
-    public void setY(int y) {
-
-        bounds = bounds.withY(y);
-    }
-
-    @Override
     public int getCoord(Axis axis) {
 
         return bounds.getCoord(axis);
@@ -52,52 +28,10 @@ public abstract class WidgetAdapter extends Gui implements Widget {
         bounds = bounds.withCoord(axis, coord);
     }
 
-    @Override
-    public Point getPosition() {
-
-        return bounds.getPosition();
-    }
-
-    @Override
-    public void setPosition(int x, int y) {
-
-        bounds = bounds.withPosition(x, y);
-    }
-
-    @Override
-    public void setPosition(Point position) {
-
-        bounds = bounds.withPosition(position);
-    }
-
-    @Override
-    public int getWidth() {
-
-        return bounds.getWidth();
-    }
-
-    @Override
-    public int getRight() {
-
-        return getX() + getWidth();
-    }
-
     public void setWidth(int width) {
 
         Validate.isTrue(width >= 0, "Width of widget must not be negative");
         bounds = bounds.withWidth(width);
-    }
-
-    @Override
-    public int getHeight() {
-
-        return bounds.getHeight();
-    }
-
-    @Override
-    public int getBottom() {
-
-        return getY() + getHeight();
     }
 
     public void setHeight(int height) {
@@ -114,14 +48,8 @@ public abstract class WidgetAdapter extends Gui implements Widget {
 
     public void setExtent(Axis axis, int extent) {
 
-        Validate.isTrue(extent >= 0, "Width/height of widget must not be negative");
+        Validate.isTrue(extent >= 0, (axis == Axis.X ? "Width" : "Height") + " of widget must not be negative");
         bounds = bounds.withExtent(axis, extent);
-    }
-
-    @Override
-    public Dimension getSize() {
-
-        return bounds.getSize();
     }
 
     public void setSize(int width, int height) {
@@ -132,12 +60,6 @@ public abstract class WidgetAdapter extends Gui implements Widget {
     public void setSize(Dimension size) {
 
         bounds = bounds.withSize(size);
-    }
-
-    @Override
-    public Rectangle getBounds() {
-
-        return bounds;
     }
 
     public void setBounds(int x, int y, int width, int height) {
@@ -211,22 +133,6 @@ public abstract class WidgetAdapter extends Gui implements Widget {
     public boolean keyTyped(char typedChar, int keyCode) {
 
         return false;
-    }
-
-    /*
-     * Standard predicates
-     */
-
-    @Override
-    public boolean inLocalBounds(Viewport viewport, int lx, int ly) {
-
-        return viewport.inLocalBounds(lx, ly) && lx >= getX() && ly >= getY() && lx < getX() + getWidth() && ly < getY() + getHeight();
-    }
-
-    @Override
-    public boolean inGlobalBounds(Viewport viewport, int gx, int gy) {
-
-        return inLocalBounds(viewport, viewport.localX(gx), viewport.localY(gy));
     }
 
 }

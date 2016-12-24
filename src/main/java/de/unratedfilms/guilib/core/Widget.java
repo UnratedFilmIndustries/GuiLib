@@ -16,28 +16,40 @@ public interface Widget {
      *
      * @return The leftmost x coordinate in pixels.
      */
-    public int getX();
+    default public int getX() {
+
+        return getCoord(Axis.X);
+    }
 
     /**
      * Sets the leftmost x coordinate of this widget in its local context (i.e. the parent container).
      *
      * @param x The new leftmost x coordinate in pixels.
      */
-    public void setX(int x);
+    default public void setX(int x) {
+
+        setCoord(Axis.X, x);
+    }
 
     /**
      * Returns the topmost y coordinate of this widget in its local context (i.e. the parent container).
      *
      * @return The topmost y coordinate in pixels.
      */
-    public int getY();
+    default public int getY() {
+
+        return getCoord(Axis.Y);
+    }
 
     /**
      * Sets the topmost y coordinate of this widget in its local context (i.e. the parent container).
      *
      * @param y The new topmost y coordinate in pixels.
      */
-    public void setY(int y);
+    default public void setY(int y) {
+
+        setCoord(Axis.Y, y);
+    }
 
     /**
      * Returns the leftmost x <b>or</b> topmost y coordinate of this widget in its local context (i.e. the parent container), depending on the given {@link Axis}.
@@ -61,7 +73,10 @@ public interface Widget {
      *
      * @return The point the widget is located at.
      */
-    public Point getPosition();
+    default public Point getPosition() {
+
+        return new Point(getX(), getY());
+    }
 
     /**
      * Sets both the x and y coordinates of this widget in its local context (i.e. the parent container) at the same time.
@@ -70,7 +85,11 @@ public interface Widget {
      * @param x The new leftmost x coordinate in pixels.
      * @param y The new topmost y coordinate in pixels.
      */
-    public void setPosition(int x, int y);
+    default public void setPosition(int x, int y) {
+
+        setX(x);
+        setY(y);
+    }
 
     /**
      * Sets the x and y coordinates of this widget in its local context (i.e. the parent container) to the coordinates of the given {@link Point}.
@@ -78,7 +97,10 @@ public interface Widget {
      *
      * @param position The new point the widget should be located at.
      */
-    public void setPosition(Point position);
+    default public void setPosition(Point position) {
+
+        setPosition(position.getX(), position.getY());
+    }
 
     /**
      * Returns the width of this widget.
@@ -86,7 +108,10 @@ public interface Widget {
      * @return The width in pixels.
      *         Note that negative widths are not allowed.
      */
-    public int getWidth();
+    default public int getWidth() {
+
+        return getExtent(Axis.X);
+    }
 
     /**
      * Returns the rightmost x coordinate of this widget in its local context (i.e. the parent container).
@@ -94,7 +119,10 @@ public interface Widget {
      *
      * @return The rightmost x coordinate in pixels.
      */
-    public int getRight();
+    default public int getRight() {
+
+        return getX() + getWidth();
+    }
 
     /**
      * Returns the height of this widget.
@@ -102,7 +130,10 @@ public interface Widget {
      * @return The height in pixels.
      *         Note that negative heights are not allowed.
      */
-    public int getHeight();
+    default public int getHeight() {
+
+        return getExtent(Axis.Y);
+    }
 
     /**
      * Returns the lowermost y coordinate of this widget in its local context (i.e. the parent container).
@@ -110,7 +141,10 @@ public interface Widget {
      *
      * @return The lowermost y coordinate in pixels.
      */
-    public int getBottom();
+    default public int getBottom() {
+
+        return getY() + getHeight();
+    }
 
     /**
      * Returns the width or height of this widget, depending on whether the given {@link Axis} argument points to {@link Axis#X} or {@link Axis#Y}.
@@ -126,14 +160,20 @@ public interface Widget {
      *
      * @return The size of the widget.
      */
-    public Dimension getSize();
+    default public Dimension getSize() {
+
+        return new Dimension(getWidth(), getHeight());
+    }
 
     /**
      * Returns a {@link Rectangle} which contains the x and y coordinates of this widget in its local context (i.e. the parent container) as well as the width and height of the widget.
      *
      * @return The rectangle which contains the bounds of the widget.
      */
-    public Rectangle getBounds();
+    default public Rectangle getBounds() {
+
+        return new Rectangle(getPosition(), getSize());
+    }
 
     /*
      * Event handlers
@@ -237,7 +277,10 @@ public interface Widget {
      * @param ly The local y coordinate of the point which should be tested.
      * @return Whether the given local coordinate is in the bounds of this widget and the given viewport.
      */
-    public boolean inLocalBounds(Viewport viewport, int lx, int ly);
+    default public boolean inLocalBounds(Viewport viewport, int lx, int ly) {
+
+        return viewport.inLocalBounds(lx, ly) && lx >= getX() && ly >= getY() && lx < getX() + getWidth() && ly < getY() + getHeight();
+    }
 
     /**
      * Determines whether the specified <b>global</b> coordinate is in bounds of this widget's area, <b>considering the given {@link Viewport}</b>.
@@ -248,6 +291,9 @@ public interface Widget {
      * @param gy The global y coordinate of the point which should be tested.
      * @return Whether the given global coordinate is in the bounds of this widget and the given viewport.
      */
-    public boolean inGlobalBounds(Viewport viewport, int gx, int gy);
+    default public boolean inGlobalBounds(Viewport viewport, int gx, int gy) {
+
+        return inLocalBounds(viewport, viewport.localX(gx), viewport.localY(gy));
+    }
 
 }
