@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import org.lwjgl.input.Keyboard;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -68,7 +68,8 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
 
         this.widgets = ImmutableList.<Widget> builder().addAll(this.widgets).addAll(widgets).build();
 
-        Iterator<WidgetFocusable> newFocusableWidgets = Stream.of(widgets).filter(w -> w instanceof WidgetFocusable).map(WidgetFocusable.class::cast).iterator();
+        Iterator<WidgetFocusable> newFocusableWidgets = StreamSupport.stream(widgets.spliterator(), false)
+                .filter(w -> w instanceof WidgetFocusable).map(WidgetFocusable.class::cast).iterator();
         focusableWidgets = ImmutableList.<WidgetFocusable> builder().addAll(focusableWidgets).addAll(newFocusableWidgets).build();
 
         invalidate();
