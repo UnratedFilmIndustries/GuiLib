@@ -216,7 +216,7 @@ public interface Widget {
      * @param mx The global x coordinate of the mouse on the screen.
      * @param my The global y coordinate of the mouse on the screen.
      * @param mouseButton The pressed mouse button.
-     * @return Whether the has captured this click, which means that no other widget will be notified about it.
+     * @return Whether this widget has captured this click, which means that no other widget will be notified about it.
      */
     public boolean mousePressed(Viewport viewport, int mx, int my, MouseButton mouseButton);
 
