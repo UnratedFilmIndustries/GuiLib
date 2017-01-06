@@ -257,6 +257,9 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
             return true;
         }
 
+        // Retrieve the currently focused widget before we change anything
+        WidgetFocusable previouslyFocusedWidget = getFocusedWidget();
+
         // If we don't have a focused widget or the focused widget is not interested in the mouse click, allow the other widgets to handle it
         Widget clickedWidget = null;
         for (Widget widget : widgets) {
@@ -267,7 +270,6 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
         }
 
         // If the player clicked a focusable widget, focus that widget, and further make sure that the previously focused widget isn't focused anymore
-        WidgetFocusable previouslyFocusedWidget = getFocusedWidget();
         if (clickedWidget != previouslyFocusedWidget) {
             if (previouslyFocusedWidget != null) {
                 previouslyFocusedWidget.focusLost();
