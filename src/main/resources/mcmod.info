@@ -7,7 +7,6 @@
   "mcversion": "${mcversion}",
   "url": "http://www.unratedfilmindustries.de",
   "authorList": [ "LoadingByte", "Davidee" ],
-  "credits": "Davidee, who created the original Gui Library, the base of this fork",
-  "dependencies": [ "guilib" ]
+  "credits": "Davidee, who created the original Gui Library, the base of this fork"
 }
 ]

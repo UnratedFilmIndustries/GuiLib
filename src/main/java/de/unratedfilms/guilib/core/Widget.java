@@ -1,183 +1,299 @@
 
 package de.unratedfilms.guilib.core;
 
-import java.util.Collections;
-import java.util.List;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 /**
- * Widgets are the core of this library.
- * All controls should be a subclass of this Widget class.
+ * Widgets are the core of this library. A widget can be a label, a text field, a button, essentially everything.
+ * All controls should somehow implement this Widget interface.
+ * It is recommended to use one of the widget adapter superclasses in order to avoid boilerplate code.
  */
-public abstract class Widget extends Gui {
-
-    // Utility constant for quick access
-    public static final Minecraft MC = Minecraft.getMinecraft();
-
-    protected int                 x, y, width, height;
-    protected boolean             enabled;
+public interface Widget {
 
     /**
+     * Returns the leftmost x coordinate of this widget in its local context (i.e. the parent container).
      *
-     * @param width Widget of this widget
-     * @param height Height of this widget
+     * @return The leftmost x coordinate in pixels.
      */
-    public Widget(int width, int height) {
+    default public int getX() {
 
-        this.width = width;
-        this.height = height;
-        enabled = true;
+        return getCoord(Axis.X);
     }
 
     /**
+     * Sets the leftmost x coordinate of this widget in its local context (i.e. the parent container).
      *
-     * @param x Leftmost x of this widget
-     * @param y Topmost y of this widget
-     * @param width Widget of this widget
-     * @param height Height of this widget
+     * @param x The new leftmost x coordinate in pixels.
      */
-    public Widget(int x, int y, int width, int height) {
+    default public void setX(int x) {
 
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        enabled = true;
+        setCoord(Axis.X, x);
     }
 
     /**
-     * Draws this widget
+     * Returns the topmost y coordinate of this widget in its local context (i.e. the parent container).
      *
-     * @param mx Mouse-X
-     * @param my Mouse-Y
+     * @return The topmost y coordinate in pixels.
      */
-    public abstract void draw(int mx, int my);
+    default public int getY() {
 
-    /**
-     * Called when the mouse is clicked.
-     *
-     * @param mx Mouse-X
-     * @param my Mouse-Y
-     * @return Whether the control should handleClick
-     */
-    public abstract boolean click(int mx, int my);
-
-    /**
-     * Called when a call to click(mx, my) returns true.
-     * Handle the click event in this method.
-     *
-     * @param mx Mouse-X
-     * @param my Mouse-Y
-     */
-    public void handleClick(int mx, int my) {
-
+        return getCoord(Axis.Y);
     }
 
     /**
-     * Update this control (if necessary).
+     * Sets the topmost y coordinate of this widget in its local context (i.e. the parent container).
+     *
+     * @param y The new topmost y coordinate in pixels.
      */
-    public void update() {
+    default public void setY(int y) {
 
+        setCoord(Axis.Y, y);
     }
 
     /**
-     * Called when the mouse is released.
+     * Returns the leftmost x <b>or</b> topmost y coordinate of this widget in its local context (i.e. the parent container), depending on the given {@link Axis}.
      *
-     * @param mx Mouse-X
-     * @param my Mouse-Y
+     * @param axis Whether the {@link Axis#X} or {@link Axis#Y} coordinate should be returned.
+     * @return The leftmost x / topmost y coordinate in pixels.
      */
-    public void mouseReleased(int mx, int my) {
+    public int getCoord(Axis axis);
 
+    /**
+     * Sets the leftmost x <b>or</b> topmost y coordinate of this widget in its local context (i.e. the parent container), depending on the given {@link Axis}.
+     * Calling this method has the same effect as calling either {@link #setX(int)} or {@link #setY(int)} explicitly with the coordinates value.
+     *
+     * @param axis Whether the {@link Axis#X} or {@link Axis#Y} coordinate should be changed.
+     * @param coord The new leftmost x / topmost y coordinate in pixels.
+     */
+    public void setCoord(Axis axis, int coord);
+
+    /**
+     * Returns a {@link Point} which contains the x and y coordinates of this widget in its local context (i.e. the parent container).
+     *
+     * @return The point the widget is located at.
+     */
+    default public Point getPosition() {
+
+        return new Point(getX(), getY());
     }
 
     /**
-     * Called when a key is typed.
+     * Sets both the x and y coordinates of this widget in its local context (i.e. the parent container) at the same time.
+     * Calling this method has the same effect as calling {@link #setX(int)} and {@link #setY(int)} separately with the two coordinates.
      *
-     * @param typedChar Character typed (if any)
-     * @param keyCode Keyboard.KEY_ code for this key
-     * @return Whether this widget has captured this keyboard event
+     * @param x The new leftmost x coordinate in pixels.
+     * @param y The new topmost y coordinate in pixels.
      */
-    public boolean keyTyped(char typedChar, int keyCode) {
+    default public void setPosition(int x, int y) {
 
-        return false;
+        setX(x);
+        setY(y);
     }
+
+    /**
+     * Sets the x and y coordinates of this widget in its local context (i.e. the parent container) to the coordinates of the given {@link Point}.
+     * Calling this method has the same effect as calling {@link #setX(int)} and {@link #setY(int)} separately with the two coordinates.
+     *
+     * @param position The new point the widget should be located at.
+     */
+    default public void setPosition(Point position) {
+
+        setPosition(position.getX(), position.getY());
+    }
+
+    /**
+     * Returns the width of this widget.
+     *
+     * @return The width in pixels.
+     *         Note that negative widths are not allowed.
+     */
+    default public int getWidth() {
+
+        return getExtent(Axis.X);
+    }
+
+    /**
+     * Returns the rightmost x coordinate of this widget in its local context (i.e. the parent container).
+     * Note that this method just returns the sum of {@link #getX()} and {@link #getWidth()}.
+     *
+     * @return The rightmost x coordinate in pixels.
+     */
+    default public int getRight() {
+
+        return getX() + getWidth();
+    }
+
+    /**
+     * Returns the height of this widget.
+     *
+     * @return The height in pixels.
+     *         Note that negative heights are not allowed.
+     */
+    default public int getHeight() {
+
+        return getExtent(Axis.Y);
+    }
+
+    /**
+     * Returns the lowermost y coordinate of this widget in its local context (i.e. the parent container).
+     * Note that this method just returns the sum of {@link #getY()} and {@link #getHeight()}.
+     *
+     * @return The lowermost y coordinate in pixels.
+     */
+    default public int getBottom() {
+
+        return getY() + getHeight();
+    }
+
+    /**
+     * Returns the width or height of this widget, depending on whether the given {@link Axis} argument points to {@link Axis#X} or {@link Axis#Y}.
+     *
+     * @param axis Whether the {@link Axis#X} (width) or {@link Axis#Y} (height) extent should be returned.
+     * @return The width or height in pixels.
+     *         Note that negative widths and heights are not allowed.
+     */
+    public int getExtent(Axis axis);
+
+    /**
+     * Returns a {@link Dimension} object which contains the width and height of this widget.
+     *
+     * @return The size of the widget.
+     */
+    default public Dimension getSize() {
+
+        return new Dimension(getWidth(), getHeight());
+    }
+
+    /**
+     * Returns a {@link Rectangle} which contains the x and y coordinates of this widget in its local context (i.e. the parent container) as well as the width and height of the widget.
+     *
+     * @return The rectangle which contains the bounds of the widget.
+     */
+    default public Rectangle getBounds() {
+
+        return new Rectangle(getPosition(), getSize());
+    }
+
+    /*
+     * Event handlers
+     */
+
+    /**
+     * Updates this widget during each tick.
+     */
+    public void update();
+
+    public boolean revalidate(boolean force);
+
+    /**
+     * Draws this widget.
+     *
+     * @param viewport The rectangle on the screen in which the widget is allowed to draw its stuff.
+     *        It's important to note that the global x/y coordinates of the viewport are the origin of the coordinate system the local x/y coordinates of this widget lie in.
+     *        That means that you need to translate your widget's local x/y coordinates by the global viewport x/y coordinates if you want to draw correctly!<br>
+     *        <br>
+     *        Please also remember to use the {@link GL11#GL_SCISSOR_TEST} in order to ensure you are really only drawing inside the viewport rectangle.
+     *        Note, however, that there might be occasions where you deliberately ignore the viewport boundary,
+     *        i.e. because you want to draw a dropdown menu that of course shouldn't be cut of by a scrolling container.
+     * @param mx The global x coordinate of the mouse on the screen.
+     * @param my The global y coordinate of the mouse on the screen.
+     */
+    public void draw(Viewport viewport, int mx, int my);
+
+    /**
+     * Called once when the given {@link MouseButton} is pushed down.
+     * If any widget is focused, that widget will be the first to get notified about the click.
+     *
+     * @param viewport The rectangle on the screen in which the widget is allowed to receive mouse inputs.
+     *        It's important to note that the global x/y coordinates of the viewport are the origin of the coordinate system the local x/y coordinates of this widget lie in.
+     *        That means that you need to translate your widget's local x/y coordinates by the global viewport x/y coordinates before you compare with the given global mouse coordinates!<br>
+     *        <br>
+     *        Please remember to use {@link Viewport#inGlobalBounds(int, int)} or {@link Viewport#inLocalBounds(int, int)} to check whether you are actually allowed to take mouse input
+     *        from the given coordinates.
+     *        Note, however, that there might be occasions where you deliberately ignore the viewport boundary,
+     *        i.e. because you want to implement a dropdown menu that of course shouldn't be cut of by a scrolling container.
+     * @param mx The global x coordinate of the mouse on the screen.
+     * @param my The global y coordinate of the mouse on the screen.
+     * @param mouseButton The pressed mouse button.
+     * @return Whether this widget has captured this click, which means that no other widget will be notified about it.
+     */
+    public boolean mousePressed(Viewport viewport, int mx, int my, MouseButton mouseButton);
+
+    /**
+     * Called once when the given {@link MouseButton} is released after this widget has captured it being pressed by returning {@code true} in {@link #mousePressed(Viewport, int, int, MouseButton)}.
+     *
+     * @param viewport The global x/y coordinates of the viewport are the origin of the coordinate system the local x/y coordinates of this widget lie in.
+     *        That means that you need to translate your widget's local x/y coordinates by the global viewport x/y coordinates before you compare with the given global mouse coordinates!
+     *        Note that you don't need to do any fancy boundary checking like in {@link #mousePressed(Viewport, int, int, MouseButton)} since a mouse release event is only fired if a pressed event has
+     *        been captured by this widget beforehand.
+     * @param mx The global x coordinate of the mouse on the screen.
+     * @param my The global y coordinate of the mouse on the screen.
+     * @param mouseButton The released mouse button.
+     */
+    public void mouseReleased(Viewport viewport, int mx, int my, MouseButton mouseButton);
 
     /**
      * Called when the mouse wheel has moved.
+     * If any widget is focused, that widget will be the first to get notified about the wheel rotation.
      *
-     * @param delta Clamped difference, currently either +5 or -5
-     * @return Whether this widget has captured this mouse wheel event
+     * @param viewport The rectangle on the screen in which the widget is allowed to receive mouse inputs.
+     *        It's important to note that the global x/y coordinates of the viewport are the origin of the coordinate system the local x/y coordinates of this widget lie in.
+     *        That means that you need to translate your widget's local x/y coordinates by the global viewport x/y coordinates before you compare with the given global mouse coordinates!<br>
+     *        <br>
+     *        Please remember to use {@link Viewport#inGlobalBounds(int, int)} or {@link Viewport#inLocalBounds(int, int)} to check whether you are actually allowed to take mouse input
+     *        from the given coordinates.
+     *        Note, however, that there might be occasions where you deliberately ignore the viewport boundary,
+     *        i.e. because you want to implement a dropdown menu that of course shouldn't be cut of by a scrolling container.
+     * @param mx The global x coordinate of the mouse on the screen.
+     * @param my The global y coordinate of the mouse on the screen.
+     * @param delta Clamped difference, currently either +5 or -5.
+     * @return Whether this widget has captured this wheel rotation event, which means that no other widget will be notified about it.
+     *         Returning {@code true} also prevents the event from causing a scrollbar shift.
      */
-    public boolean mouseWheel(int delta) {
+    public boolean mouseWheel(Viewport viewport, int mx, int my, int delta);
 
-        return false;
+    /**
+     * Called once when the given key is typed.
+     * If any widget is focused, that widget will be the first to get notified about the keyboard event.
+     *
+     * @param typedChar The typed character (if any).
+     * @param keyCode {@link Keyboard}{@code .KEY_} code for the typed key.
+     * @return Whether this widget has captured this keyboard event, which means that no other widget will be notified about it.
+     *         Returning {@code true} also prevents the keyboard event from causing a focus shift (tab) or a scrollbar shift (up/down).
+     */
+    public boolean keyTyped(char typedChar, int keyCode);
+
+    /*
+     * Predicates
+     */
+
+    /**
+     * Determines whether the specified <b>local</b> coordinate is in bounds of this widget's area, <b>considering the given {@link Viewport}</b>.
+     *
+     * @param viewport The rectangle on the screen in which the widget is allowed to operate.
+     *        Typically, you receive a viewport object from somewhere, which you can then provide to this method.
+     * @param lx The local x coordinate of the point which should be tested.
+     * @param ly The local y coordinate of the point which should be tested.
+     * @return Whether the given local coordinate is in the bounds of this widget and the given viewport.
+     */
+    default public boolean inLocalBounds(Viewport viewport, int lx, int ly) {
+
+        return viewport.inLocalBounds(lx, ly) && lx >= getX() && ly >= getY() && lx < getX() + getWidth() && ly < getY() + getHeight();
     }
 
     /**
-     * Called when rendering to get tooltips.
+     * Determines whether the specified <b>global</b> coordinate is in bounds of this widget's area, <b>considering the given {@link Viewport}</b>.
      *
-     * @return Tooltips for this widget
+     * @param viewport The rectangle on the screen in which the widget is allowed to operate.
+     *        Typically, you receive a viewport object from somewhere, which you can then provide to this method.
+     * @param gx The global x coordinate of the point which should be tested.
+     * @param gy The global y coordinate of the point which should be tested.
+     * @return Whether the given global coordinate is in the bounds of this widget and the given viewport.
      */
-    public List<Widget> getTooltips() {
+    default public boolean inGlobalBounds(Viewport viewport, int gx, int gy) {
 
-        return Collections.emptyList();
-    }
-
-    /**
-     * Called to see if the specified coordinate is in bounds.
-     *
-     * @param mx Mouse-X
-     * @param my Mouse-Y
-     * @return Whether the mouse is in the bounds of this widget
-     */
-    public boolean inBounds(int mx, int my) {
-
-        return mx >= x && my >= y && mx < x + width && my < y + height;
-    }
-
-    /**
-     * Called to see if this widget should render.
-     *
-     * @param topY Top-Y of the screen
-     * @param bottomY Bottom-Y of the screen
-     * @return Whether or not this widget should be rendered
-     */
-    public boolean shouldRender(int topY, int bottomY) {
-
-        return y + height >= topY && y <= bottomY;
-    }
-
-    /**
-     * Set the position of this widget.
-     *
-     * @param x Left-most X
-     * @param y Top-most Y
-     */
-    public void setPosition(int x, int y) {
-
-        this.x = x;
-        this.y = y;
-    }
-
-    public int getX() {
-
-        return x;
-    }
-
-    public int getY() {
-
-        return y;
-    }
-
-    public int getWidth() {
-
-        return width;
-    }
-
-    public int getHeight() {
-
-        return height;
+        return inLocalBounds(viewport, viewport.localX(gx), viewport.localY(gy));
     }
 
 }
