@@ -122,7 +122,7 @@ task buildLib(type: Copy, dependsOn: [universalLibraryJar, sourceJar, javadocJar
         from sourceJar
         from javadocJar
         from jar
-        into "${project.output}/${name}/${version}"
+        into "${project.output}/${project.property('name')}/${version}"
     }
 }
 
