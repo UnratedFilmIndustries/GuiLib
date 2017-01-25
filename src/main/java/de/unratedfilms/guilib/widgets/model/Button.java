@@ -1,11 +1,12 @@
 
 package de.unratedfilms.guilib.widgets.model;
 
+import de.unratedfilms.guilib.core.MouseButton;
+import de.unratedfilms.guilib.core.Widget;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import de.unratedfilms.guilib.core.MouseButton;
-import de.unratedfilms.guilib.core.Widget;
 
 /**
  * Abstract representation of a button.

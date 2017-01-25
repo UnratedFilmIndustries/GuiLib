@@ -1,15 +1,18 @@
 
 package de.unratedfilms.guilib.widgets.model;
 
-import java.util.Collection;
+import com.google.common.collect.ImmutableList;
+import de.unratedfilms.guilib.core.WidgetFlexible;
+import de.unratedfilms.guilib.core.WidgetFocusable;
+import de.unratedfilms.guilib.widgets.model.Dropdown.Option;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import com.google.common.collect.ImmutableList;
-import de.unratedfilms.guilib.core.WidgetFlexible;
-import de.unratedfilms.guilib.core.WidgetFocusable;
-import de.unratedfilms.guilib.widgets.model.Dropdown.Option;;
+
+import java.util.Collection;
+
+;
 
 /**
  * Abstract representation of a dropdown menu / combo box.

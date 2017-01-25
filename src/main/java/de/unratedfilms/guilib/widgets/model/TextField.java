@@ -1,9 +1,9 @@
 
 package de.unratedfilms.guilib.widgets.model;
 
-import net.minecraft.util.ChatAllowedCharacters;
 import de.unratedfilms.guilib.core.WidgetFlexible;
 import de.unratedfilms.guilib.core.WidgetFocusable;
+import net.minecraft.util.ChatAllowedCharacters;
 
 /**
  * Abstract representation of a text field.

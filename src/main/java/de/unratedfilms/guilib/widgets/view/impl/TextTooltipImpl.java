@@ -1,14 +1,15 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
-import java.util.List;
-import org.apache.commons.lang3.Validate;
-import org.lwjgl.opengl.GL11;
-import net.minecraft.client.gui.FontRenderer;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.util.FontUtils;
 import de.unratedfilms.guilib.widgets.model.TextTooltip;
 import de.unratedfilms.guilib.widgets.view.adapters.TextTooltipAdapter;
+import net.minecraft.client.gui.FontRenderer;
+import org.apache.commons.lang3.Validate;
+import org.lwjgl.opengl.GL11;
+
+import java.util.List;
 
 /**
  * The vanilla {@link TextTooltip} you can see whenever you're hovering over something in Widget form.
@@ -19,7 +20,7 @@ public class TextTooltipImpl extends TextTooltipAdapter {
 
     public TextTooltipImpl(List<String> lines) {
 
-        this(lines, MC.fontRenderer);
+        this(lines, MC.fontRendererObj);
     }
 
     public TextTooltipImpl(List<String> lines, FontRenderer font) {

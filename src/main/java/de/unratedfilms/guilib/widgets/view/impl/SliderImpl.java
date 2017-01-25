@@ -1,10 +1,10 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
-import org.lwjgl.opengl.GL11;
-import net.minecraft.util.ResourceLocation;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.widgets.view.adapters.SliderAdapter;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 /**
  * Vanilla GuiSlider in Widget form, but still abstract and without an implemented value type {@code <V>}.
@@ -40,7 +40,7 @@ public abstract class SliderImpl<V> extends SliderAdapter<V> {
         drawTexturedModalRect(getX() + (int) (getDegree() * (getWidth() - 8)) + 4, getY(), 196, 66, 4, 20); // right part, 4 pixels in width
 
         // Label
-        drawCenteredString(MC.fontRenderer, getLabelFormatter().formatLabel(this), getX() + getWidth() / 2, getY() + (getHeight() - 8) / 2,
+        drawCenteredString(MC.fontRendererObj, getLabelFormatter().formatLabel(this), getX() + getWidth() / 2, getY() + (getHeight() - 8) / 2,
                 inLocalBounds(viewport, lmx, lmy) ? 16777120 : 0xffffff);
     }
 

@@ -1,11 +1,12 @@
 
 package de.unratedfilms.guilib.widgets.view.adapters;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.commons.lang3.Validate;
 import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
 import de.unratedfilms.guilib.widgets.model.TextTooltip;
+import org.apache.commons.lang3.Validate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A minimal implementation of {@link TextTooltip} that doesn't contain any drawing code.

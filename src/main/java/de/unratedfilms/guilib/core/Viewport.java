@@ -1,10 +1,10 @@
 
 package de.unratedfilms.guilib.core;
 
-import org.apache.commons.lang3.Validate;
-import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import org.apache.commons.lang3.Validate;
+import org.lwjgl.opengl.GL11;
 
 public class Viewport {
 
@@ -137,7 +137,7 @@ public class Viewport {
 
         // Enable scissors
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        int scale = new ScaledResolution(MC, MC.displayWidth, MC.displayHeight).getScaleFactor();
+        int scale = new ScaledResolution(MC).getScaleFactor();
         GL11.glScissor(scissor.getX() * scale, MC.displayHeight - scissor.getY() * scale - scissor.getHeight() * scale, scissor.getWidth() * scale, scissor.getHeight() * scale);
 
         // Actually draw whatever needs to be drawn

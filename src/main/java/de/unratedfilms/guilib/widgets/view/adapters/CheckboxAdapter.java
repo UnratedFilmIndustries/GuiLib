@@ -1,12 +1,12 @@
 
 package de.unratedfilms.guilib.widgets.view.adapters;
 
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.util.ResourceLocation;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
 import de.unratedfilms.guilib.widgets.model.Checkbox;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.init.SoundEvents;
 
 /**
  * A minimal implementation of {@link Checkbox} that doesn't contain any drawing code.
@@ -74,7 +74,7 @@ public abstract class CheckboxAdapter extends ContextHelperWidgetAdapter impleme
     public boolean mousePressedInLocalContext(Viewport viewport, int lmx, int lmy, MouseButton mouseButton) {
 
         if (mouseButton == MouseButton.LEFT && inLocalBounds(viewport, lmx, lmy)) {
-            MC.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+            MC.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 
             checked = !checked;
 

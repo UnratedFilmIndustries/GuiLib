@@ -1,12 +1,12 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
-import org.apache.commons.lang3.StringUtils;
-import org.lwjgl.opengl.GL11;
-import net.minecraft.util.ResourceLocation;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.widgets.model.Checkbox;
 import de.unratedfilms.guilib.widgets.view.adapters.CheckboxAdapter;
+import net.minecraft.util.ResourceLocation;
+import org.apache.commons.lang3.StringUtils;
+import org.lwjgl.opengl.GL11;
 
 /**
  * Default style {@link Checkbox}.
@@ -31,7 +31,7 @@ public class CheckboxImpl extends CheckboxAdapter {
 
         int width = SIZE;
         if (!StringUtils.isBlank(getLabel())) {
-            width += 2 + MC.fontRenderer.getStringWidth(getLabel());
+            width += 2 + MC.fontRendererObj.getStringWidth(getLabel());
         }
         setSize(width, SIZE);
     }
@@ -44,7 +44,7 @@ public class CheckboxImpl extends CheckboxAdapter {
         drawTexturedModalRect(getX(), getY(), 0, isChecked() ? SIZE : 0, SIZE, SIZE);
 
         if (!StringUtils.isBlank(getLabel())) {
-            MC.fontRenderer.drawStringWithShadow(getLabel(), getX() + SIZE + 2, getY() + 1, inLocalBounds(viewport, lmx, lmy) ? 16777120 : 0xffffff);
+            MC.fontRendererObj.drawStringWithShadow(getLabel(), getX() + SIZE + 2, getY() + 1, inLocalBounds(viewport, lmx, lmy) ? 16777120 : 0xffffff);
         }
     }
 

@@ -1,17 +1,18 @@
 
 package de.unratedfilms.guilib.layouts;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import org.apache.commons.lang3.Validate;
 import de.unratedfilms.guilib.core.Axis;
 import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.core.WidgetFlexible;
 import de.unratedfilms.guilib.widgets.model.Container;
 import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
+import org.apache.commons.lang3.Validate;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Squeezes all of the widgets in a container either into its whole width (X axis) or height (Y axis), meaning that all the available space on that axis is used up.
