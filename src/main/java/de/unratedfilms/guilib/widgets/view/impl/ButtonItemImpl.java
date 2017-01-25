@@ -10,6 +10,7 @@ import de.unratedfilms.guilib.widgets.model.Button;
 import de.unratedfilms.guilib.widgets.model.ButtonItem;
 import de.unratedfilms.guilib.widgets.view.adapters.ButtonAdapter;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
@@ -108,19 +109,19 @@ public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, WidgetT
 
         boolean hover = inLocalBounds(viewport, lmx, lmy);
         if (hover) {
-            GL11.glDisable(GL11.GL_DEPTH_TEST);
+            GlStateManager.disableDepth();
             drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0x55909090);
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            GlStateManager.enableDepth();
         }
 
         if (itemStack.getItem() != null) {
             RenderHelper.enableGUIStandardItemLighting();
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            GlStateManager.enableRescaleNormal();
             ITEM_RENDERER.zLevel = zLevel;
             ITEM_RENDERER.renderItemAndEffectIntoGUI(itemStack, getX() + 1, getY() + 1);
             ITEM_RENDERER.zLevel = 0;
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+            GlStateManager.disableRescaleNormal();
             RenderHelper.disableStandardItemLighting();
         } else {
             // Air

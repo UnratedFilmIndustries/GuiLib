@@ -3,6 +3,7 @@ package de.unratedfilms.guilib.widgets.view.impl;
 
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.widgets.view.adapters.SliderAdapter;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -29,7 +30,7 @@ public abstract class SliderImpl<V> extends SliderAdapter<V> {
         super.drawInLocalContext(viewport, lmx, lmy);
 
         MC.renderEngine.bindTexture(TEXTURE);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
         // Rail
         drawTexturedModalRect(getX(), getY(), 0, 46, getWidth() / 2, getHeight()); // left part

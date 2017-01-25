@@ -4,6 +4,7 @@ package de.unratedfilms.guilib.widgets.view.impl;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.widgets.model.Checkbox;
 import de.unratedfilms.guilib.widgets.view.adapters.CheckboxAdapter;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.StringUtils;
 import org.lwjgl.opengl.GL11;
@@ -40,7 +41,7 @@ public class CheckboxImpl extends CheckboxAdapter {
     public void drawInLocalContext(Viewport viewport, int lmx, int lmy) {
 
         MC.renderEngine.bindTexture(TEXTURE);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         drawTexturedModalRect(getX(), getY(), 0, isChecked() ? SIZE : 0, SIZE, SIZE);
 
         if (!StringUtils.isBlank(getLabel())) {

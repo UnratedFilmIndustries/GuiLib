@@ -6,6 +6,7 @@ import de.unratedfilms.guilib.util.FontUtils;
 import de.unratedfilms.guilib.widgets.model.TextTooltip;
 import de.unratedfilms.guilib.widgets.view.adapters.TextTooltipAdapter;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import org.apache.commons.lang3.Validate;
 import org.lwjgl.opengl.GL11;
 
@@ -54,7 +55,7 @@ public class TextTooltipImpl extends TextTooltipAdapter {
     @Override
     public void drawInLocalContext(Viewport viewport, int lmx, int lmy) {
 
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
+        GlStateManager.disableDepth();
 
         if (!getLines().isEmpty()) {
             int x = getX();
@@ -81,7 +82,7 @@ public class TextTooltipImpl extends TextTooltipAdapter {
             }
         }
 
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GlStateManager.enableDepth();
     }
 
 }
