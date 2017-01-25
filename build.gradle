@@ -60,8 +60,16 @@ processResources {
     }
 }
 
-// Task for creating a deobfuscated JAR; needed by the projects which use this library
+// declaring new configuration that will be used
+// to associate with artifacts
+configurations {
+    library
+}
+
+// Task for creating a deobfuscated JAR;
+// Needed by the projects which use this library as a mod
 task deobfJar(type: Jar) {
+    tasks.reobf.shouldRunAfter deobfJar
     from sourceSets.main.output
     classifier = 'dev'
 }
@@ -77,6 +85,47 @@ task sourceJar(type: Jar) {
 task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
     classifier = 'javadoc'
+}
+
+// Disable javadoc warnings for java 8
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+        tasks.withType(Javadoc) {
+            options.addStringOption('Xdoclint:none', '-quiet')
+        }
+    }
+}
+
+// Task for creating a deobfuscated jar
+// that can be shaded into other mod
+task universalLibraryJar(type: Jar) {
+    tasks.reobf.shouldRunAfter universalLibraryJar
+    from(sourceSets.main.output) {
+        exclude 'mcmod.info'
+    }
+    classifier = 'universal'
+}
+
+artifacts {
+    archives jar
+    library universalLibraryJar
+    library sourceJar
+    library javadocJar
+}
+
+// Simplify the process of creating library that can be shaded into other mod
+// just run :
+//  ./gradlew buildLib
+//  ./gradlew buildLib -Poutput="../my/libs/folder/"
+task buildLib(type: Copy, dependsOn: [universalLibraryJar, sourceJar, javadocJar, build]) {
+
+    if(project.hasProperty('output')) {
+        from universalLibraryJar
+        from sourceJar
+        from javadocJar
+        from jar
+        into "${project.output}/${name}/${version}"
+    }
 }
 
 // Publish the project artifacts to a maven repository
