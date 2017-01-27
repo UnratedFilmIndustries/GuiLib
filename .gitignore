@@ -1,7 +1,3 @@
-
-#################
-## Forge
-#################
 run/
 
 
@@ -12,13 +8,6 @@ run/
 build/
 .gradle/
 
-#################
-## Gradle
-#################
-
-.idea/
-*.iml
-out/
 
 #################
 ## Eclipse
@@ -49,6 +38,17 @@ local.properties
 
 # PDT-specific
 .buildpath
+
+
+#################
+## IDEA
+#################
+
+out/
+*.ipr
+*.iws
+*.iml
+.idea/
 
 
 #################
