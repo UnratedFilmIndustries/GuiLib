@@ -1,6 +1,8 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
+import org.apache.commons.lang3.Validate;
+import org.lwjgl.input.Keyboard;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Point;
 import de.unratedfilms.guilib.core.Viewport;
@@ -8,8 +10,6 @@ import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.core.WidgetFocusable;
 import de.unratedfilms.guilib.widgets.model.Container;
 import de.unratedfilms.guilib.widgets.model.Scrollbar;
-import org.apache.commons.lang3.Validate;
-import org.lwjgl.input.Keyboard;
 
 /**
  * A {@link Container} that can display a scrollbar so that the player can scroll to the elements which are out of the container's bounds at first.

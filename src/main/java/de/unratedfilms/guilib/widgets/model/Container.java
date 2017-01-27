@@ -1,12 +1,11 @@
 
 package de.unratedfilms.guilib.widgets.model;
 
+import java.util.Arrays;
+import java.util.List;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.core.WidgetFocusable;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Abstract representation of a container that holds a list of other {@link Widget}s and renders them whenever it is rendered.

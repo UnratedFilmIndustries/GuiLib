@@ -1,11 +1,10 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
-import de.unratedfilms.guilib.core.Viewport;
-import de.unratedfilms.guilib.widgets.view.adapters.SliderAdapter;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
+import de.unratedfilms.guilib.core.Viewport;
+import de.unratedfilms.guilib.widgets.view.adapters.SliderAdapter;
 
 /**
  * Vanilla GuiSlider in Widget form, but still abstract and without an implemented value type {@code <V>}.

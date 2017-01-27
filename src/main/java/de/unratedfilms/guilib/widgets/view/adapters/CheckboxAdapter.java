@@ -1,12 +1,12 @@
 
 package de.unratedfilms.guilib.widgets.view.adapters;
 
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.init.SoundEvents;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
 import de.unratedfilms.guilib.widgets.model.Checkbox;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.init.SoundEvents;
 
 /**
  * A minimal implementation of {@link Checkbox} that doesn't contain any drawing code.

@@ -1,14 +1,14 @@
 
 package de.unratedfilms.guilib.widgets.view.adapters;
 
+import org.apache.commons.lang3.Validate;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.math.MathHelper;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
 import de.unratedfilms.guilib.widgets.model.Slider;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.math.MathHelper;
-import org.apache.commons.lang3.Validate;
 
 /**
  * A minimal implementation of {@link Slider} that doesn't contain any drawing code.

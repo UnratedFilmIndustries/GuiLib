@@ -1,6 +1,10 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
+import java.util.Collection;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.client.config.GuiUtils;
 import de.unratedfilms.guilib.core.Axis;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
@@ -15,11 +19,6 @@ import de.unratedfilms.guilib.widgets.model.Dropdown;
 import de.unratedfilms.guilib.widgets.model.Dropdown.Option;
 import de.unratedfilms.guilib.widgets.model.Scrollbar;
 import de.unratedfilms.guilib.widgets.view.adapters.DropdownAdapter;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.client.config.GuiUtils;
-
-import java.util.Collection;
 
 /**
  * Default style {@link Dropdown} that displays labels for the different options.

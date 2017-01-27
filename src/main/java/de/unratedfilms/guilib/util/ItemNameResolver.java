@@ -27,8 +27,8 @@ public class ItemNameResolver {
 
     private ItemNameResolver() {}
 
-    private static String translateToLocal(String key)
-    {
+    private static String translateToLocal(String key) {
+
         return I18n.format(key, new Object[0]);
     }
 

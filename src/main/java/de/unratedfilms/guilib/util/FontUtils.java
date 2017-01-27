@@ -1,9 +1,8 @@
 
 package de.unratedfilms.guilib.util;
 
-import net.minecraft.client.gui.FontRenderer;
-
 import java.util.List;
+import net.minecraft.client.gui.FontRenderer;
 
 public class FontUtils {
 

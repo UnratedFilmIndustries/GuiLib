@@ -1,9 +1,9 @@
 
 package de.unratedfilms.guilib.core;
 
+import org.apache.commons.lang3.Validate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import org.apache.commons.lang3.Validate;
 
 /**
  * A default implementation of {@link Widget} which provides most of the standard methods and extends {@link Gui} so that users gain access to some drawing methods.

@@ -1,13 +1,12 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
+import org.apache.commons.lang3.StringUtils;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.widgets.model.Checkbox;
 import de.unratedfilms.guilib.widgets.view.adapters.CheckboxAdapter;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
-import org.apache.commons.lang3.StringUtils;
-import org.lwjgl.opengl.GL11;
 
 /**
  * Default style {@link Checkbox}.

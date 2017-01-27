@@ -1,16 +1,15 @@
 
 package de.unratedfilms.guilib.integration;
 
+import java.io.IOException;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.math.MathHelper;
 import de.unratedfilms.guilib.core.Dimension;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.WidgetFlexible;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.math.MathHelper;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
-import java.io.IOException;
 
 /**
  * The core GuiScreen. Use this class for your GUIs.
@@ -112,8 +111,11 @@ public abstract class BasicScreen extends GuiScreen {
     @Override
     public void handleMouseInput() {
 
-        try { super.handleMouseInput(); }
-        catch(IOException e) { e.printStackTrace(); }
+        try {
+            super.handleMouseInput();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         int delta = Mouse.getEventDWheel();
         if (delta != 0) {

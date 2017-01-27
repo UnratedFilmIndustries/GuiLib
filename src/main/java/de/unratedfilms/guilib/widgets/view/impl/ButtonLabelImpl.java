@@ -1,13 +1,13 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
+import org.apache.commons.lang3.Validate;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.config.GuiUtils;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.util.FontUtils;
 import de.unratedfilms.guilib.widgets.model.ButtonLabel;
 import de.unratedfilms.guilib.widgets.view.adapters.ButtonAdapter;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.client.config.GuiUtils;
-import org.apache.commons.lang3.Validate;
 
 /**
  * Vanilla GuiButton in Widget form.

@@ -1,17 +1,16 @@
 
 package de.unratedfilms.guilib.widgets.view.adapters;
 
+import java.util.Collection;
+import org.apache.commons.lang3.Validate;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.init.SoundEvents;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
 import de.unratedfilms.guilib.widgets.model.Dropdown;
 import de.unratedfilms.guilib.widgets.model.Dropdown.Option;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.init.SoundEvents;
-import org.apache.commons.lang3.Validate;
-
-import java.util.Collection;
 
 /**
  * A minimal implementation of {@link Dropdown} that doesn't contain any drawing code.

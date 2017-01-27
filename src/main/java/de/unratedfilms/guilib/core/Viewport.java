@@ -1,11 +1,11 @@
 
 package de.unratedfilms.guilib.core;
 
+import org.apache.commons.lang3.Validate;
+import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import org.apache.commons.lang3.Validate;
-import org.lwjgl.opengl.GL11;
 
 public class Viewport {
 

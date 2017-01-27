@@ -1,7 +1,16 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.ListIterator;
 import com.mojang.realmsclient.gui.ChatFormatting;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.item.ItemStack;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.core.WidgetTooltipable;
@@ -9,18 +18,6 @@ import de.unratedfilms.guilib.util.ItemNameResolver;
 import de.unratedfilms.guilib.widgets.model.Button;
 import de.unratedfilms.guilib.widgets.model.ButtonItem;
 import de.unratedfilms.guilib.widgets.view.adapters.ButtonAdapter;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.item.ItemStack;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
 
 /**
  * This class implements a {@link Button} that shows an {@link ItemStack} instead of a label.
@@ -60,7 +57,6 @@ public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, WidgetT
         return this;
     }
 
-    @SuppressWarnings ("unchecked")
     protected TextTooltipImpl generateTooltip() {
 
         List<String> tooltipLines;

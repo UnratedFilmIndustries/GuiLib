@@ -1,11 +1,8 @@
 
 package de.unratedfilms.guilib.widgets.view.adapters;
 
-import de.unratedfilms.guilib.core.MouseButton;
-import de.unratedfilms.guilib.core.Viewport;
-import de.unratedfilms.guilib.core.WidgetFocusable;
-import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
-import de.unratedfilms.guilib.widgets.model.TextField;
+import org.apache.commons.lang3.Validate;
+import org.lwjgl.opengl.GL11;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -13,8 +10,11 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
-import org.apache.commons.lang3.Validate;
-import org.lwjgl.opengl.GL11;
+import de.unratedfilms.guilib.core.MouseButton;
+import de.unratedfilms.guilib.core.Viewport;
+import de.unratedfilms.guilib.core.WidgetFocusable;
+import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
+import de.unratedfilms.guilib.widgets.model.TextField;
 
 /**
  * A minimal implementation of {@link TextField} that only contains drawing code for painting the text and the cursor.
