@@ -1,10 +1,6 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
-import java.util.Collection;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import cpw.mods.fml.client.config.GuiUtils;
 import de.unratedfilms.guilib.core.Axis;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
@@ -19,6 +15,11 @@ import de.unratedfilms.guilib.widgets.model.Dropdown;
 import de.unratedfilms.guilib.widgets.model.Dropdown.Option;
 import de.unratedfilms.guilib.widgets.model.Scrollbar;
 import de.unratedfilms.guilib.widgets.view.adapters.DropdownAdapter;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.client.config.GuiUtils;
+
+import java.util.Collection;
 
 /**
  * Default style {@link Dropdown} that displays labels for the different options.
@@ -53,7 +54,7 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
 
         int maxOptionWidth = 0;
         for (O option : getOptions()) {
-            maxOptionWidth = Math.max(maxOptionWidth, MC.fontRenderer.getStringWidth(option.getDisplayObject()));
+            maxOptionWidth = Math.max(maxOptionWidth, MC.fontRendererObj.getStringWidth(option.getDisplayObject()));
         }
         return maxOptionWidth;
     }
@@ -122,11 +123,11 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
 
         // Make sure that ext does not peek out of the right side of the Minecraft window
         int maxX = viewport.localX(viewport.getScreenSize().getWidth() - EXT_MARGIN - ext.getWidth());
-        ext.setX(MathHelper.clamp_int(0, getX(), maxX));
+        ext.setX(MathHelper.clamp(0, getX(), maxX));
 
         // Make ext as high as necessary, but don't let it peek out of the lower side of the Minecraft window
         int maxHeight = viewport.getScreenSize().getHeight() - EXT_MARGIN - viewport.globalY(getY() + ext.getY());
-        ext.setHeight(MathHelper.clamp_int(getOptions().size() * OPTION_HEIGHT, 0, maxHeight));
+        ext.setHeight(MathHelper.clamp(getOptions().size() * OPTION_HEIGHT, 0, maxHeight));
 
         ext.revalidate(true);
     }
@@ -143,8 +144,8 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
         int u = 0, v = 46 + (hover ? 40 : 20);
         GuiUtils.drawContinuousTexturedBox(TEXTURE, getX(), getY(), u, v, getWidth(), getHeight(), 200, 20, 2, 3, 2, 2, zLevel);
 
-        String actualLabel = FontUtils.abbreviateIfTooLong(MC.fontRenderer, getSelectedOption().getDisplayObject(), getWidth() - 6);
-        drawCenteredString(MC.fontRenderer, actualLabel, getX() + getWidth() / 2, getY() + (getHeight() - 8) / 2, hover ? 16777120 : 14737632);
+        String actualLabel = FontUtils.abbreviateIfTooLong(MC.fontRendererObj, getSelectedOption().getDisplayObject(), getWidth() - 6);
+        drawCenteredString(MC.fontRendererObj, actualLabel, getX() + getWidth() / 2, getY() + (getHeight() - 8) / 2, hover ? 16777120 : 14737632);
     }
 
     /*

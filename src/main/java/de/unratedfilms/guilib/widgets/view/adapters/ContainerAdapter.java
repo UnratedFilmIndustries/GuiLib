@@ -1,26 +1,18 @@
 
 package de.unratedfilms.guilib.widgets.view.adapters;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
+import de.unratedfilms.guilib.core.*;
+import de.unratedfilms.guilib.widgets.model.Container;
+import org.lwjgl.input.Keyboard;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.StreamSupport;
-import org.lwjgl.input.Keyboard;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
-import de.unratedfilms.guilib.core.MouseButton;
-import de.unratedfilms.guilib.core.Point;
-import de.unratedfilms.guilib.core.Rectangle;
-import de.unratedfilms.guilib.core.Viewport;
-import de.unratedfilms.guilib.core.Widget;
-import de.unratedfilms.guilib.core.WidgetAdapter;
-import de.unratedfilms.guilib.core.WidgetFlexible;
-import de.unratedfilms.guilib.core.WidgetFocusable;
-import de.unratedfilms.guilib.core.WidgetRigid;
-import de.unratedfilms.guilib.core.WidgetTooltipable;
-import de.unratedfilms.guilib.widgets.model.Container;
 
 /**
  * A minimal implementation of {@link Container}.

@@ -1,14 +1,16 @@
 
 package de.unratedfilms.guilib.integration;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.MathHelper;
 import de.unratedfilms.guilib.core.Dimension;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.WidgetFlexible;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.math.MathHelper;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
+import java.io.IOException;
 
 /**
  * The core GuiScreen. Use this class for your GUIs.
@@ -110,13 +112,14 @@ public abstract class BasicScreen extends GuiScreen {
     @Override
     public void handleMouseInput() {
 
-        super.handleMouseInput();
+        try { super.handleMouseInput(); }
+        catch(IOException e) { e.printStackTrace(); }
 
         int delta = Mouse.getEventDWheel();
         if (delta != 0) {
             int mouseX = Mouse.getEventX() * width / mc.displayWidth;
             int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
-            delta = MathHelper.clamp_int(delta, -5, 5);
+            delta = MathHelper.clamp(delta, -5, 5);
 
             rootWidget.mouseWheel(getRootViewport(), mouseX, mouseY, delta);
         }
@@ -129,7 +132,7 @@ public abstract class BasicScreen extends GuiScreen {
     }
 
     @Override
-    protected void mouseMovedOrUp(int mouseX, int mouseY, int code) {
+    protected void mouseReleased(int mouseX, int mouseY, int code) {
 
         rootWidget.mouseReleased(getRootViewport(), mouseX, mouseY, MouseButton.fromCode(code));
     }

@@ -1,17 +1,7 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.core.WidgetTooltipable;
@@ -19,6 +9,18 @@ import de.unratedfilms.guilib.util.ItemNameResolver;
 import de.unratedfilms.guilib.widgets.model.Button;
 import de.unratedfilms.guilib.widgets.model.ButtonItem;
 import de.unratedfilms.guilib.widgets.view.adapters.ButtonAdapter;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.item.ItemStack;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * This class implements a {@link Button} that shows an {@link ItemStack} instead of a label.
@@ -30,7 +32,7 @@ import de.unratedfilms.guilib.widgets.view.adapters.ButtonAdapter;
 public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, WidgetTooltipable {
 
     public static final int        SIZE          = 18;
-    public static final RenderItem ITEM_RENDERER = new RenderItem();
+    public static final RenderItem ITEM_RENDERER = MC.getRenderItem();
 
     private ItemStack              itemStack;
     private TextTooltipImpl        tooltip;
@@ -62,12 +64,12 @@ public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, WidgetT
     protected TextTooltipImpl generateTooltip() {
 
         List<String> tooltipLines;
-        FontRenderer font = MC.fontRenderer;
+        FontRenderer font = MC.fontRendererObj;
 
         if (itemStack.getItem() == null) {
             tooltipLines = Arrays.asList(ItemNameResolver.resolveUnknownName(null));
         } else {
-            tooltipLines = itemStack.getTooltip(MC.thePlayer, MC.gameSettings.advancedItemTooltips);
+            tooltipLines = itemStack.getTooltip(MC.player, MC.gameSettings.advancedItemTooltips);
 
             if (!tooltipLines.isEmpty()) {
                 String line0 = tooltipLines.get(0);
@@ -80,7 +82,7 @@ public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, WidgetT
 
                 // All other lines should be colored gray
                 for (ListIterator<String> iter = tooltipLines.listIterator(1); iter.hasNext();) {
-                    iter.set(EnumChatFormatting.GRAY + iter.next());
+                    iter.set(ChatFormatting.GRAY + iter.next());
                 }
             }
 
@@ -107,23 +109,23 @@ public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, WidgetT
 
         boolean hover = inLocalBounds(viewport, lmx, lmy);
         if (hover) {
-            GL11.glDisable(GL11.GL_DEPTH_TEST);
+            GlStateManager.disableDepth();
             drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0x55909090);
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            GlStateManager.enableDepth();
         }
 
         if (itemStack.getItem() != null) {
             RenderHelper.enableGUIStandardItemLighting();
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            GlStateManager.enableRescaleNormal();
             ITEM_RENDERER.zLevel = zLevel;
-            ITEM_RENDERER.renderItemAndEffectIntoGUI(MC.fontRenderer, MC.getTextureManager(), itemStack, getX() + 1, getY() + 1);
+            ITEM_RENDERER.renderItemAndEffectIntoGUI(itemStack, getX() + 1, getY() + 1);
             ITEM_RENDERER.zLevel = 0;
-            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+            GlStateManager.disableRescaleNormal();
             RenderHelper.disableStandardItemLighting();
         } else {
             // Air
-            drawString(MC.fontRenderer, "Air", getX() + 3, getY() + 5, -1);
+            drawString(MC.fontRendererObj, "Air", getX() + 3, getY() + 5, -1);
         }
     }
 

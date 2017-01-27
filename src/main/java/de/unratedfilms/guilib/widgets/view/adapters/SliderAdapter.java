@@ -1,14 +1,14 @@
 
 package de.unratedfilms.guilib.widgets.view.adapters;
 
-import org.apache.commons.lang3.Validate;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
 import de.unratedfilms.guilib.widgets.model.Slider;
+import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.math.MathHelper;
+import org.apache.commons.lang3.Validate;
 
 /**
  * A minimal implementation of {@link Slider} that doesn't contain any drawing code.
@@ -83,7 +83,7 @@ public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implem
     @Override
     public SliderAdapter<V> setValue(V value) {
 
-        this.degree = MathHelper.clamp_float(convertToDegree(value), 0, 1);
+        this.degree = MathHelper.clamp(convertToDegree(value), 0, 1);
         return this;
     }
 
@@ -108,7 +108,7 @@ public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implem
      *
      * @param value The user value which has been taken in by {@link #setValue(Object)}.
      * @return The converted float from 0 to 1 which describes the new current position of the slider from the most left position (0) to the most right one (1).
-     *         If the returned degree is outside the range 0 - 1, it is {@link MathHelper#clamp_float(float, float, float) clamped} to those bounds.
+     *         If the returned degree is outside the range 0 - 1, it is {@link MathHelper#clamp(float, float, float) clamped} to those bounds.
      */
     protected abstract float convertToDegree(V value);
 
@@ -122,7 +122,7 @@ public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implem
 
         if (dragging) {
             degree = (float) (lmx - (getX() + 4)) / (getWidth() - 8);
-            degree = MathHelper.clamp_float(degree, 0, 1);
+            degree = MathHelper.clamp(degree, 0, 1);
         }
     }
 
@@ -131,7 +131,7 @@ public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implem
 
         if (mouseButton == MouseButton.LEFT && inLocalBounds(viewport, lmx, lmy)) {
             dragging = true;
-            MC.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+            MC.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 
             return true;
         }

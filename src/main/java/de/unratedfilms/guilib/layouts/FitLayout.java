@@ -1,12 +1,12 @@
 
 package de.unratedfilms.guilib.layouts;
 
-import org.apache.commons.lang3.Validate;
 import de.unratedfilms.guilib.core.Axis;
 import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.core.WidgetFlexible;
 import de.unratedfilms.guilib.widgets.model.Container;
 import de.unratedfilms.guilib.widgets.model.Container.LayoutManager;
+import org.apache.commons.lang3.Validate;
 
 /**
  * Sets either the width or the height of all widgets in a container to either a specific value or the width/height of the container itself,

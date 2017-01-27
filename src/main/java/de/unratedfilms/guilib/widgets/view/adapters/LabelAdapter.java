@@ -1,9 +1,9 @@
 
 package de.unratedfilms.guilib.widgets.view.adapters;
 
-import org.apache.commons.lang3.Validate;
 import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
 import de.unratedfilms.guilib.widgets.model.Label;
+import org.apache.commons.lang3.Validate;
 
 /**
  * A minimal implementation of {@link Label} that doesn't contain any drawing code.

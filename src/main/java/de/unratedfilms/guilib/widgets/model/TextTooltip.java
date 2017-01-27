@@ -1,8 +1,9 @@
 
 package de.unratedfilms.guilib.widgets.model;
 
-import java.util.List;
 import de.unratedfilms.guilib.core.WidgetRigid;
+
+import java.util.List;
 
 /**
  * Abstract representation of a tooltip which displays multiple lines of text.
