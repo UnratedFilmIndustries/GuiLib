@@ -1,9 +1,6 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
-import de.unratedfilms.guilib.core.Widget;
-import de.unratedfilms.guilib.core.WidgetTooltipable;
-import de.unratedfilms.guilib.widgets.model.TextTooltip;
 import org.apache.commons.lang3.StringUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
@@ -14,13 +11,10 @@ import de.unratedfilms.guilib.widgets.view.adapters.CheckboxAdapter;
 /**
  * Default style {@link Checkbox}.
  */
-public class CheckboxImpl extends CheckboxAdapter implements WidgetTooltipable
-{
+public class CheckboxImpl extends CheckboxAdapter {
 
     public static final int               SIZE    = 10;
     private static final ResourceLocation TEXTURE = new ResourceLocation("guilib", "textures/gui/checkbox.png");
-
-    private TextTooltip                   tooltip;
 
     public CheckboxImpl(String label) {
 
@@ -30,10 +24,6 @@ public class CheckboxImpl extends CheckboxAdapter implements WidgetTooltipable
     public CheckboxImpl(String label, boolean checked) {
 
         super(label, checked);
-    }
-
-    public void setTooltip(TextTooltip tooltip) {
-        this.tooltip = tooltip;
     }
 
     @Override
@@ -58,8 +48,4 @@ public class CheckboxImpl extends CheckboxAdapter implements WidgetTooltipable
         }
     }
 
-    @Override
-    public Widget getTooltip(int hoveredMillis)  {
-        return tooltip;
-    }
 }
