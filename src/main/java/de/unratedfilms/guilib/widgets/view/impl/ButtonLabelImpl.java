@@ -3,7 +3,7 @@ package de.unratedfilms.guilib.widgets.view.impl;
 
 import org.apache.commons.lang3.Validate;
 import net.minecraft.util.ResourceLocation;
-import cpw.mods.fml.client.config.GuiUtils;
+import net.minecraftforge.fml.client.config.GuiUtils;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.util.FontUtils;
 import de.unratedfilms.guilib.widgets.model.ButtonLabel;
@@ -49,8 +49,8 @@ public class ButtonLabelImpl extends ButtonAdapter implements ButtonLabel {
         int u = 0, v = 46 + getStateOffset(hover);
         GuiUtils.drawContinuousTexturedBox(TEXTURE, getX(), getY(), u, v, getWidth(), getHeight(), 200, 20, 2, 3, 2, 2, zLevel);
 
-        String actualLabel = FontUtils.abbreviateIfTooLong(MC.fontRenderer, label, getWidth() - 6);
-        drawCenteredString(MC.fontRenderer, actualLabel, getX() + getWidth() / 2, getY() + (getHeight() - 8) / 2, getTextColor(hover));
+        String actualLabel = FontUtils.abbreviateIfTooLong(MC.fontRendererObj, label, getWidth() - 6);
+        drawCenteredString(MC.fontRendererObj, actualLabel, getX() + getWidth() / 2, getY() + (getHeight() - 8) / 2, getTextColor(hover));
     }
 
     private int getStateOffset(boolean hover) {

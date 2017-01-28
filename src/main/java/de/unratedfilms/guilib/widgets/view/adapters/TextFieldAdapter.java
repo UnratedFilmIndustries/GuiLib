@@ -5,8 +5,11 @@ import org.apache.commons.lang3.Validate;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.MathHelper;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.math.MathHelper;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.WidgetFocusable;
@@ -196,7 +199,7 @@ public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implem
     @Override
     public void setCursorPosition(int index) {
 
-        cursorPosition = MathHelper.clamp_int(index, 0, text.length());
+        cursorPosition = MathHelper.clamp(index, 0, text.length());
         setSelectionPosition(cursorPosition);
     }
 
@@ -209,7 +212,7 @@ public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implem
     @Override
     public void setSelectionPosition(int index) {
 
-        index = MathHelper.clamp_int(index, 0, text.length());
+        index = MathHelper.clamp(index, 0, text.length());
         selectionEnd = index;
 
         if (charOffset > index) {
@@ -217,11 +220,11 @@ public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implem
         }
 
         int width = getInternalWidth();
-        String s = MC.fontRenderer.trimStringToWidth(text.substring(charOffset), width);
+        String s = MC.fontRendererObj.trimStringToWidth(text.substring(charOffset), width);
         int pos = s.length() + charOffset;
 
         if (index == charOffset) {
-            charOffset -= MC.fontRenderer.trimStringToWidth(text, width, true).length();
+            charOffset -= MC.fontRendererObj.trimStringToWidth(text, width, true).length();
         }
         if (index > pos) {
             charOffset += index - 1;
@@ -229,7 +232,7 @@ public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implem
             charOffset = index;
         }
 
-        charOffset = MathHelper.clamp_int(charOffset, 0, text.length());
+        charOffset = MathHelper.clamp(charOffset, 0, text.length());
     }
 
     protected abstract int getDrawX();
@@ -247,7 +250,7 @@ public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implem
 
         int j = cursorPosition - charOffset;
         int k = selectionEnd - charOffset;
-        String s = MC.fontRenderer.trimStringToWidth(text.substring(charOffset), getInternalWidth());
+        String s = MC.fontRendererObj.trimStringToWidth(text.substring(charOffset), getInternalWidth());
         boolean flag = j >= 0 && j <= s.length();
         boolean cursor = focused && cursorCounter / 6 % 2 == 0 && flag;
         int l = getDrawX();
@@ -260,7 +263,7 @@ public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implem
 
         if (s.length() > 0) {
             String s1 = flag ? s.substring(0, j) : s;
-            j1 = MC.fontRenderer.drawStringWithShadow(s1, l, i1, textColor);
+            j1 = MC.fontRendererObj.drawStringWithShadow(s1, l, i1, textColor);
         }
 
         boolean flag2 = cursorPosition < text.length() || text.length() >= maxLength;
@@ -273,18 +276,18 @@ public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implem
             --j1;
         }
         if (s.length() > 0 && flag && j < s.length()) {
-            MC.fontRenderer.drawStringWithShadow(s.substring(j), j1, i1, textColor);
+            MC.fontRendererObj.drawStringWithShadow(s.substring(j), j1, i1, textColor);
         }
         if (cursor) {
             if (flag2) {
-                Gui.drawRect(k1, i1 - 1, k1 + 1, i1 + 1 + MC.fontRenderer.FONT_HEIGHT, -3092272);
+                Gui.drawRect(k1, i1 - 1, k1 + 1, i1 + 1 + MC.fontRendererObj.FONT_HEIGHT, -3092272);
             } else {
-                MC.fontRenderer.drawStringWithShadow("_", k1, i1, textColor);
+                MC.fontRendererObj.drawStringWithShadow("_", k1, i1, textColor);
             }
         }
         if (k != j) {
-            int l1 = l + MC.fontRenderer.getStringWidth(s.substring(0, k));
-            drawCursorVertical(k1, i1 - 1, l1 - 1, i1 + 1 + MC.fontRenderer.FONT_HEIGHT);
+            int l1 = l + MC.fontRendererObj.getStringWidth(s.substring(0, k));
+            drawCursorVertical(k1, i1 - 1, l1 - 1, i1 + 1 + MC.fontRendererObj.FONT_HEIGHT);
         }
     }
 
@@ -302,19 +305,23 @@ public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implem
             y2 = temp;
         }
 
-        Tessellator tessellator = Tessellator.instance;
-        GL11.glColor4f(0.0F, 0.0F, 255.0F, 255.0F);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_COLOR_LOGIC_OP);
-        GL11.glLogicOp(GL11.GL_OR_REVERSE);
-        tessellator.startDrawingQuads();
-        tessellator.addVertex(x1, y2, 0.0D);
-        tessellator.addVertex(x2, y2, 0.0D);
-        tessellator.addVertex(x2, y1, 0.0D);
-        tessellator.addVertex(x1, y1, 0.0D);
+        Tessellator tessellator = Tessellator.getInstance();
+        VertexBuffer vertexbuffer = tessellator.getBuffer();
+
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableColorLogic();
+        GlStateManager.colorLogicOp(GlStateManager.LogicOp.OR_REVERSE);
+        GlStateManager.color(0.0F, 0.0F, 255.0F, 255.0F);
+
+        vertexbuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        vertexbuffer.pos(x1, y2, 0.0D).endVertex();
+        vertexbuffer.pos(x2, y2, 0.0D).endVertex();
+        vertexbuffer.pos(x2, y1, 0.0D).endVertex();
+        vertexbuffer.pos(x1, y1, 0.0D).endVertex();
         tessellator.draw();
-        GL11.glDisable(GL11.GL_COLOR_LOGIC_OP);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+        GlStateManager.disableColorLogic();
+        GlStateManager.enableTexture2D();
     }
 
     @Override
@@ -343,9 +350,9 @@ public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implem
             int pos = lmx - getX();
             pos -= Math.abs(getInternalWidth() - getWidth()) / 2;
 
-            String s = MC.fontRenderer.trimStringToWidth(
+            String s = MC.fontRendererObj.trimStringToWidth(
                     text.substring(charOffset), getWidth());
-            setCursorPosition(MC.fontRenderer.trimStringToWidth(s, pos).length()
+            setCursorPosition(MC.fontRendererObj.trimStringToWidth(s, pos).length()
                     + charOffset);
 
             return true;

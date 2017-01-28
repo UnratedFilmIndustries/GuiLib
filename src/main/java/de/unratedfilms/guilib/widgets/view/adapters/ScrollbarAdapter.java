@@ -2,7 +2,7 @@
 package de.unratedfilms.guilib.widgets.view.adapters;
 
 import org.lwjgl.input.Mouse;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
@@ -90,7 +90,7 @@ public abstract class ScrollbarAdapter extends ContextHelperWidgetAdapter implem
         int heightDiff = getHeightDifference();
 
         if (heightDiff > 0) {
-            widgetShift = MathHelper.clamp_int(widgetShift + p, 0, heightDiff);
+            widgetShift = MathHelper.clamp(widgetShift + p, 0, heightDiff);
         }
     }
 

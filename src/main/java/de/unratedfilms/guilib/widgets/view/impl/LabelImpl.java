@@ -57,7 +57,7 @@ public class LabelImpl extends LabelAdapter {
     @Override
     protected void doRevalidate() {
 
-        setSize(MC.fontRenderer.getStringWidth(getText()), 11);
+        setSize(MC.fontRendererObj.getStringWidth(getText()), 11);
     }
 
     @Override
@@ -66,9 +66,9 @@ public class LabelImpl extends LabelAdapter {
         boolean hover = inLocalBounds(viewport, lmx, lmy);
         int finalColor = hover ? hoverColor : color;
         if (shadowed) {
-            MC.fontRenderer.drawStringWithShadow(getText(), getX(), getY() + 2, finalColor);
+            MC.fontRendererObj.drawStringWithShadow(getText(), getX(), getY() + 2, finalColor);
         } else {
-            MC.fontRenderer.drawString(getText(), getX(), getY() + 2, finalColor);
+            MC.fontRendererObj.drawString(getText(), getX(), getY() + 2, finalColor);
         }
     }
 

@@ -59,16 +59,12 @@ public class LabelFocusableImpl extends LabelImpl implements LabelFocusable {
     @Override
     public void drawInLocalContext(Viewport viewport, int lmx, int lmy) {
 
-        if (focused) {
-            drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), focusColor);
-        }
-
         boolean hover = inLocalBounds(viewport, lmx, lmy);
         int finalColor = focused ? focusColor : hover ? getHoverColor() : getColor();
         if (isShadowed()) {
-            MC.fontRenderer.drawStringWithShadow(getText(), getX(), getY() + 2, finalColor);
+            MC.fontRendererObj.drawStringWithShadow(getText(), getX(), getY() + 2, finalColor);
         } else {
-            MC.fontRenderer.drawString(getText(), getX(), getY() + 2, finalColor);
+            MC.fontRendererObj.drawString(getText(), getX(), getY() + 2, finalColor);
         }
     }
 

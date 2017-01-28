@@ -41,6 +41,17 @@ local.properties
 
 
 #################
+## IDEA
+#################
+
+out/
+*.ipr
+*.iws
+*.iml
+.idea/
+
+
+#################
 ## Visual Studio
 #################
 

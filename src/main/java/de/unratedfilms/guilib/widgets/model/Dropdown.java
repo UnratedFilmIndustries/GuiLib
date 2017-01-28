@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.google.common.collect.ImmutableList;
 import de.unratedfilms.guilib.core.WidgetFlexible;
 import de.unratedfilms.guilib.core.WidgetFocusable;
-import de.unratedfilms.guilib.widgets.model.Dropdown.Option;;
+import de.unratedfilms.guilib.widgets.model.Dropdown.Option;
 
 /**
  * Abstract representation of a dropdown menu / combo box.

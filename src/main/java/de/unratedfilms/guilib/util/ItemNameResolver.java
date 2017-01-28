@@ -2,29 +2,34 @@
 package de.unratedfilms.guilib.util;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.util.StatCollector;
 
 public class ItemNameResolver {
 
     public static String resolveUnknownName(Item item) {
 
         if (item == null) {
-            return StatCollector.translateToLocal("itemname.air");
+            return translateToLocal("itemname.air");
         }
 
         if (item instanceof ItemBlock) {
-            Class<? extends Block> blockClass = ((ItemBlock) item).field_150939_a.getClass();
+            Class<? extends Block> blockClass = ((ItemBlock) item).getBlock().getClass();
             String langKey = "itemname.blockclass." + blockClass.getSimpleName();
-            if (StatCollector.canTranslate(langKey)) {
-                return StatCollector.translateToLocal(langKey);
+            if (I18n.hasKey(langKey)) {
+                return translateToLocal(langKey);
             }
         }
 
-        return StatCollector.translateToLocal("itemname.unknown");
+        return translateToLocal("itemname.unknown");
     }
 
     private ItemNameResolver() {}
+
+    private static String translateToLocal(String key) {
+
+        return I18n.format(key, new Object[0]);
+    }
 
 }

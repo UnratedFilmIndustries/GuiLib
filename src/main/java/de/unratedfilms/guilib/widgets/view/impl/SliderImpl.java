@@ -1,7 +1,7 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.widgets.view.adapters.SliderAdapter;
@@ -29,7 +29,7 @@ public abstract class SliderImpl<V> extends SliderAdapter<V> {
         super.drawInLocalContext(viewport, lmx, lmy);
 
         MC.renderEngine.bindTexture(TEXTURE);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
         // Rail
         drawTexturedModalRect(getX(), getY(), 0, 46, getWidth() / 2, getHeight()); // left part
@@ -40,7 +40,7 @@ public abstract class SliderImpl<V> extends SliderAdapter<V> {
         drawTexturedModalRect(getX() + (int) (getDegree() * (getWidth() - 8)) + 4, getY(), 196, 66, 4, 20); // right part, 4 pixels in width
 
         // Label
-        drawCenteredString(MC.fontRenderer, getLabelFormatter().formatLabel(this), getX() + getWidth() / 2, getY() + (getHeight() - 8) / 2,
+        drawCenteredString(MC.fontRendererObj, getLabelFormatter().formatLabel(this), getX() + getWidth() / 2, getY() + (getHeight() - 8) / 2,
                 inLocalBounds(viewport, lmx, lmy) ? 16777120 : 0xffffff);
     }
 

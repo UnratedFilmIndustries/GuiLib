@@ -1,3 +1,12 @@
+1.3.0
+-----
+
+### Notes
+* Upgraded to Minecraft version 1.11.2.
+
+### Fixes
+* A new fix prevents Minecraft from crashing if a tooltip-supporting widget returns a null tooltip.
+
 1.2.0
 -----
 

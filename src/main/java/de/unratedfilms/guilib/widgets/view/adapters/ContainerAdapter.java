@@ -192,8 +192,10 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
             int hoveredMillis = (int) ( (System.nanoTime() - hoverStart) / 1000 / 1000);
             Widget tooltip = ((WidgetTooltipable) hoveredWidget).getTooltip(hoveredMillis);
 
-            tooltip.revalidate(false);
-            tooltip.draw(getTooltipViewport(viewport, tooltip, mx, my), mx, my);
+            if (tooltip != null) {
+                tooltip.revalidate(false);
+                tooltip.draw(getTooltipViewport(viewport, tooltip, mx, my), mx, my);
+            }
         }
     }
 
