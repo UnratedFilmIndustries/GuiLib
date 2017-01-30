@@ -20,6 +20,12 @@ public abstract class BasicScreen extends GuiScreen {
     private boolean         hasInit, closed;
     private WidgetFlexible  rootWidget;
 
+    /*
+     * The size of this screen.
+     * Basically, the biggest available viewport that drawing is allowed on.
+     */
+    private Viewport        rootViewport;
+
     public BasicScreen(GuiScreen parent) {
 
         this.parent = parent;
@@ -38,11 +44,6 @@ public abstract class BasicScreen extends GuiScreen {
     public void setRootWidget(WidgetFlexible rootWidget) {
 
         this.rootWidget = rootWidget;
-    }
-
-    protected Viewport getRootViewport() {
-
-        return new Viewport(new Dimension(width, height));
     }
 
     public void close() {
@@ -71,6 +72,9 @@ public abstract class BasicScreen extends GuiScreen {
             createGui();
             hasInit = true;
         }
+
+        // Window resize root viewport adjustment
+        rootViewport = new Viewport(new Dimension(width, height));
 
         // Window resize revalidation
         rootWidget.setBounds(0, 0, width, height);
@@ -102,7 +106,7 @@ public abstract class BasicScreen extends GuiScreen {
         rootWidget.revalidate(false);
 
         drawBackground();
-        rootWidget.draw(getRootViewport(), mouseX, mouseY);
+        rootWidget.draw(rootViewport, mouseX, mouseY);
     }
 
     /**
@@ -123,20 +127,20 @@ public abstract class BasicScreen extends GuiScreen {
             int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
             delta = MathHelper.clamp(delta, -5, 5);
 
-            rootWidget.mouseWheel(getRootViewport(), mouseX, mouseY, delta);
+            rootWidget.mouseWheel(rootViewport, mouseX, mouseY, delta);
         }
     }
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int code) {
 
-        rootWidget.mousePressed(getRootViewport(), mouseX, mouseY, MouseButton.fromCode(code));
+        rootWidget.mousePressed(rootViewport, mouseX, mouseY, MouseButton.fromCode(code));
     }
 
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int code) {
 
-        rootWidget.mouseReleased(getRootViewport(), mouseX, mouseY, MouseButton.fromCode(code));
+        rootWidget.mouseReleased(rootViewport, mouseX, mouseY, MouseButton.fromCode(code));
     }
 
     @Override
