@@ -135,7 +135,7 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
 
         // Second, we revalidate the container itself; it can now arrange the widgets after resizing the flexible ones
         if (rev) {
-            doRevalidate();
+            revalidateThis();
         }
 
         // Third, we revalidate the flexible widgets; they might have been resized during the second revalidation step
@@ -150,7 +150,7 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     }
 
     @Override
-    protected void doRevalidate() {
+    protected void revalidateThis() {
 
         for (LayoutManager layoutManager : layoutManagers) {
             layoutManager.layout(this);

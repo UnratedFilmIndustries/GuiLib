@@ -42,7 +42,7 @@ public class TextTooltipImpl extends TextTooltipAdapter {
     }
 
     @Override
-    protected void doRevalidate() {
+    protected void revalidateThis() {
 
         setSize(FontUtils.getMaxStringWidth(font, getLines()), getLines().size() == 1 ? 8 : getLines().size() * 10);
     }

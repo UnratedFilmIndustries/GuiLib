@@ -17,9 +17,9 @@ public class ContainerAdjustingImpl extends ContainerAdapter implements WidgetRi
     }
 
     @Override
-    protected void doRevalidate() {
+    protected void revalidateThis() {
 
-        super.doRevalidate();
+        super.revalidateThis();
 
         int width = 0;
         int height = 0;

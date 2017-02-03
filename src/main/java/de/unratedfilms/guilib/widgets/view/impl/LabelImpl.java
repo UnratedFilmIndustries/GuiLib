@@ -55,7 +55,7 @@ public class LabelImpl extends LabelAdapter {
     }
 
     @Override
-    protected void doRevalidate() {
+    protected void revalidateThis() {
 
         setSize(MC.fontRendererObj.getStringWidth(getText()), 11);
     }

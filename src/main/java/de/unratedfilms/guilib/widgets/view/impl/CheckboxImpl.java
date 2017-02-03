@@ -27,7 +27,7 @@ public class CheckboxImpl extends CheckboxAdapter {
     }
 
     @Override
-    protected void doRevalidate() {
+    protected void revalidateThis() {
 
         int width = SIZE;
         if (!StringUtils.isBlank(getLabel())) {

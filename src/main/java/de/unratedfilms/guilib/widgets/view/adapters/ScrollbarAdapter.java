@@ -105,7 +105,7 @@ public abstract class ScrollbarAdapter extends ContextHelperWidgetAdapter implem
     }
 
     @Override
-    protected void doRevalidate() {
+    protected void revalidateThis() {
 
         setHeight(container.getHeight());
     }

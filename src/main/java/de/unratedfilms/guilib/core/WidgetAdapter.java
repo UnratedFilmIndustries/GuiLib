@@ -86,7 +86,7 @@ public abstract class WidgetAdapter extends Gui implements Widget {
     public boolean revalidate(boolean force) {
 
         if (!valid || force) {
-            doRevalidate();
+            revalidateThis();
             valid = true;
             return true;
         } else {
@@ -98,7 +98,7 @@ public abstract class WidgetAdapter extends Gui implements Widget {
      * Empty event handlers
      */
 
-    protected void doRevalidate() {
+    protected void revalidateThis() {
 
     }
 

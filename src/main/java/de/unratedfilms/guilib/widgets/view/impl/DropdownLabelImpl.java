@@ -112,7 +112,7 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
     }
 
     @Override
-    protected void doRevalidate() {
+    protected void revalidateThis() {
 
         ext.setPosition(getX(), getY() + getHeight());
         ext.setWidth(getExtWidth());

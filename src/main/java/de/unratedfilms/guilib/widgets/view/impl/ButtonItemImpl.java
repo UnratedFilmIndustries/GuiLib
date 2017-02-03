@@ -92,7 +92,7 @@ public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, WidgetT
     }
 
     @Override
-    protected void doRevalidate() {
+    protected void revalidateThis() {
 
         setSize(SIZE, SIZE);
     }
