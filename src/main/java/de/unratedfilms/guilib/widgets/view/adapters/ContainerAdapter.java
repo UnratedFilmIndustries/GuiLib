@@ -45,7 +45,7 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     }
 
     @Override
-    public Container appendLayoutManager(LayoutManager layoutManager) {
+    public ContainerAdapter appendLayoutManager(LayoutManager layoutManager) {
 
         layoutManagers.add(layoutManager);
         return this;
@@ -78,7 +78,7 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     }
 
     @Override
-    public Container removeWidgets(Iterable<Widget> widgets) {
+    public ContainerAdapter removeWidgets(Iterable<Widget> widgets) {
 
         this.widgets = ImmutableList.copyOf(this.widgets.stream().filter(w -> !Iterables.contains(widgets, w)).iterator());
         focusableWidgets = ImmutableList.copyOf(focusableWidgets.stream().filter(w -> !Iterables.contains(widgets, w)).iterator());
@@ -89,7 +89,7 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     }
 
     @Override
-    public Container clearWidgets() {
+    public ContainerAdapter clearWidgets() {
 
         widgets = ImmutableList.of();
         focusableWidgets = ImmutableList.of();
