@@ -83,7 +83,7 @@ public abstract class WidgetAdapter extends Gui implements Widget {
     }
 
     @Override
-    public boolean revalidate(boolean force) {
+    public boolean doRevalidation(boolean force) {
 
         if (!valid || force) {
             revalidateThis();
@@ -99,6 +99,11 @@ public abstract class WidgetAdapter extends Gui implements Widget {
      */
 
     protected void revalidateThis() {
+
+    }
+
+    @Override
+    public void postRevalidation(Viewport viewport) {
 
     }
 

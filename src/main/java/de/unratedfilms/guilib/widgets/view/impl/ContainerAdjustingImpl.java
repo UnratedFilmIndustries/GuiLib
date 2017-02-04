@@ -4,12 +4,12 @@ package de.unratedfilms.guilib.widgets.view.impl;
 import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.core.WidgetRigid;
 import de.unratedfilms.guilib.widgets.model.Container;
-import de.unratedfilms.guilib.widgets.view.adapters.ContainerAdapter;
+import de.unratedfilms.guilib.widgets.view.adapters.ContainerRigidAdapter;
 
 /**
  * A {@link Container} which adjusts its own {@link #getBounds() bounds} so that they always cover all the contained widgets.
  */
-public class ContainerAdjustingImpl extends ContainerAdapter implements WidgetRigid {
+public class ContainerAdjustingImpl extends ContainerRigidAdapter implements WidgetRigid {
 
     public ContainerAdjustingImpl(Widget... widgets) {
 

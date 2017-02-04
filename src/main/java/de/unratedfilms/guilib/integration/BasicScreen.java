@@ -78,7 +78,7 @@ public abstract class BasicScreen extends GuiScreen {
 
         // Window resize revalidation
         rootWidget.setBounds(0, 0, width, height);
-        rootWidget.revalidate(true);
+        rootWidget.revalidate(rootViewport, true);
 
         if (closed) {
             reopenedGui();
@@ -103,7 +103,7 @@ public abstract class BasicScreen extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
         // Potential revalidation
-        rootWidget.revalidate(false);
+        rootWidget.revalidate(rootViewport, false);
 
         drawBackground();
         rootWidget.draw(rootViewport, mouseX, mouseY);

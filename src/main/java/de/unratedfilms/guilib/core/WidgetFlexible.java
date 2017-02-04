@@ -3,7 +3,7 @@ package de.unratedfilms.guilib.core;
 
 /**
  * A {@link Widget} that is flexible and therefore can be resized by outside callers.
- * The widget can provide a default size when it is created, but its {@link #revalidate(boolean)} method is not allowed to change the widget's size afterwards.<br>
+ * The widget can provide a default size when it is created, but its {@link #doRevalidation(boolean)} method is not allowed to change the widget's size afterwards.<br>
  * <br>
  * For example, widgets like labeled buttons or text fields are flexible since they can handle different sizes and are not restricted to just one size.
  */
@@ -103,6 +103,6 @@ public interface WidgetFlexible extends Widget {
      * @return Whether a revalidation has been performed.
      */
     @Override
-    boolean revalidate(boolean force);
+    boolean doRevalidation(boolean force);
 
 }

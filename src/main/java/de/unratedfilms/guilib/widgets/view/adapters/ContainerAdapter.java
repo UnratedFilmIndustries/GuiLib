@@ -23,21 +23,22 @@ import de.unratedfilms.guilib.core.WidgetTooltipable;
 import de.unratedfilms.guilib.widgets.model.Container;
 
 /**
- * A minimal implementation of {@link Container}.
+ * An incomplete implementation of {@link Container}.
+ * This implementation is the base class for both {@link ContainerRigidAdapter} and {@link ContainerFlexibleAdapter}.
  */
 public abstract class ContainerAdapter extends WidgetAdapter implements Container {
 
-    private final List<LayoutManager>      layoutManagers     = new ArrayList<>();
+    protected final List<LayoutManager>      layoutManagers     = new ArrayList<>();
 
-    private ImmutableList<Widget>          widgets            = ImmutableList.of();
-    private ImmutableList<WidgetFocusable> focusableWidgets   = ImmutableList.of();
+    protected ImmutableList<Widget>          widgets            = ImmutableList.of();
+    protected ImmutableList<WidgetFocusable> focusableWidgets   = ImmutableList.of();
 
     // Keys & mouse
-    private final Map<MouseButton, Widget> lastClickedWidgets = new HashMap<>();
+    private final Map<MouseButton, Widget>   lastClickedWidgets = new HashMap<>();
 
     // Hover and tooltips
-    private Widget                         hoveredWidget;
-    private long                           hoverStart;                             // nanoseconds
+    private Widget                           hoveredWidget;
+    private long                             hoverStart;                             // nanoseconds
 
     public ContainerAdapter(Widget... widgets) {
 
@@ -121,40 +122,32 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
      * Event handlers
      */
 
-    @Override
-    public boolean revalidate(boolean force) {
+    // This is a prototype for the revalidation event handler which is used by subclasses
+    protected boolean performRevalidation(Runnable containerRevalidationFunction, boolean force) {
 
         boolean rev = !valid || force;
 
         // First, we revalidate all the rigid widgets which don't care about their position
         for (Widget widget : widgets) {
             if (widget instanceof WidgetRigid) {
-                rev |= widget.revalidate(force);
+                rev |= widget.doRevalidation(force);
             }
         }
 
         // Second, we revalidate the container itself; it can now arrange the widgets after resizing the flexible ones
         if (rev) {
-            revalidateThis();
+            containerRevalidationFunction.run();
         }
 
         // Third, we revalidate the flexible widgets; they might have been resized during the second revalidation step
         for (Widget widget : widgets) {
             if (widget instanceof WidgetFlexible) {
-                widget.revalidate(rev);
+                widget.doRevalidation(rev);
             }
         }
 
         valid = true;
         return rev;
-    }
-
-    @Override
-    protected void revalidateThis() {
-
-        for (LayoutManager layoutManager : layoutManagers) {
-            layoutManager.layout(this);
-        }
     }
 
     @Override
@@ -193,7 +186,7 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
             Widget tooltip = ((WidgetTooltipable) hoveredWidget).getTooltip(hoveredMillis);
 
             if (tooltip != null) {
-                tooltip.revalidate(false);
+                tooltip.doRevalidation(false);
                 tooltip.draw(getTooltipViewport(viewport, tooltip, mx, my), mx, my);
             }
         }

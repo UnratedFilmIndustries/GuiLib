@@ -72,13 +72,13 @@ public class ContainerScrollableImpl extends ContainerClippingImpl {
     }
 
     @Override
-    public boolean revalidate(boolean force) {
+    public boolean doRevalidation(boolean force) {
 
         // Revalidate the scrollbar; note that it is a rigid widget
-        boolean scrollbarRevalidated = scrollbar.revalidate(!valid || force);
+        boolean scrollbarRevalidated = scrollbar.doRevalidation(!valid || force);
 
         // Revalidate the rest of the container
-        return super.revalidate(force || scrollbarRevalidated);
+        return super.doRevalidation(force || scrollbarRevalidated);
     }
 
     /*

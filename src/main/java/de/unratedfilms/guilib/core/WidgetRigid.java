@@ -3,7 +3,7 @@ package de.unratedfilms.guilib.core;
 
 /**
  * A {@link Widget} that is rigid and therefore cannot be resized by outside callers.
- * Only the widget's own {@link #revalidate(boolean)} method can change the widget's size.<br>
+ * Only the widget's own {@link #doRevalidation(boolean)} method can change the widget's size.<br>
  * <br>
  * For example, widgets like labels or checkboxes are rigid since their sizes are directly derived from the text they display, rendering any kind of external change absurd.
  */
@@ -20,6 +20,6 @@ public interface WidgetRigid extends Widget {
      * @return Whether a revalidation has been performed.
      */
     @Override
-    public boolean revalidate(boolean force);
+    public boolean doRevalidation(boolean force);
 
 }

@@ -184,7 +184,27 @@ public interface Widget {
      */
     public void update();
 
-    public boolean revalidate(boolean force);
+    /**
+     * Starts a widget tree revalidation that layouts the contents of this widget and all child (also grandchild and so on) widgets again.
+     * This helper method first calls {@link #doRevalidation(boolean)} in order to perform the actual revalidation,
+     * and then calls {@link #postRevalidation(Viewport)} to perform additional revalidation actions that need the viewport to function properly.
+     *
+     * @param viewport The rectangle on the screen in which the widget is allowed to draw its stuff; this is especially useful when child widgets want to layout such that they don't clip out.
+     *        It's important to note that the global x/y coordinates of the viewport are the origin of the coordinate system the local x/y coordinates of this widget lie in.
+     *        That means that you need to translate your widget's local x/y coordinates by the global viewport x/y coordinates if you want to determine its position correctly!
+     * @param force Whether the widget and all its child widget's must be revalidated, even if they weren't explicitly invalidated beforehand.
+     * @return Whether a revalidation has been performed.
+     */
+    default public boolean revalidate(Viewport viewport, boolean force) {
+
+        boolean rev = doRevalidation(force);
+        postRevalidation(viewport);
+        return rev;
+    }
+
+    public boolean doRevalidation(boolean force);
+
+    public void postRevalidation(Viewport viewport);
 
     /**
      * Draws this widget.

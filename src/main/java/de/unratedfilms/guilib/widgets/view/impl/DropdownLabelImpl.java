@@ -128,7 +128,7 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
         int maxHeight = viewport.getScreenSize().getHeight() - EXT_MARGIN - viewport.globalY(getY() + ext.getY());
         ext.setHeight(MathHelper.clamp(getOptions().size() * OPTION_HEIGHT, 0, maxHeight));
 
-        ext.revalidate(true);
+        ext.doRevalidation(true);
     }
 
     /*
@@ -152,10 +152,10 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
      */
 
     @Override
-    public boolean revalidate(boolean force) {
+    public boolean doRevalidation(boolean force) {
 
-        boolean extRevalidated = ext.revalidate(!valid || force);
-        return super.revalidate(force || extRevalidated);
+        boolean extRevalidated = ext.doRevalidation(!valid || force);
+        return super.doRevalidation(force || extRevalidated);
     }
 
     @Override
