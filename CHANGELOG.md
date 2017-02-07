@@ -1,6 +1,13 @@
 1.3.0
 -----
 
+### Additions
+* Recursion is now done by external classes which take care of the whole recursion process. The event handlers on individual containers shall no longer go about calling event handlers on their children! Instead, they should implement `WidgetParent` and provide a list of their child widgets through that interface.
+* All flexible widgets are now supplied with a viewport when revalidated. That viewport is final, i.e. it represents exactly the viewport the widget will receive when it is being drawn. You could, for example, use that viewport to ensure some parts of your widget don't clip out of the screen, e.g. a dropdown menu.
+
+### Removals
+* The mouseReleased() event will no longer notify you automatically after a mouse button press you have captured is released, since that kind of functionality really should be defined by the widget itself. Instead, all widgets now receive all mouseReleased() events (without a capturing mechanism built in).
+
 ### Notes
 * Upgraded to Minecraft version 1.11.2.
 
