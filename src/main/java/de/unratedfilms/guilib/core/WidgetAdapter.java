@@ -82,11 +82,16 @@ public abstract class WidgetAdapter extends Gui implements Widget {
         valid = false;
     }
 
-    @Override
-    public boolean doRevalidation(boolean force) {
+    public boolean revalidate(boolean force) {
+
+        return revalidate(null, force);
+    }
+
+    public boolean revalidate(Viewport viewport, boolean force) {
 
         if (!valid || force) {
             revalidateThis();
+            revalidateThis(viewport);
             valid = true;
             return true;
         } else {
@@ -98,12 +103,24 @@ public abstract class WidgetAdapter extends Gui implements Widget {
      * Empty event handlers
      */
 
+    /**
+     * Called when this widget needs to be revalidated.
+     * An {@link #invalidate() invalid} and a force check have already been performed.
+     */
     protected void revalidateThis() {
 
     }
 
-    @Override
-    public void postRevalidation(Viewport viewport) {
+    /**
+     * <b>Only used in {@link WidgetFlexible flexible widgets}!</b> Called when this widget needs to be revalidated.
+     * An {@link #invalidate() invalid} and a force check have already been performed.
+     *
+     * @param viewport The rectangle on the screen in which the widget will be allowed to draw its stuff.
+     *        This viewport is especially handy when you want to layout your widget such that nothing clips out of the screen.<br>
+     *        It's important to note that the global x/y coordinates of the viewport are the origin of the coordinate system the local x/y coordinates of this widget lie in.
+     *        That means that you need to translate your widget's local x/y coordinates by the global viewport x/y coordinates if you want to determine its position correctly!
+     */
+    protected void revalidateThis(Viewport viewport) {
 
     }
 

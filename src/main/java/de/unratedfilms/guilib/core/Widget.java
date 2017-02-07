@@ -185,28 +185,6 @@ public interface Widget {
     public void update();
 
     /**
-     * Starts a widget tree revalidation that layouts the contents of this widget and all child (also grandchild and so on) widgets again.
-     * This helper method first calls {@link #doRevalidation(boolean)} in order to perform the actual revalidation,
-     * and then calls {@link #postRevalidation(Viewport)} to perform additional revalidation actions that need the viewport to function properly.
-     *
-     * @param viewport The rectangle on the screen in which the widget is allowed to draw its stuff; this is especially useful when child widgets want to layout such that they don't clip out.
-     *        It's important to note that the global x/y coordinates of the viewport are the origin of the coordinate system the local x/y coordinates of this widget lie in.
-     *        That means that you need to translate your widget's local x/y coordinates by the global viewport x/y coordinates if you want to determine its position correctly!
-     * @param force Whether the widget and all its child widget's must be revalidated, even if they weren't explicitly invalidated beforehand.
-     * @return Whether a revalidation has been performed.
-     */
-    default public boolean revalidate(Viewport viewport, boolean force) {
-
-        boolean rev = doRevalidation(force);
-        postRevalidation(viewport);
-        return rev;
-    }
-
-    public boolean doRevalidation(boolean force);
-
-    public void postRevalidation(Viewport viewport);
-
-    /**
      * Draws this widget.
      *
      * @param viewport The rectangle on the screen in which the widget is allowed to draw its stuff.
@@ -241,12 +219,21 @@ public interface Widget {
     public boolean mousePressed(Viewport viewport, int mx, int my, MouseButton mouseButton);
 
     /**
-     * Called once when the given {@link MouseButton} is released after this widget has captured it being pressed by returning {@code true} in {@link #mousePressed(Viewport, int, int, MouseButton)}.
+     * Called once when the given {@link MouseButton} is going back up.
+     * If any widget is focused, that widget will be the first to get notified about the release.<br>
+     * <br>
+     * Note that it doesn't make any difference whether or not this widget has captured the button being pressed down by returning {@code true} in
+     * {@link #mousePressed(Viewport, int, int, MouseButton)}.
+     * The release of the mouse button is handled as a completely separate event, following the same propagation rules as the pressing event.
      *
-     * @param viewport The global x/y coordinates of the viewport are the origin of the coordinate system the local x/y coordinates of this widget lie in.
-     *        That means that you need to translate your widget's local x/y coordinates by the global viewport x/y coordinates before you compare with the given global mouse coordinates!
-     *        Note that you don't need to do any fancy boundary checking like in {@link #mousePressed(Viewport, int, int, MouseButton)} since a mouse release event is only fired if a pressed event has
-     *        been captured by this widget beforehand.
+     * @param viewport The rectangle on the screen in which the widget is allowed to receive mouse inputs.
+     *        It's important to note that the global x/y coordinates of the viewport are the origin of the coordinate system the local x/y coordinates of this widget lie in.
+     *        That means that you need to translate your widget's local x/y coordinates by the global viewport x/y coordinates before you compare with the given global mouse coordinates!<br>
+     *        <br>
+     *        Please remember to use {@link Viewport#inGlobalBounds(int, int)} or {@link Viewport#inLocalBounds(int, int)} to check whether you are actually allowed to take mouse input
+     *        from the given coordinates.
+     *        Note, however, that there might be occasions where you deliberately ignore the viewport boundary,
+     *        i.e. because you want to implement a dropdown menu that of course shouldn't be cut of by a scrolling container.
      * @param mx The global x coordinate of the mouse on the screen.
      * @param my The global y coordinate of the mouse on the screen.
      * @param mouseButton The released mouse button.
@@ -261,10 +248,10 @@ public interface Widget {
      *        It's important to note that the global x/y coordinates of the viewport are the origin of the coordinate system the local x/y coordinates of this widget lie in.
      *        That means that you need to translate your widget's local x/y coordinates by the global viewport x/y coordinates before you compare with the given global mouse coordinates!<br>
      *        <br>
-     *        Please remember to use {@link Viewport#inGlobalBounds(int, int)} or {@link Viewport#inLocalBounds(int, int)} to check whether you are actually allowed to take mouse input
-     *        from the given coordinates.
-     *        Note, however, that there might be occasions where you deliberately ignore the viewport boundary,
-     *        i.e. because you want to implement a dropdown menu that of course shouldn't be cut of by a scrolling container.
+     *        Please remember that you sometimes want to use {@link Viewport#inGlobalBounds(int, int)} or {@link Viewport#inLocalBounds(int, int)} to check whether you are actually allowed to take
+     *        mouse input from the given coordinates.
+     *        Note, however, that there often are cases where you want to deliberately ignore the viewport boundary,
+     *        i.e. because you want to implement a slider which should be "de-clicked" even if the user moved his cursor somewhere else.
      * @param mx The global x coordinate of the mouse on the screen.
      * @param my The global y coordinate of the mouse on the screen.
      * @param delta Clamped difference, currently either +5 or -5.

@@ -9,9 +9,6 @@ import de.unratedfilms.guilib.core.WidgetFlexible;
  */
 public interface ContainerFlexible extends Container, WidgetFlexible {
 
-    @Override
-    public ContainerFlexible appendLayoutManager(LayoutManager layoutManager);
-
     public ContainerFlexible appendLayoutManager(ViewportAwareLayoutManager layoutManager);
 
     public static interface ViewportAwareLayoutManager {

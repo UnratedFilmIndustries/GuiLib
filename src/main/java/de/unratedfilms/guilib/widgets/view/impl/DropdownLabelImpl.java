@@ -2,6 +2,8 @@
 package de.unratedfilms.guilib.widgets.view.impl;
 
 import java.util.Collection;
+import java.util.List;
+import com.google.common.collect.ImmutableList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.client.config.GuiUtils;
@@ -9,6 +11,7 @@ import de.unratedfilms.guilib.core.Axis;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
+import de.unratedfilms.guilib.core.WidgetParent;
 import de.unratedfilms.guilib.layouts.FlowLayout;
 import de.unratedfilms.guilib.util.FontUtils;
 import de.unratedfilms.guilib.widgets.model.Button;
@@ -25,7 +28,7 @@ import de.unratedfilms.guilib.widgets.view.adapters.DropdownAdapter;
  *
  * @param <O> The type of {@link Option} that can be selected through this dropdown menu.
  */
-public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter<O> {
+public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter<O> implements WidgetParent {
 
     private static final int              EXT_MARGIN       = 10;
     private static final int              OPTION_HEIGHT    = 12;
@@ -112,13 +115,10 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
     }
 
     @Override
-    protected void revalidateThis() {
+    protected void revalidateThis(Viewport viewport) {
 
-        ext.setPosition(getX(), getY() + getHeight());
+        ext.setY(getY() + getHeight());
         ext.setWidth(getExtWidth());
-    }
-
-    private void fitExtIntoWindow(Viewport viewport) {
 
         // Make sure that ext does not peek out of the right side of the Minecraft window
         int maxX = viewport.localX(viewport.getScreenSize().getWidth() - EXT_MARGIN - ext.getWidth());
@@ -127,8 +127,6 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
         // Make ext as high as necessary, but don't let it peek out of the lower side of the Minecraft window
         int maxHeight = viewport.getScreenSize().getHeight() - EXT_MARGIN - viewport.globalY(getY() + ext.getY());
         ext.setHeight(MathHelper.clamp(getOptions().size() * OPTION_HEIGHT, 0, maxHeight));
-
-        ext.doRevalidation(true);
     }
 
     /*
@@ -152,56 +150,19 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
      */
 
     @Override
-    public boolean doRevalidation(boolean force) {
+    public List<Widget> getChildren() {
 
-        boolean extRevalidated = ext.doRevalidation(!valid || force);
-        return super.doRevalidation(force || extRevalidated);
+        return isFocused() ? ImmutableList.of(ext) : ImmutableList.of();
     }
 
     @Override
-    public void update() {
+    public Viewport getChildViewport(Viewport viewport, Widget child) {
 
-        super.update();
-        if (isFocused()) {
-            ext.update();
+        if (child == ext) {
+            return viewport.withoutScissor();
         }
-    }
 
-    @Override
-    public void draw(Viewport viewport, int mx, int my) {
-
-        super.draw(viewport, mx, my);
-        if (isFocused()) {
-            fitExtIntoWindow(viewport); // Since the revalidate() method doesn't take a viewport (for good reasons), we have to do the ext x and height adjustment here
-            ext.draw(viewport.withoutScissor(), mx, my);
-        }
-    }
-
-    @Override
-    public boolean mousePressed(Viewport viewport, int mx, int my, MouseButton mouseButton) {
-
-        return super.mousePressed(viewport, mx, my, mouseButton) | (isFocused() && ext.mousePressed(viewport.withoutScissor(), mx, my, mouseButton));
-    }
-
-    @Override
-    public void mouseReleased(Viewport viewport, int mx, int my, MouseButton mouseButton) {
-
-        super.mouseReleased(viewport, mx, my, mouseButton);
-        if (isFocused()) {
-            ext.mouseReleased(viewport.withoutScissor(), mx, my, mouseButton);
-        }
-    }
-
-    @Override
-    public boolean mouseWheel(Viewport viewport, int mx, int my, int delta) {
-
-        return super.mouseWheel(viewport, mx, my, delta) | (isFocused() && ext.mouseWheel(viewport.withoutScissor(), mx, my, delta));
-    }
-
-    @Override
-    public boolean keyTyped(char typedChar, int keyCode) {
-
-        return super.keyTyped(typedChar, keyCode) | (isFocused() && ext.keyTyped(typedChar, keyCode));
+        throw new UnknownChildException(this, child);
     }
 
 }

@@ -1,13 +1,14 @@
 
 package de.unratedfilms.guilib.widgets.view.impl;
 
+import java.util.List;
 import org.apache.commons.lang3.Validate;
 import org.lwjgl.input.Keyboard;
-import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Point;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.core.WidgetFocusable;
+import de.unratedfilms.guilib.util.Utils;
 import de.unratedfilms.guilib.widgets.model.Container;
 import de.unratedfilms.guilib.widgets.model.Scrollbar;
 
@@ -65,79 +66,58 @@ public class ContainerScrollableImpl extends ContainerClippingImpl {
      */
 
     @Override
-    public void update() {
+    public List<Widget> getChildren() {
 
-        scrollbar.update();
-        super.update();
-    }
-
-    @Override
-    public boolean doRevalidation(boolean force) {
-
-        // Revalidate the scrollbar; note that it is a rigid widget
-        boolean scrollbarRevalidated = scrollbar.doRevalidation(!valid || force);
-
-        // Revalidate the rest of the container
-        return super.doRevalidation(force || scrollbarRevalidated);
+        return Utils.mutableListWith(super.getChildren(), scrollbar);
     }
 
     /*
      * This method is used for the widget's inside the container, which need to be shifted by the scroll amount.
-     * Note that the scrollbar itself still uses the super.subViewport() since it is not affected by the scrolling and should just sit next to the scrolled content!
+     * Note that the scrollbar itself still uses the super.getChildViewport() since it is not affected by the scrolling and should just sit next to the scrolled content!
      */
     @Override
-    protected Viewport subViewport(Viewport parent) {
+    public Viewport getChildViewport(Viewport viewport, Widget child) {
 
-        Viewport sub = super.subViewport(parent);
+        Viewport sub = super.getChildViewport(viewport, child);
 
-        Point widgetOffset = sub.getWidgetOffset();
-        // Note that we shift UP (-), not DOWN (+)!
-        widgetOffset = widgetOffset.withY(widgetOffset.getY() - scrollbar.getWidgetShift());
+        // The scrollbar should not scroll
+        if (child == scrollbar) {
+            return sub;
+        }
+        // The user has added the child widget to the container; it should therefore scroll
+        else {
+            Point widgetOffset = sub.getWidgetOffset();
+            // Note that we shift UP (-), not DOWN (+)!
+            widgetOffset = widgetOffset.withY(widgetOffset.getY() - scrollbar.getWidgetShift());
 
-        return sub.withWidgetOffset(widgetOffset);
-    }
-
-    @Override
-    public void draw(Viewport viewport, int mx, int my) {
-
-        super.draw(viewport, mx, my);
-
-        scrollbar.draw(super.subViewport(viewport), mx, my);
-    }
-
-    @Override
-    public boolean mousePressed(Viewport viewport, int mx, int my, MouseButton mouseButton) {
-
-        if (scrollbar.inGlobalBounds(super.subViewport(viewport), mx, my)) {
-            return true;
-        } else {
-            return super.mousePressed(viewport, mx, my, mouseButton);
+            return sub.withWidgetOffset(widgetOffset);
         }
     }
 
     @Override
     public boolean mouseWheel(Viewport viewport, int mx, int my, int delta) {
 
-        boolean widgetCapturedMouseWheel = super.mouseWheel(viewport, mx, my, delta);
-
-        if (widgetCapturedMouseWheel) {
+        if (super.mouseWheel(viewport, mx, my, delta)) {
             return true;
         }
-        // We catch all mouse wheel actions that take place over the area of this container and are not captured by any widget that's part of the container
-        else if (!widgetCapturedMouseWheel && inGlobalBounds(viewport, mx, my)) {
+
+        // We catch all mouse wheel actions that take place over the area of this container and are not captured by the superclass (or any widget that's part of the container)
+        if (inGlobalBounds(viewport, mx, my)) {
             scrollbar.addWidgetShiftRelative(-delta);
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     @Override
     public boolean keyTyped(char typedChar, int keyCode) {
 
-        super.keyTyped(typedChar, keyCode);
+        if (super.keyTyped(typedChar, keyCode)) {
+            return true;
+        }
 
-        // If even that had no effect and no widget wanted to handle the event, try using it for internal purposes
+        // If the superclass didn't want to handle the key press (and no widget as well), try using it for internal purposes
         switch (keyCode) {
             case Keyboard.KEY_UP:
                 scrollbar.addWidgetShiftRelative(-4);

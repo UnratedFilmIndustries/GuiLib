@@ -10,6 +10,13 @@ import de.unratedfilms.guilib.core.Dimension;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.WidgetFlexible;
+import de.unratedfilms.guilib.recursions.DrawRecursion;
+import de.unratedfilms.guilib.recursions.KeyTypedRecursion;
+import de.unratedfilms.guilib.recursions.MousePressedRecursion;
+import de.unratedfilms.guilib.recursions.MouseReleasedRecursion;
+import de.unratedfilms.guilib.recursions.MouseWheelRecursion;
+import de.unratedfilms.guilib.recursions.RevalidationRecursion;
+import de.unratedfilms.guilib.recursions.UpdateRecursion;
 
 /**
  * The core GuiScreen. Use this class for your GUIs.
@@ -78,7 +85,7 @@ public abstract class BasicScreen extends GuiScreen {
 
         // Window resize revalidation
         rootWidget.setBounds(0, 0, width, height);
-        rootWidget.revalidate(rootViewport, true);
+        RevalidationRecursion.revalidate(rootWidget, rootViewport, true);
 
         if (closed) {
             reopenedGui();
@@ -96,17 +103,17 @@ public abstract class BasicScreen extends GuiScreen {
     @Override
     public void updateScreen() {
 
-        rootWidget.update();
+        UpdateRecursion.update(rootWidget);
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
         // Potential revalidation
-        rootWidget.revalidate(rootViewport, false);
+        RevalidationRecursion.revalidate(rootWidget, rootViewport, false);
 
         drawBackground();
-        rootWidget.draw(rootViewport, mouseX, mouseY);
+        DrawRecursion.draw(rootWidget, rootViewport, mouseX, mouseY);
     }
 
     /**
@@ -127,26 +134,26 @@ public abstract class BasicScreen extends GuiScreen {
             int mouseY = height - Mouse.getEventY() * height / mc.displayHeight - 1;
             delta = MathHelper.clamp(delta, -5, 5);
 
-            rootWidget.mouseWheel(rootViewport, mouseX, mouseY, delta);
+            MouseWheelRecursion.mouseWheel(rootWidget, rootViewport, mouseX, mouseY, delta);
         }
     }
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int code) {
 
-        rootWidget.mousePressed(rootViewport, mouseX, mouseY, MouseButton.fromCode(code));
+        MousePressedRecursion.mousePressed(rootWidget, rootViewport, mouseX, mouseY, MouseButton.fromCode(code));
     }
 
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int code) {
 
-        rootWidget.mouseReleased(rootViewport, mouseX, mouseY, MouseButton.fromCode(code));
+        MouseReleasedRecursion.mouseReleased(rootWidget, rootViewport, mouseX, mouseY, MouseButton.fromCode(code));
     }
 
     @Override
     protected void keyTyped(char typedChar, int keyCode) {
 
-        boolean handled = rootWidget.keyTyped(typedChar, keyCode);
+        boolean handled = KeyTypedRecursion.keyTyped(rootWidget, typedChar, keyCode);
 
         if (!handled) {
             unhandledKeyTyped(typedChar, keyCode);

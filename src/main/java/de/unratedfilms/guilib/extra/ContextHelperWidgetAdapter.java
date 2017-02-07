@@ -61,7 +61,6 @@ public abstract class ContextHelperWidgetAdapter extends WidgetAdapter {
         // First global context, then local context
         mouseReleasedInGlobalContext(viewport, mx, my, mouseButton);
         mouseReleasedInLocalContext(viewport, viewport.localX(mx), viewport.localY(my), mouseButton);
-
     }
 
     public void mouseReleasedInLocalContext(Viewport viewport, int lmx, int lmy, MouseButton mouseButton) {
