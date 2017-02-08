@@ -53,6 +53,11 @@ public abstract class BasicScreen extends GuiScreen {
         this.rootWidget = rootWidget;
     }
 
+    protected Viewport getRootViewport() {
+
+        return rootViewport;
+    }
+
     public void close() {
 
         mc.displayGuiScreen(parent);
