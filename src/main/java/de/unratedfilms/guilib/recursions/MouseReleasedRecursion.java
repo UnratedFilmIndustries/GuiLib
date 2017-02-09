@@ -29,7 +29,7 @@ public class MouseReleasedRecursion {
             }
         }
 
-        widget.mousePressed(viewport, mx, my, mouseButton);
+        widget.mouseReleased(viewport, mx, my, mouseButton);
     }
 
     private MouseReleasedRecursion() {}
