@@ -19,8 +19,6 @@ public interface Container extends Widget, WidgetFocusable {
 
     public List<Widget> getWidgets();
 
-    public List<WidgetFocusable> getFocusableWidgets();
-
     default public Container addWidgets(Widget... widgets) {
 
         return addWidgets(Arrays.asList(widgets));
@@ -37,7 +35,22 @@ public interface Container extends Widget, WidgetFocusable {
 
     public Container clearWidgets();
 
-    public WidgetFocusable getFocusedWidget();
+    default public WidgetFocusable getFocusedWidget() {
+
+        for (Widget widget : getWidgets()) {
+            if (widget instanceof WidgetFocusable && ((WidgetFocusable) widget).isFocused()) {
+                return (WidgetFocusable) widget;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    default boolean isFocused() {
+
+        return getFocusedWidget() != null;
+    }
 
     public static interface LayoutManager {
 

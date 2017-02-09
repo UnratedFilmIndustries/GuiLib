@@ -2,9 +2,7 @@
 package de.unratedfilms.guilib.widgets.view.adapters;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.stream.StreamSupport;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import com.google.common.collect.ImmutableList;
@@ -33,7 +31,6 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     private final List<ViewportAwareLayoutManager> viewportAwareLayoutManagers = new ArrayList<>();
 
     private ImmutableList<Widget>                  widgets                     = ImmutableList.of();
-    private ImmutableList<WidgetFocusable>         focusableWidgets            = ImmutableList.of();
 
     // Hover and tooltips
     private Widget                                 hoveredWidget;
@@ -69,20 +66,9 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     }
 
     @Override
-    public ImmutableList<WidgetFocusable> getFocusableWidgets() {
-
-        return focusableWidgets;
-    }
-
-    @Override
     public ContainerAdapter addWidgets(Iterable<Widget> widgets) {
 
         this.widgets = ImmutableList.<Widget> builder().addAll(this.widgets).addAll(widgets).build();
-
-        Iterator<WidgetFocusable> newFocusableWidgets = StreamSupport.stream(widgets.spliterator(), false)
-                .filter(w -> w instanceof WidgetFocusable).map(WidgetFocusable.class::cast).iterator();
-        focusableWidgets = ImmutableList.<WidgetFocusable> builder().addAll(focusableWidgets).addAll(newFocusableWidgets).build();
-
         invalidate();
 
         return this;
@@ -92,8 +78,6 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     public ContainerAdapter removeWidgets(Iterable<Widget> widgets) {
 
         this.widgets = ImmutableList.copyOf(this.widgets.stream().filter(w -> !Iterables.contains(widgets, w)).iterator());
-        focusableWidgets = ImmutableList.copyOf(focusableWidgets.stream().filter(w -> !Iterables.contains(widgets, w)).iterator());
-
         invalidate();
 
         return this;
@@ -103,29 +87,9 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     public ContainerAdapter clearWidgets() {
 
         widgets = ImmutableList.of();
-        focusableWidgets = ImmutableList.of();
-
         invalidate();
 
         return this;
-    }
-
-    @Override
-    public boolean isFocused() {
-
-        return getFocusedWidget() != null;
-    }
-
-    @Override
-    public WidgetFocusable getFocusedWidget() {
-
-        for (WidgetFocusable widget : focusableWidgets) {
-            if (widget.isFocused()) {
-                return widget;
-            }
-        }
-
-        return null;
     }
 
     @Override
@@ -231,13 +195,22 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     @Override
     public void focusGained() {
 
-        // Empty
+        if (!isFocused()) { // should always be true, but just to make sure ...
+            for (Widget widget : widgets) {
+                if (widget instanceof WidgetFocusable) {
+                    ((WidgetFocusable) widget).focusGained();
+                    break;
+                }
+            }
+        }
     }
 
     @Override
     public void focusLost() {
 
-        // Empty
+        if (isFocused()) { // should always be true, but just to make sure ...
+            getFocusedWidget().focusLost();
+        }
     }
 
     @Override
@@ -246,26 +219,32 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
         // If no widget wanted to handle the key press, try using it for internal purposes
         switch (keyCode) {
             case Keyboard.KEY_TAB:
-                shiftFocusToNext();
-                return true;
+                // Only return true if the focus was actually shifted; otherwise, higher containers will get their chance
+                return shiftFocusToNext();
         }
 
         // Okay, that key seems to be really lame; we apparently don't care about it being pressed
         return false;
     }
 
-    protected void shiftFocusToNext() {
+    protected boolean shiftFocusToNext() {
 
-        if (isFocused() /* has a widget that is in focus */) {
-            WidgetFocusable currentlyFocusedWidget = getFocusedWidget();
-            int currentFocusIndex = focusableWidgets.indexOf(getFocusedWidget());
-            int newFocusIndex = (currentFocusIndex + 1) % focusableWidgets.size();
+        WidgetFocusable currentFocusedWidget = getFocusedWidget();
 
-            if (currentFocusIndex != newFocusIndex) {
-                currentlyFocusedWidget.focusLost();
-                focusableWidgets.get(newFocusIndex).focusGained();
+        if (currentFocusedWidget != null) {
+            int currentFocusIndex = widgets.indexOf(currentFocusedWidget);
+
+            for (int newFocusIndex = currentFocusIndex + 1; newFocusIndex < widgets.size(); newFocusIndex++) {
+                if (widgets.get(newFocusIndex) instanceof WidgetFocusable) {
+                    currentFocusedWidget.focusLost();
+                    ((WidgetFocusable) widgets.get(newFocusIndex)).focusGained();
+
+                    return true;
+                }
             }
         }
+
+        return false;
     }
 
 }
