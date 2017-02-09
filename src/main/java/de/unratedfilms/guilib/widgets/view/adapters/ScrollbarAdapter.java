@@ -85,12 +85,12 @@ public abstract class ScrollbarAdapter extends ContextHelperWidgetAdapter implem
     }
 
     @Override
-    public void addWidgetShift(int p) {
+    public void setWidgetShift(int widgetShift) {
 
         int heightDiff = getHeightDifference();
 
         if (heightDiff > 0) {
-            widgetShift = MathHelper.clamp(widgetShift + p, 0, heightDiff);
+            this.widgetShift = MathHelper.clamp(widgetShift, 0, heightDiff);
         }
     }
 

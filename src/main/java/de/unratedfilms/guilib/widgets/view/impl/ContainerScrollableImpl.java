@@ -18,37 +18,30 @@ import de.unratedfilms.guilib.widgets.model.Scrollbar;
 public class ContainerScrollableImpl extends ContainerClippingImpl {
 
     private final Scrollbar scrollbar;
-    private final int       shiftAmount;
 
     /**
      * Creates a new scrollable container, which by default will clip the elements contained.
      *
      * @param scrollbar The scrollbar for this container.
-     * @param shiftAmount The amount to shift the scrollbar when focus is shifted.
-     *        This should normally be the height of the {@link WidgetFocusable}, depending on spacing.
      * @throws IllegalArgumentException If either the given width or the given height is negative.
      */
-    public ContainerScrollableImpl(Scrollbar scrollbar, int shiftAmount) {
+    public ContainerScrollableImpl(Scrollbar scrollbar) {
 
         Validate.notNull(scrollbar, "Scrollbar cannot be null in a scrollable container");
         Validate.isTrue(scrollbar.getContainer() == null, "One scrollbar cannot be used in multiple scrollable containers");
 
         this.scrollbar = scrollbar;
         scrollbar.setContainer(this);
-
-        this.shiftAmount = shiftAmount;
     }
 
     /**
      * Creates a new scrollable container, which by default will clip the elements contained, and immediately adds the given widgets to it.
      *
      * @param scrollbar The scrollbar for this container.
-     * @param shiftAmount The amount to shift the scrollbar when focus is shifted.
-     *        This should normally be the height of the {@link WidgetFocusable}, depending on spacing.
      * @param widgets The widgets that should initially be added to the new scrollable container.
      * @throws IllegalArgumentException If either the given width or the given height is negative.
      */
-    public ContainerScrollableImpl(Scrollbar scrollbar, int shiftAmount, Widget... widgets) {
+    public ContainerScrollableImpl(Scrollbar scrollbar, Widget... widgets) {
 
         super(widgets);
 
@@ -57,8 +50,6 @@ public class ContainerScrollableImpl extends ContainerClippingImpl {
 
         this.scrollbar = scrollbar;
         scrollbar.setContainer(this);
-
-        this.shiftAmount = shiftAmount;
     }
 
     /*
@@ -132,15 +123,30 @@ public class ContainerScrollableImpl extends ContainerClippingImpl {
     }
 
     @Override
-    protected void shiftFocusToNext() {
+    protected boolean shiftFocusToNext() {
 
-        if (isFocused() /* has a widget that is in focus */) {
-            int oldFocusIndex = getFocusableWidgets().indexOf(getFocusedWidget());
-            super.shiftFocusToNext();
-            int newFocusIndex = getFocusableWidgets().indexOf(getFocusedWidget());
+        boolean focusShifted = super.shiftFocusToNext();
 
-            scrollbar.addWidgetShift( (newFocusIndex - oldFocusIndex) * shiftAmount);
+        if (focusShifted) {
+            WidgetFocusable focusedWidget = getFocusedWidget();
+
+            // The focus shift might have caused this container to lose focus completely, so we have to check
+            if (focusedWidget != null) {
+                int minWidgetShift = focusedWidget.getBottom() - getHeight();
+                int maxWidgetShift = focusedWidget.getY();
+
+                if (scrollbar.getWidgetShift() < minWidgetShift) {
+                    scrollbar.setWidgetShift(minWidgetShift);
+                } else if (scrollbar.getWidgetShift() > maxWidgetShift) {
+                    scrollbar.setWidgetShift(maxWidgetShift);
+                }
+                // Otherwise, the focused widget is visible
+
+                return true;
+            }
         }
+
+        return false;
     }
 
 }

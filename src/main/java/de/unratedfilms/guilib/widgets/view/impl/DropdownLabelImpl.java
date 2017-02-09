@@ -84,7 +84,7 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
     private void generateExt() {
 
         extScrollbar = new ScrollbarImpl(0);
-        ext = new ContainerScrollableImpl(extScrollbar, 10);
+        ext = new ContainerScrollableImpl(extScrollbar);
         ext
                 .appendLayoutManager(c -> {
                     extScrollbar.setPosition(ext.getWidth() - extScrollbar.getWidth(), 0);

@@ -20,11 +20,21 @@ public interface Scrollbar extends WidgetRigid {
     public int getWidgetShift();
 
     /**
-     * Shifts the scollable widgets upwards by {@code p} pixels.
+     * Sets the amount of pixels the scrollable widgets should be shifted upwards by.
      *
-     * @param p How many pixels to shift the scollable widgets.
+     * @param widgetShift How many pixels to shift the scollable widgets.
      */
-    public void addWidgetShift(int p);
+    public void setWidgetShift(int widgetShift);
+
+    /**
+     * Shifts the scollable widgets upwards by {@code delta} pixels, taking into account the current {@link #getWidgetShift() widget shift}.
+     *
+     * @param delta How many pixels to "shift the shift" upwards by.
+     */
+    default public void addWidgetShift(int delta) {
+
+        setWidgetShift(getWidgetShift() + delta);
+    }
 
     /**
      * Shifts this scrollbar relative to its size + contentHeight.
