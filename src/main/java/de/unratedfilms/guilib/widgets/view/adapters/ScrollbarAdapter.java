@@ -1,8 +1,8 @@
 
 package de.unratedfilms.guilib.widgets.view.adapters;
 
-import org.lwjgl.input.Mouse;
 import net.minecraft.util.math.MathHelper;
+import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
@@ -124,25 +124,17 @@ public abstract class ScrollbarAdapter extends ContextHelperWidgetAdapter implem
 
         int length = getLength();
 
-        if (Mouse.isButtonDown(0)) {
-            if (yClick == -1) {
-                if (inLocalBounds(viewport, lmx, lmy)) {
-                    yClick = lmy;
-                }
-            } else {
-                float scrollMultiplier = 1.0F;
-                int diff = getHeightDifference();
+        if (yClick != -1) {
+            float scrollMultiplier = 1.0F;
+            int diff = getHeightDifference();
 
-                if (diff < 1) {
-                    diff = 1;
-                }
-
-                scrollMultiplier /= (getHeight() - length) / (float) diff;
-                addWidgetShift((int) ( (lmy - yClick) * scrollMultiplier));
-                yClick = lmy;
+            if (diff < 1) {
+                diff = 1;
             }
-        } else {
-            yClick = -1;
+
+            scrollMultiplier /= (getHeight() - length) / (float) diff;
+            addWidgetShift((int) ( (lmy - yClick) * scrollMultiplier));
+            yClick = lmy;
         }
 
         drawBoundaryInLocalContext();
@@ -175,5 +167,24 @@ public abstract class ScrollbarAdapter extends ContextHelperWidgetAdapter implem
     protected abstract void drawBoundaryInLocalContext();
 
     protected abstract void drawScrollbarInLocalContext(int y, int length);
+
+    @Override
+    public boolean mousePressedInLocalContext(Viewport viewport, int lmx, int lmy, MouseButton mouseButton) {
+
+        if (mouseButton == MouseButton.LEFT && inLocalBounds(viewport, lmx, lmy)) {
+            yClick = lmy;
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void mouseReleasedInLocalContext(Viewport viewport, int lmx, int lmy, MouseButton mouseButton) {
+
+        if (mouseButton == MouseButton.LEFT) {
+            yClick = -1;
+        }
+    }
 
 }
