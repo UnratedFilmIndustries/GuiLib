@@ -5,6 +5,7 @@ import org.apache.commons.lang3.Validate;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.math.MathHelper;
+import de.unratedfilms.guilib.core.Axis;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
@@ -20,6 +21,7 @@ public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implem
     private SliderHandler<V>        handler;
 
     private V                       minValue, maxValue;
+    private Axis                    draggingAxis;
     private SliderLabelFormatter<V> labelFormatter;
 
     // A float from 0 to 1 which describes the current position of the slider from the most left position (0) to the most right one (1)
@@ -71,6 +73,20 @@ public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implem
     public SliderAdapter<V> setMaxValue(V maxValue) {
 
         this.maxValue = maxValue;
+        return this;
+    }
+
+    @Override
+    public Axis getDraggingAxis() {
+
+        return draggingAxis;
+    }
+
+    @Override
+    public SliderAdapter<V> setDraggingAxis(Axis draggingAxis) {
+
+        Validate.notNull(draggingAxis, "Slider dragging axis cannot be null");
+        this.draggingAxis = draggingAxis;
         return this;
     }
 
@@ -136,7 +152,8 @@ public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implem
     public void drawInLocalContext(Viewport viewport, int lmx, int lmy) {
 
         if (dragging) {
-            float newDegree = (float) (lmx - (getX() + 4)) / (getWidth() - 8);
+            int mPos = draggingAxis == Axis.X ? lmx : lmy;
+            float newDegree = (float) (mPos - (getCoord(draggingAxis) + 4)) / (getExtent(draggingAxis) - 8);
             newDegree = MathHelper.clamp(newDegree, 0, 1);
 
             if (newDegree != degree) {

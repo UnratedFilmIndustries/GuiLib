@@ -1,6 +1,7 @@
 
 package de.unratedfilms.guilib.widgets.model;
 
+import de.unratedfilms.guilib.core.Axis;
 import de.unratedfilms.guilib.core.WidgetFlexible;
 
 /**
@@ -21,6 +22,10 @@ public interface Slider<V> extends WidgetFlexible {
     public V getMaxValue();
 
     public Slider<V> setMaxValue(V maxValue);
+
+    public Axis getDraggingAxis();
+
+    public Slider<V> setDraggingAxis(Axis draggingAxis);
 
     public SliderLabelFormatter<V> getLabelFormatter();
 
