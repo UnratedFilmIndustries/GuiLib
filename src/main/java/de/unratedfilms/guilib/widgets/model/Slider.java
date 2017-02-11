@@ -10,6 +10,10 @@ import de.unratedfilms.guilib.core.WidgetFlexible;
  */
 public interface Slider<V> extends WidgetFlexible {
 
+    public SliderHandler<V> getHandler();
+
+    public Slider<V> setHandler(SliderHandler<V> handler);
+
     public V getMinValue();
 
     public Slider<V> setMinValue(V minValue);
@@ -25,6 +29,12 @@ public interface Slider<V> extends WidgetFlexible {
     public V getValue();
 
     public Slider<V> setValue(V value);
+
+    public static interface SliderHandler<V> {
+
+        public void sliderMoved(Slider<V> slider);
+
+    }
 
     public static interface SliderLabelFormatter<V> {
 

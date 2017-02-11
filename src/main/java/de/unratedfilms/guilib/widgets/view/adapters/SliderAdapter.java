@@ -17,6 +17,8 @@ import de.unratedfilms.guilib.widgets.model.Slider;
  */
 public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implements Slider<V> {
 
+    private SliderHandler<V>        handler;
+
     private V                       minValue, maxValue;
     private SliderLabelFormatter<V> labelFormatter;
 
@@ -31,6 +33,19 @@ public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implem
         this.maxValue = maxValue;
         this.labelFormatter = labelFormatter;
         setValue(value);
+    }
+
+    @Override
+    public SliderHandler<V> getHandler() {
+
+        return handler;
+    }
+
+    @Override
+    public SliderAdapter<V> setHandler(SliderHandler<V> handler) {
+
+        this.handler = handler;
+        return this;
     }
 
     @Override
@@ -121,8 +136,16 @@ public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implem
     public void drawInLocalContext(Viewport viewport, int lmx, int lmy) {
 
         if (dragging) {
-            degree = (float) (lmx - (getX() + 4)) / (getWidth() - 8);
-            degree = MathHelper.clamp(degree, 0, 1);
+            float newDegree = (float) (lmx - (getX() + 4)) / (getWidth() - 8);
+            newDegree = MathHelper.clamp(newDegree, 0, 1);
+
+            if (newDegree != degree) {
+                degree = newDegree;
+
+                if (handler != null) {
+                    handler.sliderMoved(this);
+                }
+            }
         }
     }
 
