@@ -3,7 +3,6 @@ package de.unratedfilms.guilib.widgets.view.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
@@ -11,7 +10,6 @@ import de.unratedfilms.guilib.core.Point;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
 import de.unratedfilms.guilib.core.WidgetAdapter;
-import de.unratedfilms.guilib.core.WidgetFocusable;
 import de.unratedfilms.guilib.core.WidgetParent;
 import de.unratedfilms.guilib.core.WidgetTooltipable;
 import de.unratedfilms.guilib.util.Utils;
@@ -190,61 +188,6 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
 
         // Create a new viewport without any effective scissor area
         return containerViewport.withWidgetOffset(offset).withoutScissor();
-    }
-
-    @Override
-    public void focusGained() {
-
-        if (!isFocused()) { // should always be true, but just to make sure ...
-            for (Widget widget : widgets) {
-                if (widget instanceof WidgetFocusable) {
-                    ((WidgetFocusable) widget).focusGained();
-                    break;
-                }
-            }
-        }
-    }
-
-    @Override
-    public void focusLost() {
-
-        if (isFocused()) { // should always be true, but just to make sure ...
-            getFocusedWidget().focusLost();
-        }
-    }
-
-    @Override
-    public boolean keyTyped(char typedChar, int keyCode) {
-
-        // If no widget wanted to handle the key press, try using it for internal purposes
-        switch (keyCode) {
-            case Keyboard.KEY_TAB:
-                // Only return true if the focus was actually shifted; otherwise, higher containers will get their chance
-                return shiftFocusToNext();
-        }
-
-        // Okay, that key seems to be really lame; we apparently don't care about it being pressed
-        return false;
-    }
-
-    protected boolean shiftFocusToNext() {
-
-        WidgetFocusable currentFocusedWidget = getFocusedWidget();
-
-        if (currentFocusedWidget != null) {
-            int currentFocusIndex = widgets.indexOf(currentFocusedWidget);
-
-            for (int newFocusIndex = currentFocusIndex + 1; newFocusIndex < widgets.size(); newFocusIndex++) {
-                if (widgets.get(newFocusIndex) instanceof WidgetFocusable) {
-                    currentFocusedWidget.focusLost();
-                    ((WidgetFocusable) widgets.get(newFocusIndex)).focusGained();
-
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
 }

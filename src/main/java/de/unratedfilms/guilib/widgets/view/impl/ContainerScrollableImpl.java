@@ -7,7 +7,6 @@ import org.lwjgl.input.Keyboard;
 import de.unratedfilms.guilib.core.Point;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
-import de.unratedfilms.guilib.core.WidgetFocusable;
 import de.unratedfilms.guilib.util.Utils;
 import de.unratedfilms.guilib.widgets.model.Container;
 import de.unratedfilms.guilib.widgets.model.Scrollbar;
@@ -119,33 +118,6 @@ public class ContainerScrollableImpl extends ContainerClippingImpl {
         }
 
         // Okay, that key seems really lame; we apparently don't care about it being pressed
-        return false;
-    }
-
-    @Override
-    protected boolean shiftFocusToNext() {
-
-        boolean focusShifted = super.shiftFocusToNext();
-
-        if (focusShifted) {
-            WidgetFocusable focusedWidget = getFocusedWidget();
-
-            // The focus shift might have caused this container to lose focus completely, so we have to check
-            if (focusedWidget != null) {
-                int minWidgetShift = focusedWidget.getBottom() - getHeight();
-                int maxWidgetShift = focusedWidget.getY();
-
-                if (scrollbar.getWidgetShift() < minWidgetShift) {
-                    scrollbar.setWidgetShift(minWidgetShift);
-                } else if (scrollbar.getWidgetShift() > maxWidgetShift) {
-                    scrollbar.setWidgetShift(maxWidgetShift);
-                }
-                // Otherwise, the focused widget is visible
-
-                return true;
-            }
-        }
-
         return false;
     }
 

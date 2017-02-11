@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
-import de.unratedfilms.guilib.core.WidgetFocusable;
+import de.unratedfilms.guilib.core.WidgetFocusAware;
 
 /**
  * Abstract representation of a container that holds a list of other {@link Widget}s and renders them whenever it is rendered.
@@ -13,7 +13,7 @@ import de.unratedfilms.guilib.core.WidgetFocusable;
  * Thereby, the coordinates of the widgets are shifted by the coordinates of the container.
  * That means that you can group multiple widgets together and describe their relative coordinates to each other instead of absolute coordinates, because the container takes care of that for you.
  */
-public interface Container extends Widget, WidgetFocusable {
+public interface Container extends Widget {
 
     public Container appendLayoutManager(LayoutManager layoutManager);
 
@@ -35,21 +35,15 @@ public interface Container extends Widget, WidgetFocusable {
 
     public Container clearWidgets();
 
-    default public WidgetFocusable getFocusedWidget() {
+    default public WidgetFocusAware getFocusedWidget() {
 
         for (Widget widget : getWidgets()) {
-            if (widget instanceof WidgetFocusable && ((WidgetFocusable) widget).isFocused()) {
-                return (WidgetFocusable) widget;
+            if (widget instanceof WidgetFocusAware && ((WidgetFocusAware) widget).isFocused()) {
+                return (WidgetFocusAware) widget;
             }
         }
 
         return null;
-    }
-
-    @Override
-    default boolean isFocused() {
-
-        return getFocusedWidget() != null;
     }
 
     public static interface LayoutManager {

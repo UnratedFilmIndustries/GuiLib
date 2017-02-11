@@ -10,7 +10,9 @@ import de.unratedfilms.guilib.core.Dimension;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.WidgetFlexible;
+import de.unratedfilms.guilib.core.WidgetParent;
 import de.unratedfilms.guilib.recursions.DrawRecursion;
+import de.unratedfilms.guilib.recursions.FocusShiftRecursion;
 import de.unratedfilms.guilib.recursions.KeyTypedRecursion;
 import de.unratedfilms.guilib.recursions.MousePressedRecursion;
 import de.unratedfilms.guilib.recursions.MouseReleasedRecursion;
@@ -158,11 +160,21 @@ public abstract class BasicScreen extends GuiScreen {
     @Override
     protected void keyTyped(char typedChar, int keyCode) {
 
-        boolean handled = KeyTypedRecursion.keyTyped(rootWidget, typedChar, keyCode);
-
-        if (!handled) {
-            unhandledKeyTyped(typedChar, keyCode);
+        if (KeyTypedRecursion.keyTyped(rootWidget, typedChar, keyCode) != null /* handled? */) {
+            return;
         }
+
+        // If no widget caught the tab key, use it to shift between focused widgets
+        if (rootWidget instanceof WidgetParent && keyCode == Keyboard.KEY_TAB) {
+            int shift = 1;
+            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+                shift = -1;
+            }
+            FocusShiftRecursion.shiftFocus((WidgetParent) rootWidget, shift);
+            return;
+        }
+
+        unhandledKeyTyped(typedChar, keyCode);
     }
 
     /*

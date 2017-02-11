@@ -10,7 +10,7 @@ import java.util.List;
  * <b>The implementing widget <i>shall not</i> perform operations like revalidation or drawing recursively on the child widgets.</b>
  * That is done by an external function which accesses the child widgets of this parent widget through the {@link #getChildren()} method.
  */
-public interface WidgetParent extends Widget {
+public interface WidgetParent extends Widget, WidgetFocusAware {
 
     /**
      * Returns the child widgets which are held by this widget.
@@ -20,15 +20,21 @@ public interface WidgetParent extends Widget {
      */
     public List<Widget> getChildren();
 
-    default public WidgetFocusable getFocusedChild() {
+    default public WidgetFocusAware getFocusedChild() {
 
         for (Widget child : getChildren()) {
-            if (child instanceof WidgetFocusable && ((WidgetFocusable) child).isFocused()) {
-                return (WidgetFocusable) child;
+            if (child instanceof WidgetFocusAware && ((WidgetFocusAware) child).isFocused()) {
+                return (WidgetFocusAware) child;
             }
         }
 
         return null;
+    }
+
+    @Override
+    default boolean isFocused() {
+
+        return getFocusedChild() != null;
     }
 
     /**

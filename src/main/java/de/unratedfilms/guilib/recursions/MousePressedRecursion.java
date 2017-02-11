@@ -8,22 +8,26 @@ import de.unratedfilms.guilib.core.WidgetFocusable;
 
 public class MousePressedRecursion {
 
-    public static boolean mousePressed(Widget widget, Viewport viewport, int mx, int my, MouseButton mouseButton) {
+    /*
+     * Returns the widget which has captured the event, or null if no widget has captured the event.
+     */
+    public static Widget mousePressed(Widget widget, Viewport viewport, int mx, int my, MouseButton mouseButton) {
 
-        return RecursionHelper.propagateEvent(widget, viewport,
-                (w, vp) -> w.mousePressed(vp, mx, my, mouseButton),
-                MousePressedRecursion::tryTransferFocus);
-    }
+        Widget catcher = RecursionHelper.propagateEvent(widget, viewport,
+                (w, vp) -> w.mousePressed(vp, mx, my, mouseButton));
 
-    private static void tryTransferFocus(WidgetFocusable from, Widget to) {
+        // If either no widget caught the event (user clicked outside of all widgets), or if some focusable widget caught the event
+        if (catcher == null || catcher instanceof WidgetFocusable) {
+            // Defocus the previously focused widget
+            FocusLostRecursion.focusLost(widget);
 
-        if (from != null) {
-            from.focusLost();
+            // Focus the catcher, if there is one
+            if (catcher != null) {
+                ((WidgetFocusable) catcher).focusGained();
+            }
         }
 
-        if (to instanceof WidgetFocusable) {
-            ((WidgetFocusable) to).focusGained();
-        }
+        return catcher;
     }
 
     private MousePressedRecursion() {}

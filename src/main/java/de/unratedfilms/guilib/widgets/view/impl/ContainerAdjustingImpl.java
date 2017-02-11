@@ -19,6 +19,7 @@ public class ContainerAdjustingImpl extends ContainerAdapter implements Containe
     @Override
     protected void revalidateThis() {
 
+        // Call the layout managers
         super.revalidateThis();
 
         int width = 0;

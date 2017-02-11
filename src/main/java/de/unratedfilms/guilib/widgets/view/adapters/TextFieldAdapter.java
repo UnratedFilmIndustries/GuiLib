@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
 import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Viewport;
-import de.unratedfilms.guilib.core.WidgetFocusable;
 import de.unratedfilms.guilib.extra.ContextHelperWidgetAdapter;
 import de.unratedfilms.guilib.widgets.model.TextField;
 
@@ -20,7 +19,7 @@ import de.unratedfilms.guilib.widgets.model.TextField;
  * A minimal implementation of {@link TextField} that only contains drawing code for painting the text and the cursor.
  * The border and background of the text field must be painted by a subclass.
  */
-public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implements TextField, WidgetFocusable {
+public abstract class TextFieldAdapter extends ContextHelperWidgetAdapter implements TextField {
 
     private TextFieldHandler handler;
 
