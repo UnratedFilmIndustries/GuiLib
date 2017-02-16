@@ -6,6 +6,7 @@ import java.util.List;
 import org.lwjgl.input.Mouse;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
+import de.unratedfilms.guilib.core.MouseButton;
 import de.unratedfilms.guilib.core.Point;
 import de.unratedfilms.guilib.core.Viewport;
 import de.unratedfilms.guilib.core.Widget;
@@ -188,6 +189,14 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
 
         // Create a new viewport without any effective scissor area
         return containerViewport.withWidgetOffset(offset).withoutScissor();
+    }
+
+    @Override
+    public boolean mousePressed(Viewport viewport, int mx, int my, MouseButton mouseButton) {
+
+        // Capture the click if it happens inside the container and now contained widget is interested
+        // This is the most intuitive behavior and avoids things like popups closing even though you clicked inside the popup (just not on any widget)
+        return inGlobalBounds(viewport, mx, my);
     }
 
 }
