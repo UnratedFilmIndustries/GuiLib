@@ -12,10 +12,11 @@ public class RevalidationRecursion {
     public static void revalidate(Widget widget, Viewport viewport, boolean force) {
 
         // If this widget is a parent and houses rigid widgets, revalidate those rigid widgets and alle rigid widgets below them first
+        boolean rigidChildRevalidated = false;
         if (widget instanceof WidgetParent) {
             for (Widget child : ((WidgetParent) widget).getChildren()) {
                 if (child instanceof WidgetRigid) {
-                    revalidateRigidWidgetTree((WidgetRigid) child, force);
+                    rigidChildRevalidated |= revalidateRigidWidgetTree((WidgetRigid) child, force);
                 }
             }
         }
@@ -23,9 +24,9 @@ public class RevalidationRecursion {
         // Then, revalidate this actual widget
         boolean thisRevalidated = false;
         if (widget instanceof WidgetRigid) {
-            thisRevalidated = ((WidgetRigid) widget).revalidate(force);
+            thisRevalidated = ((WidgetRigid) widget).revalidate(force || rigidChildRevalidated);
         } else if (widget instanceof WidgetFlexible) {
-            thisRevalidated = ((WidgetFlexible) widget).revalidate(viewport, force);
+            thisRevalidated = ((WidgetFlexible) widget).revalidate(viewport, force || rigidChildRevalidated);
         }
 
         // Finally, if this widget is a parent, find any non-rigid widgets below it and start new revalidations on those
