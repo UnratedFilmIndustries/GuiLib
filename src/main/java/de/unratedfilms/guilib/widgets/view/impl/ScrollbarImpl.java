@@ -36,13 +36,13 @@ public class ScrollbarImpl extends ScrollbarAdapter {
     @Override
     protected void drawBoundaryInLocalContext() {
 
-        drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0x80000000);
+        drawRect(getX(), getY(), getRight(), getBottom(), 0x80000000);
     }
 
     @Override
     protected void drawScrollbarInLocalContext(int y, int length) {
 
-        drawGradientRect(getX(), y, getX() + getWidth(), y + length, 0x80ffffff, 0x80777777);
+        drawGradientRect(getX(), y, getRight(), y + length, 0x80ffffff, 0x80777777);
     }
 
 }

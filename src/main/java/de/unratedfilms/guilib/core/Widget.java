@@ -286,7 +286,7 @@ public interface Widget {
      */
     default public boolean inLocalBounds(Viewport viewport, int lx, int ly) {
 
-        return viewport.inLocalBounds(lx, ly) && lx >= getX() && ly >= getY() && lx < getX() + getWidth() && ly < getY() + getHeight();
+        return viewport.inLocalBounds(lx, ly) && lx >= getX() && ly >= getY() && lx < getRight() && ly < getBottom();
     }
 
     /**

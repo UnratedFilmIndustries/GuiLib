@@ -40,9 +40,10 @@ public class TextFieldImpl extends TextFieldAdapter {
         return innerColor;
     }
 
-    public void setInnerColor(int innerColor) {
+    public TextFieldImpl setInnerColor(int innerColor) {
 
         this.innerColor = innerColor;
+        return this;
     }
 
     public int getOuterColor() {
@@ -50,9 +51,10 @@ public class TextFieldImpl extends TextFieldAdapter {
         return outerColor;
     }
 
-    public void setOuterColor(int outerColor) {
+    public TextFieldImpl setOuterColor(int outerColor) {
 
         this.outerColor = outerColor;
+        return this;
     }
 
     @Override
@@ -76,8 +78,8 @@ public class TextFieldImpl extends TextFieldAdapter {
     @Override
     protected void drawBackground() {
 
-        drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), outerColor);
-        drawRect(getX() + 1, getY() + 1, getX() + getWidth() - 1, getY() + getHeight() - 1, innerColor);
+        drawRect(getX(), getY(), getRight(), getBottom(), outerColor);
+        drawRect(getX() + 1, getY() + 1, getRight() - 1, getBottom() - 1, innerColor);
     }
 
 }

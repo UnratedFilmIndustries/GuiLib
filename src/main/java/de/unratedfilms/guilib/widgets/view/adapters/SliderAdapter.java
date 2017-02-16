@@ -33,7 +33,7 @@ public abstract class SliderAdapter<V> extends ContextHelperWidgetAdapter implem
 
         this.minValue = minValue;
         this.maxValue = maxValue;
-        this.labelFormatter = labelFormatter;
+        setLabelFormatter(labelFormatter);
         setValue(value);
     }
 

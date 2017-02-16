@@ -50,7 +50,7 @@ public class ButtonLabelImpl extends ButtonAdapter implements ButtonLabel {
         GuiUtils.drawContinuousTexturedBox(TEXTURE, getX(), getY(), u, v, getWidth(), getHeight(), 200, 20, 2, 3, 2, 2, zLevel);
 
         String actualLabel = FontUtils.abbreviateIfTooLong(MC.fontRendererObj, label, getWidth() - 6);
-        drawCenteredString(MC.fontRendererObj, actualLabel, getX() + getWidth() / 2, getY() + (getHeight() - 8) / 2, getTextColor(hover));
+        drawCenteredString(MC.fontRendererObj, actualLabel, getX() + getWidth() / 2, getY() + (getHeight() - MC.fontRendererObj.FONT_HEIGHT) / 2, getTextColor(hover));
     }
 
     private int getStateOffset(boolean hover) {

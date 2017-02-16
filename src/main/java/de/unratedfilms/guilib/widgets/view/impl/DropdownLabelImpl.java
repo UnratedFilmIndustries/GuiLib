@@ -117,12 +117,12 @@ public class DropdownLabelImpl<O extends Option<String>> extends DropdownAdapter
     @Override
     protected void revalidateThis(Viewport viewport) {
 
-        ext.setY(getY() + getHeight());
+        ext.setY(getBottom());
         ext.setWidth(getExtWidth());
 
         // Make sure that ext does not peek out of the right side of the Minecraft window
         int maxX = viewport.localX(viewport.getScreenSize().getWidth() - EXT_MARGIN - ext.getWidth());
-        ext.setX(MathHelper.clamp(0, getX(), maxX));
+        ext.setX(MathHelper.clamp(getX(), 0, maxX));
 
         // Make ext as high as necessary, but don't let it peek out of the lower side of the Minecraft window
         int maxHeight = viewport.getScreenSize().getHeight() - EXT_MARGIN - viewport.globalY(getY() + ext.getY());

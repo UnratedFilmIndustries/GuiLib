@@ -106,7 +106,7 @@ public class ButtonItemImpl extends ButtonAdapter implements ButtonItem, WidgetT
         boolean hover = inLocalBounds(viewport, lmx, lmy);
         if (hover) {
             GlStateManager.disableDepth();
-            drawRect(getX(), getY(), getX() + getWidth(), getY() + getHeight(), 0x55909090);
+            drawRect(getX(), getY(), getRight(), getBottom(), 0x55909090);
             GlStateManager.enableDepth();
         }
 

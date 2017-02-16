@@ -26,8 +26,8 @@ public class ContainerAdjustingImpl extends ContainerAdapter implements Containe
         int height = 0;
 
         for (Widget widget : getWidgets()) {
-            width = Math.max(width, widget.getX() + widget.getWidth());
-            height = Math.max(height, widget.getY() + widget.getHeight());
+            width = Math.max(width, widget.getRight());
+            height = Math.max(height, widget.getBottom());
         }
 
         setSize(width, height);
