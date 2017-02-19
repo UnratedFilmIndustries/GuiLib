@@ -56,7 +56,6 @@ public class ColorPickerImpl extends ColorPickerAdapter implements WidgetParent 
     public ColorPickerImpl() {
 
         setSize(20, 20); // default size
-        setColorBits(0xAAFFCC33);
     }
 
     /*
