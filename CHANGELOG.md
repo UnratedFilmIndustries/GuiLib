@@ -8,6 +8,7 @@
 * Added a color picker widget.
 * The slider widget now has a handler for listening to value changes.
 * The slider width can now also be displayed in a vertical fashion.
+* Added a little indicator arrow to the dropdown widget.
 
 ### Removals
 * The `mouseReleased()` event will no longer notify you automatically after a mouse button press you have captured is released, since that kind of functionality really should be defined by the widget itself. Instead, all widgets now receive all mouseReleased() events (without a capturing mechanism built in).
