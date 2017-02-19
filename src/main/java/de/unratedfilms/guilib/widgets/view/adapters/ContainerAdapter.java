@@ -34,7 +34,7 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
     // Hover and tooltips
     private Widget                                 hoveredWidget;
     private long                                   hoverStart;                                      // nanoseconds
-    private Widget                                 tooltip;
+    protected Widget                               tooltip;
 
     public ContainerAdapter(Widget... widgets) {
 
@@ -161,8 +161,8 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
 
         if (child == tooltip) {
             // A quick and dirty hack to get the location of the mouse at this point in time
-            int mx = viewport.getScreenSize().getWidth() * Mouse.getX() / MC.displayWidth;
-            int my = viewport.getScreenSize().getHeight() * (1 - Mouse.getY() / MC.displayHeight) - 1;
+            int mx = (int) (viewport.getScreenSize().getWidth() * ((float) Mouse.getX() / MC.displayWidth));
+            int my = (int) (viewport.getScreenSize().getHeight() * (1 - (float) Mouse.getY() / MC.displayHeight)) - 1;
 
             return getTooltipViewport(viewport, child, mx, my);
         }
@@ -178,13 +178,13 @@ public abstract class ContainerAdapter extends WidgetAdapter implements Containe
         Point offset = new Point(mx + 12, my - 12);
 
         // Shift the tooltip widget if it would clip out of the right border of the window
-        if (offset.getX() + tooltip.getWidth() + 6 > MC.displayWidth) {
+        if (offset.getX() + tooltip.getWidth() + 6 > containerViewport.getScreenSize().getWidth()) {
             offset = offset.withX(offset.getX() - 28 - tooltip.getWidth());
         }
 
         // Shift the tooltip widget if it would clip out of the lower border of the window
-        if (offset.getY() + tooltip.getHeight() + 6 > MC.displayHeight) {
-            offset = offset.withY(MC.displayHeight - tooltip.getHeight() - 6);
+        if (offset.getY() + tooltip.getHeight() + 6 > containerViewport.getScreenSize().getHeight()) {
+            offset = offset.withY(containerViewport.getScreenSize().getHeight() - tooltip.getHeight() - 6);
         }
 
         // Create a new viewport without any effective scissor area

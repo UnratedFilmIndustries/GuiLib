@@ -70,8 +70,8 @@ public class ContainerScrollableImpl extends ContainerClippingImpl {
 
         Viewport sub = super.getChildViewport(viewport, child);
 
-        // The scrollbar should not scroll
-        if (child == scrollbar) {
+        // The scrollbar should not scroll, neither shall the tooltip
+        if (child == scrollbar || child == tooltip) {
             return sub;
         }
         // The user has added the child widget to the container; it should therefore scroll
